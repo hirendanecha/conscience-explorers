@@ -22,7 +22,7 @@ export class NotificationsComponent {
 
   ) 
   {  const data = {
-    title: 'Freedom.Buzz Notification',
+    title: 'ConscienceExplorers.com Notification',
     url: `${location.href}`,
     description: '',
   };

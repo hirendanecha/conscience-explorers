@@ -19,7 +19,7 @@ export class SeeFirstUserComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     const data = {
-      title: 'Freedom.Buzz See First User',
+      title: 'ConscienceExplorers.com See First User',
       url: `${location.href}`,
       description: '',
     };

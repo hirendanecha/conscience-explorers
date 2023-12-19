@@ -17,7 +17,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'communities',
+        path: 'visionaries',
         loadChildren: () => import('./pages/communities/communities.module').then((m) => m.CommunitiesModule),
         data: {
           isShowLeftSideBar: true
@@ -25,7 +25,7 @@ const routes: Routes = [
         canActivate: mapToCanActivate([AuthenticationGuard]),
       },
       {
-        path: 'pages',
+        path: 'occult-topics',
         loadChildren: () => import('./pages/freedom-page/freedom-page.module').then((m) => m.FreedomPageModule),
         data: {
           isShowLeftSideBar: true

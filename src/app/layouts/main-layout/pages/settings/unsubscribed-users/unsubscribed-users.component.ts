@@ -19,7 +19,7 @@ export class UnsubscribedUsersComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object
   ) { 
     const data = {
-      title: 'Freedom.Buzz Unsubscribed User',
+      title: 'ConscienceExplorers.com Unsubscribed User',
       url: `${location.href}`,
       description: '',
     };
