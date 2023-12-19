@@ -1,5 +1,5 @@
 {
-  "name": "freedom-ssr",
+  "name": "conscience-explorers",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,10 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "dev:ssr": "ng run freedom-ssr:dev-serve-ssr",
-    "serve:ssr": "node dist/freedom-ssr/server/main.js",
-    "build:ssr": "ng build --configuration production && ng run freedom-ssr:server",
-    "prerender": "ng run freedom-ssr:prerender"
+    "dev:ssr": "ng run conscience-explorers:dev-serve-ssr",
+    "serve:ssr": "node dist/conscience-explorers/server/main.js",
+    "build:ssr": "ng build --configuration production && ng run conscience-explorers:server",
+    "prerender": "ng run conscience-explorers:prerender"
   },
   "private": true,
   "dependencies": {

@@ -20,7 +20,7 @@ const api_url = environment.serverUrl;
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/freedom-ssr/browser');
+  const distFolder = join(process.cwd(), 'dist/conscience-explorers/browser');
   const indexHtml = existsSync(join(distFolder, 'index.original.html'))
     ? 'index.original.html'
     : 'index';
@@ -30,7 +30,7 @@ export function app(): express.Express {
   const path = require('path');
   const template = fs
     .readFileSync(
-      path.join(join(process.cwd(), 'dist/freedom-ssr/browser'), 'index.html')
+      path.join(join(process.cwd(), 'dist/conscience-explorers/browser'), 'index.html')
     )
     .toString();
   // Shim for the global window and document objects.
@@ -84,14 +84,14 @@ export function app(): express.Express {
         }
         const params = req.params[0];
         var seo: any = {
-          title: 'Freedom Buzz',
+          title: 'Conscience Explorers',
           description:
-            'The Umbrella platform for All freedom based projects worldwide',
+            'ConscienceExplorers.com',
           image:
             'https://freedom.buzz/assets/images/banner/freedom-buzz-high-res.jpeg',
           site: 'https://freedom.buzz/',
           url: 'https://freedom.buzz' + params,
-          keywords: 'FreedomBuzz, Freedom',
+          keywords: 'Conscience Explorers, ConscienceExplorers',
         };
         if (
           params.indexOf('communities/') > -1 ||
@@ -153,7 +153,7 @@ export function app(): express.Express {
           const pdhtml = document.createElement('div');
           pdhtml.innerHTML = post?.postdescription || post?.metadescription;
           const talent = {
-            name: post?.title || post?.albumname || 'Freedom.Buzz Post',
+            name: post?.title || post?.albumname || 'ConscienceExplorers.com Post',
             description: pdhtml?.textContent || 'Post content',
             image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://freedom.buzz/assets/images/banner/freedom-buzz-high-res.jpeg',
           };
@@ -170,7 +170,7 @@ export function app(): express.Express {
 
           console.log('group===>', group);
           const talent = {
-            name: `Freedom.Buzz Research ${group?.PageTitle}`,
+            name: `ConscienceExplorers.com Research ${group?.PageTitle}`,
             description: group?.PageDescription,
             image: group?.CoverPicName || group?.ProfilePicName
           };

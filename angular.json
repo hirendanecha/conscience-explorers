@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "freedom-ssr": {
+    "conscience-explorers": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -22,7 +22,7 @@
               "utf-8-validate",
               "socket.io-client"
             ],
-            "outputPath": "dist/freedom-ssr/browser",
+            "outputPath": "dist/conscience-explorers/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -84,10 +84,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "freedom-ssr:build:production"
+              "browserTarget": "conscience-explorers:build:production"
             },
             "development": {
-              "browserTarget": "freedom-ssr:build:development"
+              "browserTarget": "conscience-explorers:build:development"
             }
           },
           "defaultConfiguration": ""
@@ -95,7 +95,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "freedom-ssr:build"
+            "browserTarget": "conscience-explorers:build"
           }
         },
         "test": {
@@ -120,7 +120,7 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/freedom-ssr/server",
+            "outputPath": "dist/conscience-explorers/server",
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json",
             "inlineStyleLanguage": "scss"
@@ -143,8 +143,8 @@
           "builder": "@nguniversal/builders:ssr-dev-server",
           "configurations": {
             "development": {
-              "browserTarget": "freedom-ssr:build:development",
-              "serverTarget": "freedom-ssr:server:development"
+              "browserTarget": "conscience-explorers:build:development",
+              "serverTarget": "conscience-explorers:server:development"
             }
           },
           "defaultConfiguration": "development"
@@ -153,12 +153,12 @@
           "builder": "@nguniversal/builders:ssr-dev-server",
           "configurations": {
             "development": {
-              "browserTarget": "freedom-ssr:build:development",
-              "serverTarget": "freedom-ssr:server:development"
+              "browserTarget": "conscience-explorers:build:development",
+              "serverTarget": "conscience-explorers:server:development"
             },
             "production": {
-              "browserTarget": "freedom-ssr:build:production",
-              "serverTarget": "freedom-ssr:server:production"
+              "browserTarget": "conscience-explorers:build:production",
+              "serverTarget": "conscience-explorers:server:production"
             }
           },
           "defaultConfiguration": "production"
@@ -172,12 +172,12 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "freedom-ssr:build:production",
-              "serverTarget": "freedom-ssr:server:production"
+              "browserTarget": "conscience-explorers:build:production",
+              "serverTarget": "conscience-explorers:server:production"
             },
             "development": {
-              "browserTarget": "freedom-ssr:build:development",
-              "serverTarget": "freedom-ssr:server:development"
+              "browserTarget": "conscience-explorers:build:development",
+              "serverTarget": "conscience-explorers:server:development"
             }
           },
           "defaultConfiguration": ""
