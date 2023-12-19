@@ -27,7 +27,7 @@ export class CommunitiesComponent {
 
     this.getCommunities();
     const data = {
-      title: 'Freedom.Buzz Communities',
+      title: 'ConscienceExplorers.com Visionaries',
       url: `${location.href}`,
       description: '',
     };
@@ -44,6 +44,7 @@ export class CommunitiesComponent {
       getCommunitiesObs = this.communityService.getCommunity(this.profileId, 'community');
     } else {
       getCommunitiesObs = this.communityService.getCommunityByUserId(this.profileId, 'community');
+      console.log("local  : ", getCommunitiesObs.subscribe((data: any) => data));
     }
     this.isCommunityLoader = true;
     getCommunitiesObs?.subscribe({

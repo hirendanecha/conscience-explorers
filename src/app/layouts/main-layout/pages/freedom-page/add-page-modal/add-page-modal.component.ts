@@ -18,7 +18,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./add-page-modal.component.scss'],
 })
 export class AddFreedomPageComponent implements OnInit, AfterViewInit {
-  @Input() title: string | undefined = 'Create Freedom Page';
+  @Input() title: string | undefined = 'Create Conscience Explorers Page';
   @Input() cancelButtonLabel: string | undefined = 'Cancel';
   @Input() confirmButtonLabel: string | undefined = 'Create';
   @Input() closeIcon: boolean | undefined;
@@ -203,7 +203,7 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
                 this.createAdvertizeMentLink(res.data)
                 this.createCommunityAdmin(res.data);
                 this.activeModal.close('success');
-                this.toastService.success('Freedom page created successfully');
+                this.toastService.success('Conscience Explorers page created successfully');
                 // this.router.navigateByUrl('/home');
               }
             },
@@ -226,7 +226,7 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
               if (!res.error) {
                 this.submitted = true;
                 // this.createCommunityAdmin(res.data);
-                this.toastService.success('Your Freedom page edit successfully!');
+                this.toastService.success('Your Conscience Explorers page edit successfully!');
                 this.activeModal.close('success');
               }
             },

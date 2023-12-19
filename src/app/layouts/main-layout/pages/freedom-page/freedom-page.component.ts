@@ -29,7 +29,7 @@ export class FreedomPageComponent {
 
     this.getPages();
     const data = {
-      title: 'Freedom.Buzz Freedom Pages',
+      title: 'ConscienceExplorers.com Conscience Explorers Occult Topics',
       url: `${location.href}`,
       description: '',
     };
@@ -85,6 +85,6 @@ export class FreedomPageComponent {
   }
 
   goToFindCommunity() {
-    this.router.navigate(['/communities-post']);
+    this.router.navigate(['/visionaries-post']);
   }
 }

@@ -1,6 +1,6 @@
 <div class="modal-header border-0">
   <h5 class="text-start">{{ title }}</h5>
-  <!-- <h5 class="text-start">Create Community</h5> -->
+  <h5 class="text-start">Create Visionary</h5>
   <fa-icon
     [icon]="['fas', 'xmark']"
     class="xxltxt"
@@ -17,14 +17,14 @@
   >
     <div class="col-12 mb-5">
       <label class="form-label d-flex"
-        >Community Name<span class="text-danger">*</span></label
+        >Visionary Name<span class="text-danger">*</span></label
       >
       <input
         type="text"
         class="input-area"
         name="cname"
         formControlName="CommunityName"
-        placeholder="Enter your community name"
+        placeholder="Enter your visionary name"
         (keyup)="onCommunityNameChange()"
       />
     </div>
@@ -124,9 +124,9 @@
     </div>
 
     <div class="col-12 mb-5 custom-textarea">
-      <label class="form-label d-flex">Community Description</label>
+      <label class="form-label d-flex">Visionary Description</label>
       <textarea
-        name="CommunityDescription"
+        name="VisionaryDescription"
         cols="30"
         rows="3"
         placeholder="Enter your description"
@@ -159,7 +159,7 @@
 
     <div class="col-12 mb-5">
       <label class="form-label d-flex"
-        >Community Url<span class="text-danger">*</span></label
+        >Visionary Url<span class="text-danger">*</span></label
       >
       <div class="input-group">
         <div class="input-group-prepend">
@@ -172,7 +172,7 @@
           class="input-area ps-1"
           name="cSlug"
           formControlName="slug"
-          placeholder="Enter community url slug"
+          placeholder="Enter visionary url slug"
         />
       </div>
     </div>

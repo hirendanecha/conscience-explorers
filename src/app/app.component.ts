@@ -11,7 +11,7 @@ import { SocketService } from './@shared/services/socket.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'freedom-ssr';
+  title = 'Conscience Explorers';
   showButton = false;
   tab: any;
 

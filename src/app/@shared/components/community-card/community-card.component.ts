@@ -29,12 +29,12 @@ export class CommunityCardComponent {
 
   goToCommunityDetailPage(): void {
     if (this.community.pageType === 'page') {
-      this.router.navigate(['pages', this.community?.slug]);
+      this.router.navigate(['occult-topics', this.community?.slug]);
     } else {
       if (this.community?.isApprove === 'Y') {
-        this.router.navigate(['communities', this.community?.slug]);
+        this.router.navigate(['visionaries', this.community?.slug]);
       } else {
-        this.toastService.danger('This community not approve yet.');
+        this.toastService.danger('This visionary not approve yet.');
       }
     }
   }
