@@ -62,7 +62,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   pdfName: string = '';
   notificationId: number;
   buttonClicked = false;
-  notificationSoundOct = ''
 
   constructor(
     private modalService: NgbModal,
@@ -100,7 +99,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         url: `${location.href}`,
       };
       this.seoService.updateSeoMetaData(data);
-
     }
   }
 
@@ -117,39 +115,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.socketService.socket?.connect();
     }
 
-    this.socketService.socket?.emit('join', { room: this.profileId });
-    this.socketService.socket?.on('notification', (data: any) => {
-      if (data) {
-        console.log('new-notification', data)
-        this.notificationId = data.id;
-        this.sharedService.isNotify = true;
-        if (data?.actionType === 'T') {
-          var sound = new Howl({
-            src: ['https://s3.us-east-1.wasabisys.com/freedom-social/freedom-notification.mp3']
-          });
-          this.notificationSoundOct = localStorage?.getItem('notificationSoundEnabled');
-          if (this.notificationSoundOct !== 'N') {
-            if (sound) {
-              sound?.play();
-            }
-          }
-        }
-        if (this.notificationId) {
-          this.customerService.getNotification(this.notificationId).subscribe({
-            next: (res) => {
-              localStorage.setItem('isRead', res.data[0]?.isRead);
-            },
-            error: (error) => {
-              console.log(error);
-            },
-          });
-        }
-      }
-    });
-    const isRead = localStorage.getItem('isRead');
-    if (isRead === 'N') {
-      this.sharedService.isNotify = true;
-    }
     this.socketService.socket?.on(
       'new-post-added',
       (res: any) => {
