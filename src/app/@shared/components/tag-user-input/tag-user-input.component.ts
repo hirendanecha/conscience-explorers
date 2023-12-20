@@ -206,6 +206,8 @@ export class TagUserInputComponent implements OnChanges, OnDestroy {
               this.spinner.hide();
             },
           });
+      } else {
+        this.metaData.metalink = url;
       }
     } else {
       this.clearMetaData();
@@ -293,7 +295,8 @@ export class TagUserInputComponent implements OnChanges, OnDestroy {
     if (this.tagInputDiv) {
       const htmlText = this.tagInputDiv?.nativeElement?.innerHTML;
 
-      this.value = `${htmlText}`.replace(/\<div\>\<br\>\<\/div\>/gi, '');
+      // this.value = `${htmlText}`.replace(/\<div\>\<br\>\<\/div\>/gi, '');
+      this.value = `${htmlText}`.replace(/(?:<div><br><\/div>\s*)+/gi, '<div><br></div>');
       // this.moveCursorToEnd();
       // console.log('htmlText', `${htmlText}`.replace(/\<div\>\<br\>\<\/div\>/ig, ''))
       // console.log('htmlText', this.value);

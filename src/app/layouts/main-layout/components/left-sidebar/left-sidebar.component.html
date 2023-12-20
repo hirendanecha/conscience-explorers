@@ -55,7 +55,18 @@
           <span>Occult Topics</span>
         </a>
       </li>
-
+      <li class="ms-1">
+        <a
+          class="d-flex gap-4"
+          routerLink="/request-video-call"
+          routerLinkActive="active"
+          (click)="closeSidebar()"
+        >
+          <fa-icon [icon]="['fas', 'phone']" class="font-24-px" />
+          <span>Request Call</span>
+          <!-- <span>Request Private Video Call</span> -->
+        </a>
+      </li>
       <li class="ms-1">
         <a
           routerLink="/research"
@@ -73,7 +84,7 @@
 
       <li class="ms-1">
         <a
-          class="d-flex gap-4"
+          class="d-flex gap-4 position-relative"
           routerLink="/notifications"
           routerLinkActive="active"
           (click)="notificationNavigation()"
@@ -108,7 +119,7 @@
           <span>1776 Token</span>
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a
           href="https://localfoods.market/"
           target="_blank"
@@ -118,7 +129,7 @@
           <fa-icon [icon]="['fas', 'link']" class="font-24-px" />
           <span>Local Foods</span>
         </a>
-      </li>
+      </li> -->
       <li>
         <a
           href="https://lamarslist.com/"
@@ -130,7 +141,7 @@
           <span>Lamars List</span>
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a class="d-flex gap-4" (click)="openWalletPopUp()">
           <fa-icon [icon]="['fas', 'download']" class="font-24-px" />
           <span>Download 1776 Wallet</span>
@@ -141,7 +152,7 @@
           <fa-icon [icon]="['fas', 'certificate']" class="font-24-px" />
           <span>Claim 50 free 1776</span>
         </a>
-      </li>
+      </li> -->
 
       <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <div
@@ -225,9 +236,13 @@
         class="w-100 rounded-3"
         src="/assets/images/svg/ConscienceExplorersLogo.svg"
       />
-      <span class="mt-3 text-start font-14-px">
-        The Umbrella platform for All conscience explorers based projects worldwide.
+      <span class="c-fonts text-center mt-6">
+        Private video consultations with Naturopathic Doctors <br />
+        and Holistic Healers from around the world
       </span>
+      <span class="c-fonts py-6 mt-10 text-center"
+        >Social Discussion on how to heal various ailments</span
+      >
     </div>
   </ng-container>
 </div>
