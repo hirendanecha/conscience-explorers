@@ -182,7 +182,7 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
               this.submitted = true;
               this.createCommunityAdmin(res.data);
               this.toastService.success(
-                'Your Health Practitioner will be approved within 24 hours!'
+                'Your Visionaries will be approved within 24 hours!'
               );
               this.activeModal.close('success');
               this.router.navigate(['/visionaries']);
@@ -190,7 +190,7 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
           },
           error: (err) => {
             this.toastService.danger(
-              'Please change practitioner. this practitioner name already in use.'
+              'Please change Visionaries. this Visionaries name already in use.'
             );
             this.spinner.hide();
           },
@@ -210,14 +210,14 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
               this.submitted = true;
               // this.createCommunityAdmin(res.data);
               this.toastService.success(
-                'Your Health Practitioner edit successfully!'
+                'Your Visionaries edit successfully!'
               );
               this.activeModal.close('success');
             }
           },
           error: (err) => {
             this.toastService.danger(
-              'Please change Health Practitioner. this Health Practitioner name already in use.'
+              'Please change Visionaries. this Visionaries name already in use.'
             );
             this.spinner.hide();
           },
