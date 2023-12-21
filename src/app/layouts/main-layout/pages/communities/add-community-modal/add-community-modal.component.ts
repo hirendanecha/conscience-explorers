@@ -185,7 +185,7 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
                 'Your Health Practitioner will be approved within 24 hours!'
               );
               this.activeModal.close('success');
-              this.router.navigate(['/health-practitioner']);
+              this.router.navigate(['/visionaries']);
             }
           },
           error: (err) => {
@@ -348,6 +348,6 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
   }
 
   clearForm() {
-    this.router.navigate(['/health-practitioner'])
+    this.router.navigate(['/visionaries'])
   }
 }
