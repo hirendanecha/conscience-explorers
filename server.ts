@@ -88,9 +88,11 @@ export function app(): express.Express {
           description:
             'ConscienceExplorers.com',
           image:
-            'https://freedom.buzz/assets/images/banner/freedom-buzz-high-res.jpeg',
-          site: 'https://freedom.buzz/',
-          url: 'https://freedom.buzz' + params,
+            'https://conscienceexplorers.com/assets/images/profile-cover.png',
+          // image:
+          //   'https://freedom.buzz/assets/images/banner/freedom-buzz-high-res.jpeg',
+          site: 'https://conscienceexplorers.com/',
+          url: 'https://conscienceexplorers.com' + params,
           keywords: 'Conscience Explorers, ConscienceExplorers',
         };
         if (
@@ -155,7 +157,7 @@ export function app(): express.Express {
           const talent = {
             name: post?.title || post?.albumname || 'ConscienceExplorers.com Post',
             description: pdhtml?.textContent || 'Post content',
-            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://freedom.buzz/assets/images/banner/freedom-buzz-high-res.jpeg',
+            image: post?.thumbfilename || post?.metaimage || post?.imageUrl || 'https://conscienceexplorers.com/assets/images/profile-cover.png',
           };
           seo.title = talent.name;
           seo.description = strip_html_tags(talent.description);
