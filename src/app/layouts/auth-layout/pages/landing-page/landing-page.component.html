@@ -1,29 +1,32 @@
 <div class="main-container">
-  <nav class="navbar navbar-light bg-white px-6 px-sm-10 auth-btns">
-    <div class="d-flex flex-column">
-      <img
-        src="assets/images/svg/ConscienceExplorersLogo.svg"
-        class="h-60-px pt-2"
-        alt=""
-      />
-      <!-- <h6 class="text-danger text-end">BETA</h6> -->
-    </div>
-    <div class="d-lg-none d-md-none d-block c-button-landing">
-      <fa-icon [icon]="['fas', 'bars']" (click)="mobileMenu()" />
-    </div>
-    <div class="landing-btn d-none d-md-block d-lg-block">
-      <button
-        class="btn btn-primary alt third w-80-px"
-        (click)="openLoginPage()"
-      >
-        Login
-      </button>
-      <button
-        class="btn btn-outline alt third w-80-px ms-2"
-        (click)="openSignPage()"
-      >
-        Signup
-      </button>
+  <nav class="navbar navbar-light bg-white px-6 auth-btns">
+    <div class="container">
+      <div class="d-flex flex-column">
+        <!-- src="assets/images/svg/ConscienceExplorersLogo.svg" -->
+        <img
+          src="/assets/images/ce-logo.png"
+          class="h-60-px pt-2"
+          alt=""
+        />
+        <!-- <h6 class="text-danger text-end">BETA</h6> -->
+      </div>
+      <div class="d-lg-none d-md-none d-block c-button-landing">
+        <fa-icon [icon]="['fas', 'bars']" (click)="mobileMenu()" />
+      </div>
+      <div class="landing-btn d-none d-md-block d-lg-block">
+        <button
+          class="btn btn-primary alt third w-80-px"
+          (click)="openLoginPage()"
+        >
+          Login
+        </button>
+        <button
+          class="btn btn-outline alt third w-80-px ms-2"
+          (click)="openSignPage()"
+        >
+          Signup
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -168,3 +171,4 @@
     </ul>
   </div>
 </ng-container>
+<div class="h-400-px"></div>

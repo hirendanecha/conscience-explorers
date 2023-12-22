@@ -20,14 +20,16 @@
     background-size: cover;
     background-repeat: no-repeat;
     object-fit: cover;
-    height: calc(100vh - 48px);
-    min-height: 400px;
+    height: 115vh;
+    background-position: center;
+    // height: calc(100vh - 48px);
+    // min-height: 400px;
 
     .banner-text {
       max-width: 690px;
       width: 100%;
-      background-color: rgb(11 13 14 / 50%);
-      // background-color: #0b0d0ed4;
+      // background-color: rgb(11 13 14 / 70%);
+      background-color: #0b0d0ed4;
       border-radius: 5px;
       padding: 40px 20px 5px;
       // height: 300px;
