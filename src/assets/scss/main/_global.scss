@@ -3,8 +3,8 @@
 
 :root {
   --body-font: "Inter", sans-serif;
-  --body-color: #f9fbfc;
-  --primary-color: #0085ff;
+  --body-color: #F6F1EE;
+  --primary-color: #ab8b6c;
   --secondary-color: #f3f3f3;
   --border-color: #2b3b58;
   --bs-border-color: #2b3b58;
@@ -29,14 +29,14 @@
   --box-shadow: 0px 4px 26px rgba(222, 222, 222, 0.25);
   --box-2nd-shadow: 0px 4px 26px rgba(189, 189, 189, 0.25);
   --hero-section-bg: #f9fbfcc9;
-  --font-icon-color: #171954;
-  --scroll-color: #e41e1d;
+  --font-icon-color: #dd793a;
+  --scroll-color: #F9B572;
   --post-border-color: #2b3b58;
 }
 
 .dark-ui {
   --body-color: #15202B;
-  --primary-color: #1d9bf0;
+  --primary-color: #F9B572;
   --secondary-color: #f3f3f3;
   --border-color: #192734;
   --bs-border-color: #192734;
@@ -60,7 +60,7 @@
   --box-2nd-shadow: 0px 4px 26px rgba(66, 66, 66, 0.25);
   --hero-section-bg: #000428bf;
   --font-icon-color: #ffffff;
-  --scroll-color: #e41e1d;
+  --scroll-color: #F9B572;
   --post-border-color: #f3f3f3;
 }
 .cursor {
@@ -645,9 +645,9 @@ li {
 
 /* cmn btn */
 .cmn-btn {
-  background: var(--primary-color);
+  background: var(--primary-color) !important;
   padding: 4px 15px;
-  color: var(--bs-white);
+  color: var(--bs-white) !important;
   display: inline-flex;
   align-items: center;
   font-size: 14px;
@@ -656,9 +656,14 @@ li {
   transition: 0.3s;
 
   &:disabled {
+    border: var(--primary-color) !important;
+    background: var(--primary-color) !important;
     background-color: var(--box-1st-color);
+    color: var(--bs-white) !important;
 
     &:hover {
+      background: var(--primary-color) !important;
+      color: var(--bs-white) !important;
       background-color: var(--box-1st-color);
     }
   }
@@ -676,18 +681,18 @@ li {
     }
   }
   &.alt {
-    background: #ffd3c6;
-    color: #ff4747;
+    background: #ffd3c6 !important;
+    color: #ff4747 !important;
     i,
     span {
       color: #ff4747;
     }
     &:hover {
-      background: #f44c4c;
-      color: var(--bs-white);
+      background: #f44c4c !important;
+      color: var(--bs-white) !important;
       i,
       span {
-        color: var(--bs-white);
+        color: var(--bs-white) !important;
       }
     }
   }
@@ -1107,4 +1112,9 @@ li {
 ::-webkit-scrollbar-thumb {
   border-radius: 10px !important;
   background-color: var(--scroll-color) !important;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
