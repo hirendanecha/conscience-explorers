@@ -86,7 +86,7 @@ export function app(): express.Express {
         var seo: any = {
           title: 'Conscience Explorers',
           description:
-            'ConscienceExplorers.com',
+            'Platform for the consciously awakening people worldwide to create worldwide unity conscience',
           image:
             'https://conscienceexplorers.com/assets/images/profile-cover.png',
           // image:
