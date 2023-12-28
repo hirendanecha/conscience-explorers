@@ -92,8 +92,16 @@ export class CommunityService {
     return this.http.delete(
       `${this.baseUrl}/leave?communityId=${id}&profileId=${profileId}`
     );
+  }  
+
+  getCategories(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get-emphasis-and-area`);
   }
 
+  getAllCommunities(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/get-communities`, data)
+  }
+  
   createAdvertizeMentLink(data): Observable<any> {
     return this.http.post(`${this.baseUrl}/create-advertizement-link`, data);
   }
@@ -104,13 +112,5 @@ export class CommunityService {
 
   getLinkById(id): Observable<any> {
     return this.http.get(`${this.baseUrl}/get-link/${id}`);
-  }
-
-  getCategories(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/get-emphasis-and-area`);
-  }
-
-  getAllCommunities(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/get-communities`, data)
   }
 }
