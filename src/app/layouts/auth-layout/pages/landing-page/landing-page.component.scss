@@ -9,26 +9,28 @@
   .c-fonts {
     // font-size: min(max(25px, 2vw), 44px);
     font-size: 22px;
-    
     @media (max-width: 999px) {
       font-size: 16px;
     }
   }
 
   .custom-height {
-    background-image: url(/assets/images/landingpage/healing-hm-pg.jpg);
+    background-image: url(/assets/images/landingpage/Conscience-hm-pg.png);
     background-size: cover;
     background-repeat: no-repeat;
     object-fit: cover;
-    height: calc(100vh - 48px);
-    min-height: 400px;
+    height: 115vh;
+    background-position: center;
+    // height: calc(100vh - 48px);
+    // min-height: 400px;
 
     .banner-text {
-      max-width: 600px;
+      max-width: 690px;
       width: 100%;
+      // background-color: rgb(11 13 14 / 70%);
       background-color: #0b0d0ed4;
       border-radius: 5px;
-      padding: 40px;
+      padding: 40px 20px 5px;
       // height: 300px;
     }
 
@@ -231,14 +233,14 @@
 
 .landing-btn {
   .btn-primary {
-    background: #11134d;
+    background: #1d9bf0;
     color: #fff;
-    border: #11134d;
+    border: var(--body-color);
     height: 38px;
   }
   .btn-outline {
-    border-color: #11134d;
-    color: #11134d;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
     height: 38px;
   }
 }

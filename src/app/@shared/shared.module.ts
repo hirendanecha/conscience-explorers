@@ -74,6 +74,10 @@ import {
   faFilePdf,
   faShareNodes,
   faShare,
+  faPhone,
+  faGlobe,
+  faList,
+  faCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { ClaimTokenModalComponent } from './modals/clai-1776-token-modal/claim-token-modal.component';
 import { WalletLinkComponent } from './modals/wallet-download-modal/1776-wallet.component';
@@ -204,7 +208,11 @@ export class SharedModule {
       faFile,
       faFilePdf,
       faDownload,
-      faShare
+      faShare,
+      faPhone,
+      faGlobe,
+      faList,
+      faCircle
     );
   }
 }

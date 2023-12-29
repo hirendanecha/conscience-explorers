@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomerService } from './customer.service';
-import { CommunityService } from './community.service';
 import { PostService } from './post.service';
+import { CommunityService } from './community.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
@@ -21,9 +21,9 @@ export class SharedService {
     public modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private customerService: CustomerService,
+    private route: ActivatedRoute,
     private communityService: CommunityService,
-    private postService: PostService,
-    private route: ActivatedRoute
+    private postService: PostService
   ) {
     this.route.paramMap.subscribe((paramMap) => {
       const name = paramMap.get('name');

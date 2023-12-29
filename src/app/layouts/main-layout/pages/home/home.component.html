@@ -31,7 +31,7 @@
         <div>
           <ng-container *ngIf="communityDetails?.adminIds.includes(+profileId)">
             <button
-              class="btn btn-sm btn-primary me-2"
+              class="btn btn-sm cmn-btn me-2"
               (click)="editCommunity(communityDetails)"
             >
               Edit {{ communityDetails?.pageType }}
@@ -139,7 +139,7 @@
             (onDataChange)="onTagUserInputChangeEvent($event)"
           />
           <button
-          class="d-sm-none btn btn-sm btn-primary px-3 py-1 d-flex justify-content-center align-items-center gap-2 float-end ms-1 h-40-px"
+          class="d-sm-none btn btn-sm cmn-btn px-3 py-1 d-flex justify-content-center align-items-center gap-2 float-end ms-1 h-40-px"
           [disabled]="
             !(postData?.postdescription || postData?.file?.name) ||
             buttonClicked
@@ -266,7 +266,7 @@
             </button>
 
             <button
-              class="btn btn-sm btn-primary px-3 py-1 d-flex justify-content-center align-items-center gap-2 float-end"
+              class="btn btn-sm cmn-btn px-3 py-1 d-flex justify-content-center align-items-center gap-2 float-end"
               [disabled]="
                 !(postData?.postdescription || postData?.file?.name) ||
                 buttonClicked

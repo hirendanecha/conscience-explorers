@@ -9,7 +9,9 @@
     // line-break: anywhere;
     text-align: start;
     max-width: 541px;
+    width: calc(100% - 60px);
     overflow: hidden;
+    overflow-wrap: anywhere;
 
     @media (max-width: 767px) {
       max-width: 395px;
@@ -51,9 +53,6 @@
     right: 0;
     top: 5px;
 
-    @media (min-width:768px) and (max-width:991px) {
-      right: 32px;
-    }
     @media (max-width: 575px) {
       right: 52px;
     }
@@ -96,6 +95,7 @@
       line-height: unset !important;
       color: var(--para-2nd-color) !important;
       font-weight: 400 !important;
+      overflow-wrap: anywhere;
     }
     // br {
     //   display: none;

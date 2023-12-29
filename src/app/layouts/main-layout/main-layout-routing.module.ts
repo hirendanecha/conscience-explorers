@@ -57,6 +57,16 @@ const routes: Routes = [
           isShowResearchLeftSideBar: true
         },
         canActivate: mapToCanActivate([AuthenticationGuard]),
+      },
+      {
+        path: 'request-video-call',
+        loadChildren: () => import('src/app/layouts/main-layout/pages/healing-practitioner-registration/healing-practitioner-registration.module').then((m) => m.HealingPractitionerRegistrationModule),
+        data: {
+          isShowLeftSideBar: false,
+          isShowRightSideBar: false,
+          isShowResearchLeftSideBar: false,
+        },
+        canActivate: mapToCanActivate([AuthenticationGuard]),
       }
     ]
   },

@@ -1,58 +1,49 @@
 <div class="main-container">
-  <nav class="navbar navbar-light bg-white px-6 px-sm-10 auth-btns">
-    <div class="d-flex flex-column">
-      <img
-        src="assets/images/svg/ConscienceExplorersLogo.svg"
-        class="h-60-px pt-2"
-        alt=""
-      />
-      <!-- <h6 class="text-danger text-end">BETA</h6> -->
-    </div>
-    <div class="d-lg-none d-md-none d-block c-button-landing">
-      <fa-icon [icon]="['fas', 'bars']" (click)="mobileMenu()" />
-    </div>
-    <div class="landing-btn d-none d-md-block d-lg-block">
-      <button
-        class="btn btn-primary alt third w-80-px"
-        (click)="openLoginPage()"
-      >
-        Login
-      </button>
-      <button
-        class="btn btn-outline alt third w-80-px ms-2"
-        (click)="openSignPage()"
-      >
-        Signup
-      </button>
+  <nav class="navbar navbar-light px-6 auth-btns">
+    <div class="container">
+      <div class="d-flex flex-column">
+        <!-- src="assets/images/svg/ConscienceExplorersLogo.svg" -->
+        <img
+          src="/assets/images/ce-logo.png"
+          class="h-60-px pt-2"
+          alt=""
+        />
+        <!-- <h6 class="text-danger text-end">BETA</h6> -->
+      </div>
+      <div class="d-lg-none d-md-none d-block c-button-landing">
+        <fa-icon [icon]="['fas', 'bars']" (click)="mobileMenu()" />
+      </div>
+      <div class="landing-btn d-none d-md-block d-lg-block">
+        <button
+          class="btn cmn-btn third w-80-px"
+          (click)="openLoginPage()"
+        >
+          Login
+        </button>
+        <button
+          class="btn btn-outline alt third w-80-px ms-2"
+          (click)="openSignPage()"
+        >
+          Signup
+        </button>
+      </div>
     </div>
   </nav>
 
   <div (click)="closeMenu()">
     <div
-      class="d-flex flex-column text-center py-10 custom-height justify-content-center"
+      class="d-flex text-center py-10 custom-height justify-content-center"
     >
       <div class="container">
-        <div class="row m-0 justify-content-end offset-0">
+        <div class="row m-0 justify-content-center offset-0">
           <div class="col-md-6 banner-text">
-            <!-- <span class="pb-2 pb-lg-4">
-            <i class="text-white text-s">Worldwide Freedom is the Buzzzz!</i>
+            <span class="pb-2">
+            <h2 class="text-white">Conscience Explorers</h2>
           </span>
           <span class="pb-4">
-            <i class="text-white text-s">No AI and we DO NOT sell your data</i>
-          </span> -->
-
-            <span class="text-white c-fonts text-center mt-3">
-              ConscienceExplorers.com is a platform for the consciencely
-              awakening people worldwide. We feature shamans, metaphysical
-              researchers, quantum physics practitioners, reiki healers, natural
-              healers and more.
-            </span>
-            <span class="text-white c-fonts py-6 mt-10 text-center"
-              >ConscienceExplorers.com objective to for us to mutually create
-              common objectives for the purpose of creating a worldwide
-              collective conscience based on high frequency of love, happiness,
-              joy, gratitude and know we have already won.</span
-            >
+            <span class="text-white text-s mb-8">ConscienceExplorers.com is a platform for the consciously awakening people worldwide to create worldwide unity conscience.</span>
+            <span class="text-white text-s">We feature shamans, metaphysical researchers, quantum physics practitioners, reiki healers, natural healers and more.</span>
+          </span>
           </div>
         </div>
       </div>
@@ -180,3 +171,4 @@
     </ul>
   </div>
 </ng-container>
+<div class="h-400-px"></div>

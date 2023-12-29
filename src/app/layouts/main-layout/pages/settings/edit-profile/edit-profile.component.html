@@ -40,7 +40,7 @@
             <label class="d-flex form-label">Country</label>
             <select id="country" name="country" class="input-area w-100" [(ngModel)]="customer.Country"
               (change)="changeCountry()">
-              <option value="">Select Country</option>
+              <!-- <option value="">Select Country</option> -->
               <option [value]="item.country_code" *ngFor="let item of allCountryData">
                 {{ item.country }}
               </option>
@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <button class="btn btn-primary mt-5 login-button float-end w-100-px" (click)="confirmAndUpdateCustomer()">
+      <button class="btn cmn-btn mt-5 login-button float-end w-100-px" (click)="confirmAndUpdateCustomer()">
         <!-- type="submit" -->
         Update
       </button>

@@ -213,6 +213,12 @@ export class AddFreedomPageComponent implements OnInit, AfterViewInit {
                 this.spinner.hide();
               }
           });
+          if (this.data.link1 || this.data.link2) {
+            this.editAdvertizeMentLink(this.data.Id);
+          } else {
+            this.createAdvertizeMentLink(this.data.Id);
+          }
+          this.sharedService.advertizementLink = [];
       } else {
         this.spinner.hide();
         this.toastService.danger('Please enter mandatory fields(*) data.');
