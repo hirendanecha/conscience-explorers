@@ -16,13 +16,11 @@
 
   .custom-height {
     background-image: url(/assets/images/landingpage/Conscience-hm-pg.png);
-    background-size: cover;
+    background-size: 100% 100%;
+    background-position: center center;
     background-repeat: no-repeat;
     object-fit: cover;
-    height: 115vh;
-    background-position: center;
-    // height: calc(100vh - 48px);
-    // min-height: 400px;
+    height: calc(100vh - 48px);
 
     .banner-text {
       max-width: 690px;
@@ -298,6 +296,6 @@
 }
 ::ng-deep.c-button-landing {
   svg path {
-    fill: #000428;
+    fill: var(--primary-color);
   }
 }
