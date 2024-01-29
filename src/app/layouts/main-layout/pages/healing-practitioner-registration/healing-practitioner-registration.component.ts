@@ -29,64 +29,64 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
   selectedAreaValues: number[] = [];
 
   selectedCards: any[] = [];
-  cards: any[] = [
-    {
-      title: 'Botanical Medicine',
-      id: 1,
-      description: `Plant-based supplements, tinctures, and topical applications that
-    assist the body in healing. These may include either western or
-    oriental herbal formulas with time-honored traditional healing
-    applications for various symptoms and conditions.`,
-    },
-    {
-      title: 'Homeopathy',
-      id: 2,
-      description: `Gentle effective therapy that utilizes a minute amount of a
-    potentized substance to promote a beneficial healing response.`,
-    },
-    {
-      title: 'Hydrotherapy',
-      id: 3,
-      description: `An important healing modality in traditional naturopathic
-    medicine. Hydrotherapy utilizes the therapeutic benefits of water.
-    It includes application of cool or warm water in specialized
-    compresses or baths.`,
-    },
-    {
-      title: 'Nutritional Counseling',
-      id: 4,
-      description: `Nutritional supplementation, dietary assessment, and advice in
-    making the best food choices based on your unique health history
-    and individual needs.`,
-    },
-    {
-      title: 'Lifestyle Counseling',
-      id: 5,
-      description: `Help in making new choices that are healthier for you physically,
-    emotionally, and psychologically.`,
-    },
-    {
-      title: 'Touch for Health',
-      id: 6,
-      description: ` Touch for Health is a system of balancing posture, attitude and
-    life energy to relieve stress, aches and pains, feel and function
-    better, be more effective, clarify and achieve your goals and
-    enjoy your life! Using a holistic approach we
-    rebalance the body's energies and
-    activate the body's intrinsic healing process so
-    that the body can better heal itself, creating that sense of
-    effortless effort, and being in the flow of Life.`,
-    },
-    {
-      title: `German New Medicine, Spiritual, Psychosomatic or related healing modalities`,
-      id: 7,
-      description: `Various paradigms of medicine, that recognizes the profound
-    effects of how an individual's consciousness is reflected in their
-    health and well-being. It involves awakening the body's inherent
-    self-healing properties. German New Medicine is founded of medical
-    discoveries of Dr. med. Ryke Geerd Hamer`,
-    },
-  ];
+  // cards: any[] = [
+  //   {
+  //     title: 'Botanical Medicine',
+  //     id: 1,
+  //     description: `Plant-based supplements, tinctures, and topical applications that
+  //   assist the body in healing. These may include either western or
+  //   oriental herbal formulas with time-honored traditional healing
+  //   applications for various symptoms and conditions.`,
+  //   },
+  //   {
+  //     title: 'Homeopathy',
+  //     id: 2,
+  //     description: `Gentle effective therapy that utilizes a minute amount of a
+  //   potentized substance to promote a beneficial healing response.`,
+  //   },
+  //   {
+  //     title: 'Hydrotherapy',
+  //     id: 3,
+  //     description: `An important healing modality in traditional naturopathic
+  //   medicine. Hydrotherapy utilizes the therapeutic benefits of water.
+  //   It includes application of cool or warm water in specialized
+  //   compresses or baths.`,
+  //   },
+  //   {
+  //     title: 'Nutritional Counseling',
+  //     id: 4,
+  //     description: `Nutritional supplementation, dietary assessment, and advice in
+  //   making the best food choices based on your unique health history
+  //   and individual needs.`,
+  //   },
+  //   {
+  //     title: 'Lifestyle Counseling',
+  //     id: 5,
+  //     description: `Help in making new choices that are healthier for you physically,
+  //   emotionally, and psychologically.`,
+  //   },
+  //   {
+  //     title: 'Touch for Health',
+  //     id: 6,
+  //     description: ` Touch for Health is a system of balancing posture, attitude and
+  //   life energy to relieve stress, aches and pains, feel and function
+  //   better, be more effective, clarify and achieve your goals and
+  //   enjoy your life! Using a holistic approach we
+  //   rebalance the body's energies and
+  //   activate the body's intrinsic healing process so
+  //   that the body can better heal itself, creating that sense of
+  //   effortless effort, and being in the flow of Life.`,
+  //   },
+  //   {
+  //     title: `German New Medicine, Spiritual, Psychosomatic or related healing modalities`,
+  //     id: 7,
+  //     description: `Various paradigms of medicine, that recognizes the profound
+  //   effects of how an individual's consciousness is reflected in their
+  //   health and well-being. It involves awakening the body's inherent
+  //   self-healing properties. German New Medicine is founded of medical
+  //   discoveries of Dr. med. Ryke Geerd Hamer`,
+  //   },
+  // ];
 
   isFromHome = false;
 
@@ -121,7 +121,7 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
 
     this.profileId = Number(localStorage.getItem('profileId'));
     const data = {
-      title: 'HealingTube Registration',
+      title: 'ConscienceTube Registration',
       url: `${window.window.location.href}`,
       description: '',
     };
@@ -197,21 +197,22 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
   }
 
   nextPageSearch() {
-    if (this.selectedCards.length > 0) {
-      const practitionerRequirements = {
-        selectedCard: this.selectedCards,
-        selectedCountry: this.selectedCountry,
-        selectedState: this.selectedState,
-        selectedAreas: this.selectedAreaValues
-      };
-      this.router.navigate(['/visionaries'], { state: { data: practitionerRequirements } });
-    } else if (this.isWorldwideChecked && this.selectedCards.length <= 0) {
-      const areaValues = { selectedAreas: this.selectedAreaValues } 
-      this.router.navigate(['/visionaries'], { state: { data: areaValues } });
-    }
-    else {
-      this.toastService.danger('Please select What emphasis are you interested in healing');
-    }
+    // if (this.selectedCards.length > 0) {
+    //   const practitionerRequirements = {
+    //     selectedCard: this.selectedCards,
+    //     selectedCountry: this.selectedCountry,
+    //     selectedState: this.selectedState,
+    //     selectedAreas: this.selectedAreaValues
+    //   };
+    //   this.router.navigate(['/visionaries'], { state: { data: practitionerRequirements } });
+    // } else if (this.isWorldwideChecked && this.selectedCards.length <= 0) {
+    //   const areaValues = { selectedAreas: this.selectedAreaValues } 
+    //   this.router.navigate(['/visionaries'], { state: { data: areaValues } });
+    // }
+    // else {
+    //   this.toastService.danger('Please select What emphasis are you interested in healing');
+    // }
+    this.router.navigate(['/home']);
   }
 
   getCategories() {

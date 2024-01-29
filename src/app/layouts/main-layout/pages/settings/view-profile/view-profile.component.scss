@@ -61,3 +61,9 @@
 .c-color{
   color: var( --para-2nd-color);
 }
+
+.points-list {
+  list-style-type: decimal;  
+  background: var(--section-1st-color);
+  border-radius: 10px;
+}
