@@ -30,9 +30,7 @@
               Watch videos from Naturopathic Doctors and Holistic Practitioners
             </p>
             <button>
-              <a href="https://video.healing.tube/" class="btn cmn-btn"
-                >Select</a
-              >
+              <a href="https://tube.conscienceexplorers.com/" class="btn cmn-btn">Select</a>
             </button>
           </div>
         </div>
@@ -42,7 +40,95 @@
 </ng-container>
 
 <ng-container *ngIf="selectPractitionerPage">
-  <div class="d-flex justify-content-center mt-10">
+  <div class="d-flex flex-column">
+    <div class="row mt-10 mx-3 mx-sm-0 ms-md-0 mx-xl-0 mx-xxl-0">
+        <div class="col-12 px-8 py-10 health-points">
+          <p>Within this multi-dimensional realm, what we focus on most becomes our individual reality.</p>
+          <p>If we feed the controllers 3rd dimension reality that becomes our reality.</p>
+          <p>If we focus on what we desire our reality to be and stop feeding their narratives, what we mutually believe
+            our reality to be will become our collective reality. It is how this realm works.</p>        
+          <p>One of our missions is to master the Law of Attraction to manifest a collective reality based on mutually
+            created bullet points. Below are 10 example bullet points we created for discussion and mutual
+            collaboration,
+            please create 5 of your own:</p>
+          <ul class="points-list">
+            <li>All people are healthy, and the world is disease-free</li>
+            <li>All people have access to organic healthy food</li>
+            <li>Hunger does not exist</li>
+            <li>All people live in abundance and have access to homes</li>
+            <li>Free energy technology is available to all</li>
+            <li>Free healthcare is available to all</li>
+            <li>We live free and have no authoritative government</li>
+            <li>Higher level knowledge is available to all </li>
+            <li>A unit of transaction is used for trade and transactions for goods and services to provide a record of
+              transaction</li>
+            <li>We live in abundance in all aspects of life</li>
+          </ul>
+        </div>
+      
+    </div>
+
+    <div>
+      <div class="row mt-10">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+          <div class="col-12 mb-3">
+            <label class="form-label">1.</label>
+            <input type="text" class="input-area" name="first" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">2.</label>
+            <input type="text" class="input-area" name="second" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">3.</label>
+            <input type="text" class="input-area" name="third" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">4.</label>
+            <input type="text" class="input-area" name="fourth" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">5.</label>
+            <input type="text" class="input-area" name="fifth" placeholder="Enter Point" />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+          <div class="col-12 mb-3">
+            <label class="form-label">6.</label>
+            <input type="text" class="input-area" name="sixth" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">7.</label>
+            <input type="text" class="input-area" name="seventh" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">8.</label>
+            <input type="text" class="input-area" name="eight" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">9.</label>
+            <input type="text" class="input-area" name="nineth" placeholder="Enter Point" />
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">10.</label>
+            <input type="text" class="input-area" name="tenth" placeholder="Enter Point" />
+          </div>
+        </div>
+
+        <div class="mt-5">
+          <button [routerLink]="['/home']" class="btn cmn-btn float-start">
+            <fa-icon [icon]="['fas', 'arrow-left-long']" class="c-pointer close-icon me-2" title="Back" />Skip
+          </button>
+          <button (click)="nextPageSearch()" class="btn cmn-btn float-end">
+            Next
+            <fa-icon [icon]="['fas', 'arrow-right-long']" class="c-pointer close-icon ms-2" title="Next" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- <div class="d-flex justify-content-center mt-10">
     <div class="d-flex flex-column">
       <div class="form-check">
         <input
@@ -177,5 +263,5 @@
         title="Next"
       />
     </button>
-  </div>
+  </div> -->
 </ng-container>

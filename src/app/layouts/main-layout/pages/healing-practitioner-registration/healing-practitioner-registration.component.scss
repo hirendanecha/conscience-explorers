@@ -87,3 +87,17 @@
     }
   }
 }
+
+.health-points {  
+  background: var(--section-1st-color);
+  border-radius: 10px;
+  p {
+    font-size: min(max(16px, 2vw), 20px) !important;
+  }
+  .points-list {
+    list-style-type: decimal;
+    li {
+      font-size: min(max(16px, 2vw), 18px) !important;
+    }
+  }
+}
