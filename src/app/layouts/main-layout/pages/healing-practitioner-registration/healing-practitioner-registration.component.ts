@@ -88,6 +88,20 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
   //   },
   // ];
 
+  fields = [
+    { label: '1.', name: 'first', placeholder: 'Enter Point' },
+    { label: '2.', name: 'second', placeholder: 'Enter Point' },
+    { label: '3.', name: 'third', placeholder: 'Enter Point' },
+    { label: '4.', name: 'fourth', placeholder: 'Enter Point' },
+    { label: '5.', name: 'fifth', placeholder: 'Enter Point' },
+    { label: '6.', name: 'sixth', placeholder: 'Enter Point' },
+    { label: '7.', name: 'seventh', placeholder: 'Enter Point' },
+    { label: '8.', name: 'eight', placeholder: 'Enter Point' },
+    { label: '9.', name: 'nineth', placeholder: 'Enter Point' },
+    { label: '10.', name: 'tenth', placeholder: 'Enter Point' },
+  ];
+  fieldData: any = {};
+
   isFromHome = false;
 
   constructor(
@@ -153,7 +167,7 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
       next: (result) => {
         this.spinner.hide();
         this.allCountryData = result;
-        this.getAllState();
+        // this.getAllState();
       },
       error: (error) => {
         this.spinner.hide();
@@ -215,6 +229,7 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     // else {
     //   this.toastService.danger('Please select What emphasis are you interested in healing');
     // }
+    console.log('Field values:', this.fieldData);
     this.router.navigate(['/home']);
   }
 

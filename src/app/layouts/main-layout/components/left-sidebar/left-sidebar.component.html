@@ -36,6 +36,28 @@
       <li>
         <a
           class="d-flex gap-4"
+          routerLink="/structure-reality"
+          routerLinkActive="active"
+          (click)="closeSidebar()"
+        >
+          <fa-icon [icon]="['fas', 'wave-square']" class="font-24-px" />
+          <span>Structure Reality</span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="d-flex gap-4"
+          routerLink="/collective-conscience"
+          routerLinkActive="active"
+          (click)="closeSidebar()"
+        >
+          <fa-icon [icon]="['fas', 'graduation-cap']" class="font-24-px" />
+          <span>Collective Conscience</span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="d-flex gap-4"
           routerLink="/visionaries"
           routerLinkActive="active"
           (click)="closeSidebar()"
@@ -55,7 +77,7 @@
           <span>Occult Topics</span>
         </a>
       </li>
-      <li class="ms-1">
+      <!-- <li class="ms-1">
         <a
           class="d-flex gap-4"
           routerLink="/request-video-call"
@@ -64,9 +86,9 @@
         >
           <fa-icon [icon]="['fas', 'phone']" class="font-24-px" />
           <span>Request Call</span>
-          <!-- <span>Request Private Video Call</span> -->
+          <span>Request Private Video Call</span>
         </a>
-      </li>
+      </li> -->
       <li class="ms-1">
         <a
           routerLink="/research"
@@ -108,7 +130,7 @@
           <span>View Profile</span>
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a
           href="https://1776token.com/"
           target="_blank"
@@ -118,7 +140,7 @@
           <fa-icon [icon]="['fas', 'link']" class="font-24-px" />
           <span>1776 Token</span>
         </a>
-      </li>
+      </li> -->
       <!-- <li>
         <a
           href="https://localfoods.market/"

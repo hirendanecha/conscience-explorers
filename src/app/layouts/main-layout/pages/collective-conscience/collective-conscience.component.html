@@ -1,0 +1,84 @@
+<ng-container>
+  <div class="d-flex flex-column">
+    <!-- <div class="row mt-10 mx-3 mx-sm-0 ms-md-0 mx-xl-0 mx-xxl-0">
+        <div class="col-12 px-8 py-10 health-points">
+          <p>Within this multi-dimensional realm, what we focus on most becomes our individual reality.</p>
+          <p>If we feed the controllers 3rd dimension reality that becomes our reality.</p>
+          <p>If we focus on what we desire our reality to be and stop feeding their narratives, what we mutually believe
+            our reality to be will become our collective reality. It is how this realm works.</p>        
+          <p>One of our missions is to master the Law of Attraction to manifest a collective reality based on mutually
+            created bullet points. Below are 10 example bullet points we created for discussion and mutual
+            collaboration,
+            please create 5 of your own:</p>
+          <ul class="points-list">
+            <li>All people are healthy, and the world is disease-free</li>
+            <li>All people have access to organic healthy food</li>
+            <li>Hunger does not exist</li>
+            <li>All people live in abundance and have access to homes</li>
+            <li>Free energy technology is available to all</li>
+            <li>Free healthcare is available to all</li>
+            <li>We live free and have no authoritative government</li>
+            <li>Higher level knowledge is available to all </li>
+            <li>A unit of transaction is used for trade and transactions for goods and services to provide a record of
+              transaction</li>
+            <li>We live in abundance in all aspects of life</li>
+          </ul>
+        </div>
+      
+    </div> -->
+    <!-- <div class="row mt-10"> -->
+
+    <div class="d-flex row health-points">
+      <div class="col-6 p-5">
+        <h4>Proposed Collective Reality</h4>
+        <div class="d-flex flex-column">
+          <div
+            *ngFor="let field of healthPoints"
+            class="d-flex align-items-baseline gap-2 col-12 mb-3"
+          >
+            <label class="form-label">{{ field.label }}</label>
+            <span class="input-area w-100">{{ field.placeholder }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 p-5">
+        <div class="d-flex align-items-center justify-content-center">
+          <h4>Your Proposed Reality</h4>
+          <button class="droplist d-flex align-items-center ms-3" (click)="toggleEditMode()">
+            <fa-icon [icon]="['fas', editMode ? 'times' : 'pen-to-square']"></fa-icon>
+            <span>{{ editMode ? 'Cancel' : 'Edit' }}</span>
+          </button>
+        </div>
+        <div class="d-flex flex-column">
+          <div *ngFor="let field of fields" class="d-flex align-items-baseline gap-2 col-12 mb-3">
+            <label class="form-label">{{ field.label }}</label>
+            <input
+              type="text"
+              class="input-area"
+              [name]="field.name"
+              [placeholder]="field.placeholder"
+              [(ngModel)]="fieldData[field.name]"
+              [disabled]="!editMode"
+            />
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="mt-5">
+      <!-- <button [routerLink]="['/home']" class="btn cmn-btn float-start">
+        <fa-icon [icon]="['fas', 'arrow-left-long']" class="c-pointer close-icon me-2" title="Back" />Skip
+      </button> -->
+      <button (click)="nextPageSearch()" class="btn cmn-btn float-end">
+        Next
+        <fa-icon
+          [icon]="['fas', 'arrow-right-long']"
+          class="c-pointer close-icon ms-2"
+          title="Next"
+        />
+      </button>
+    </div>
+  </div>
+</ng-container>

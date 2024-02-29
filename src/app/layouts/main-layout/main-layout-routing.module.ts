@@ -17,6 +17,22 @@ const routes: Routes = [
         }
       },
       {
+        path: 'structure-reality',
+        loadChildren: () => import('./pages/structure-reality/structure-reality.module').then((m) => m.StructureRealityModule),
+        data: {
+          isShowLeftSideBar: true
+        },
+        canActivate: mapToCanActivate([AuthenticationGuard]),
+      },
+      {
+        path: 'collective-conscience',
+        loadChildren: () => import('./pages/collective-conscience/collective-conscience.module').then((m) => m.CollectiveConscienceModule),
+        data: {
+          isShowLeftSideBar: true
+        },
+        canActivate: mapToCanActivate([AuthenticationGuard]),
+      },
+      {
         path: 'visionaries',
         loadChildren: () => import('./pages/communities/communities.module').then((m) => m.CommunitiesModule),
         data: {
