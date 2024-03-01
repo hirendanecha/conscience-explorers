@@ -1,4 +1,4 @@
-<ng-container *ngIf="!selectPractitionerPage">
+<!-- <ng-container *ngIf="!selectPractitionerPage">
   <div class="healing-registration-container">
     <h2 class="text-center">What do you want to do?</h2>
     <div class="d-flex justify-content-center mt-10">
@@ -36,9 +36,10 @@
       </div>
     </div>
   </div>
-</ng-container>
+</ng-container> -->
 
-<ng-container *ngIf="selectPractitionerPage">
+<!-- <ng-container *ngIf="selectPractitionerPage"> -->
+<ng-container>
   <div class="d-flex flex-column">
     <div class="row mt-10 mx-3 mx-sm-0 ms-md-0 mx-xl-0 mx-xxl-0">
         <div class="col-12 px-8 py-10 health-points">
@@ -67,48 +68,68 @@
       
     </div>
 
-    <div>
+    <div class="row mt-10">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6" *ngFor="let field of fields">
+        <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
+          <label class="form-label">{{field.label}}</label>
+          <input type="text" class="input-area" [name]="field.name" [placeholder]="field.placeholder" [(ngModel)]="fieldData[field.name]" />
+        </div>
+      </div>
+    
+      <div class="mt-5">
+        <button [routerLink]="['/home']" class="btn cmn-btn float-start">
+          <fa-icon [icon]="['fas', 'arrow-left-long']" class="c-pointer close-icon me-2" title="Back" />Skip
+        </button>
+        <button (click)="nextPageSearch()" class="btn cmn-btn float-end">
+          Next
+          <fa-icon [icon]="['fas', 'arrow-right-long']" class="c-pointer close-icon ms-2" title="Next" />
+        </button>
+      </div>
+    </div>
+    
+
+    <!-- <div>
       <div class="row mt-10">
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">1.</label>
             <input type="text" class="input-area" name="first" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">2.</label>
             <input type="text" class="input-area" name="second" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">3.</label>
             <input type="text" class="input-area" name="third" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">4.</label>
             <input type="text" class="input-area" name="fourth" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">5.</label>
             <input type="text" class="input-area" name="fifth" placeholder="Enter Point" />
           </div>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">6.</label>
             <input type="text" class="input-area" name="sixth" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">7.</label>
             <input type="text" class="input-area" name="seventh" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">8.</label>
             <input type="text" class="input-area" name="eight" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">9.</label>
             <input type="text" class="input-area" name="nineth" placeholder="Enter Point" />
           </div>
-          <div class="col-12 mb-3">
+          <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
             <label class="form-label">10.</label>
             <input type="text" class="input-area" name="tenth" placeholder="Enter Point" />
           </div>
@@ -124,7 +145,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
   <!-- <div class="d-flex justify-content-center mt-10">
