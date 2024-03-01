@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProfileService } from 'src/app/@shared/services/profile.service';
@@ -7,10 +7,9 @@ import { SeoService } from 'src/app/@shared/services/seo.service';
 @Component({
   selector: 'app-research-details',
   templateUrl: './research-details.component.html',
-  styleUrls: ['./research-details.component.scss']
+  styleUrls: ['./research-details.component.scss'],
 })
 export class ResearchDetailsComponent {
-
   groupDetails: any = {};
   posts: any = [];
   resources: any = [];
@@ -18,7 +17,7 @@ export class ResearchDetailsComponent {
   pagination: any = {
     page: 1,
     limit: 12,
-  }
+  };
 
   constructor(
     private profileService: ProfileService,
@@ -31,8 +30,9 @@ export class ResearchDetailsComponent {
 
   GetGroupBasicDetails(): void {
     this.spinner.show();
-    const uniqueLink = this.route.snapshot.paramMap.get('uniqueLink');
-
+    // const uniqueLink = this.route.snapshot.paramMap.get('uniqueLink');
+    this.route.paramMap.subscribe((param: any) => {
+      const uniqueLink = param.get('uniqueLink');
     this.profileService.getGroupBasicDetails(uniqueLink).subscribe({
       next: (res: any) => {
         if (res?.ID) {
@@ -53,23 +53,31 @@ export class ResearchDetailsComponent {
         this.spinner.hide();
       }
     });
+  })
+
   }
 
   GetGroupPostById(): void {
     this.spinner.show();
 
-    this.profileService.getGroupPostById(this.groupDetails?.ID, this.pagination?.page, this.pagination?.limit).subscribe({
-      next: (res: any) => {
-        if (res?.length > 0) {
-          this.posts = [...this.posts, ...res];
-          this.isLoadMorePosts = res?.length === this.pagination?.limit;
-        }
-        this.spinner.hide();
-      },
-      error: () => {
-        this.spinner.hide();
-      }
-    });
+    this.profileService
+      .getGroupPostById(
+        this.groupDetails?.ID,
+        this.pagination?.page,
+        this.pagination?.limit
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res?.length > 0) {
+            this.posts = [...this.posts, ...res];
+            this.isLoadMorePosts = res?.length === this.pagination?.limit;
+          }
+          this.spinner.hide();
+        },
+        error: () => {
+          this.spinner.hide();
+        },
+      });
   }
 
   GetGroupFileResourcesById(id: string): void {
@@ -84,7 +92,7 @@ export class ResearchDetailsComponent {
       },
       error: () => {
         this.spinner.hide();
-      }
+      },
     });
   }
 
