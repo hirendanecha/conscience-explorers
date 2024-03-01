@@ -55,13 +55,19 @@
         </div>
         <div class="d-flex flex-column">
           <div *ngFor="let field of fields" class="d-flex align-items-baseline gap-2 col-12 mb-3">
-            <label class="form-label">{{ field.label }}</label>
-            <input
+            <label class="form-label">{{ field.rulesNo }}</label>
+            <!-- <input
               type="text"
               class="input-area"
               [name]="field.name"
               [placeholder]="field.placeholder"
               [(ngModel)]="fieldData[field.name]"
+              /> -->
+              <input
+              type="text"
+              class="input-area"
+              placeholder="Enter Point"
+              [(ngModel)]="fieldData[field.rulesNo]"
               [disabled]="!editMode"
             />
           </div>
@@ -70,7 +76,7 @@
       
     </div>
 
-    <div class="mt-5">
+    <div class="mb-5 me-3">
       <!-- <button [routerLink]="['/home']" class="btn cmn-btn float-start">
         <fa-icon [icon]="['fas', 'arrow-left-long']" class="c-pointer close-icon me-2" title="Back" />Skip
       </button> -->

@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MasterLoaModalComponent } from 'src/app/@shared/modals/master-loa-modal/master-loa-modal.component';
+import { CustomerService } from 'src/app/@shared/services/customer.service';
 
 @Component({
   selector: 'app-collective-conscience',
   templateUrl: './collective-conscience.component.html',
   styleUrls: ['./collective-conscience.component.scss'],
 })
-export class CollectiveConscienceComponent {
+export class CollectiveConscienceComponent implements OnInit{
+  profileId: number
   constructor(
     private router: Router,
     private modalService: NgbModal,
+    private customerService: CustomerService,
   ) {
+    this.profileId = +localStorage.getItem('profileId');
+  }
+  ngOnInit(): void {
+    this.getRealityList();
   }
   editMode: boolean = false;
+
   healthPoints = [
     { label: '1.', placeholder: 'All people are healthy, and the world is disease-free' },
     { label: '2.', placeholder: 'All people have access to organic healthy food' },
@@ -27,24 +35,21 @@ export class CollectiveConscienceComponent {
     { label: '9.', placeholder: 'A unit of transaction is used for trade and transactions for goods and services to provide a record of transaction' },
     { label: '10.', placeholder: 'We live in abundance in all aspects of life' }
   ];
-  
+
+  exisingReality: any = [];
   fields = [
-    { label: '1.', name: 'first', placeholder: 'Enter Point' },
-    { label: '2.', name: 'second', placeholder: 'Enter Point' },
-    { label: '3.', name: 'third', placeholder: 'Enter Point' },
-    { label: '4.', name: 'fourth', placeholder: 'Enter Point' },
-    { label: '5.', name: 'fifth', placeholder: 'Enter Point' },
-    { label: '6.', name: 'sixth', placeholder: 'Enter Point' },
-    { label: '7.', name: 'seventh', placeholder: 'Enter Point' },
-    { label: '8.', name: 'eight', placeholder: 'Enter Point' },
-    { label: '9.', name: 'nineth', placeholder: 'Enter Point' },
-    { label: '10.', name: 'tenth', placeholder: 'Enter Point' },
+    { rulesNo: 1 },
+    { rulesNo: 2 },
+    { rulesNo: 3 },
+    { rulesNo: 4 },
+    { rulesNo: 5 },
+    { rulesNo: 6 },
+    { rulesNo: 7 },
+    { rulesNo: 8 },
+    { rulesNo: 9 },
+    { rulesNo: 10 },
   ];
   fieldData: any = {};
-
-  toggleEditMode() {
-    this.editMode = !this.editMode;
-  }
 
   openLofmodel(){
     const modalRef = this.modalService.open(MasterLoaModalComponent, {
@@ -56,8 +61,43 @@ export class CollectiveConscienceComponent {
     })
   }
 
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+  }
+
+  getRealityList(): void {
+    this.customerService.getMyReality(this.profileId).subscribe({
+      next: (res: any) => {
+        this.exisingReality = res.data
+        this.exisingReality.forEach(item => {
+          this.fieldData[item.rulesNo] = item.rulesDescription;
+        });
+      },
+      error: () => {
+      },
+    });
+  }
+  
   nextPageSearch() {
-    console.log('Field values:', this.fieldData);
-    // this.router.navigate(['/home']);
+    const reality = Object.keys(this.fieldData).map((key) => {
+      return {
+        rulesNo: parseInt(key),
+        rulesDescription: this.fieldData[key],
+      };
+    });
+    const modifiedOutput = {
+      profileId: this.profileId,
+      reality: reality
+    };
+    this.customerService.addUserReality(modifiedOutput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          // this.router.navigate(['/home']);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 }

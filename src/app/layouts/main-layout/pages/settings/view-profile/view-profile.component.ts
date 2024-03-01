@@ -30,6 +30,7 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   communityId = '';
   isExpand = false;
   pdfList: any = [];
+  exisingReality: any = [];
   constructor(
     private modalService: NgbActiveModal,
     private router: Router,
@@ -82,6 +83,16 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
       error: (error) => {
         this.spinner.hide();
         console.log(error);
+      },
+    });
+  }
+
+  getRealityList(): void {
+    this.customerService.getMyReality(this.profileId).subscribe({
+      next: (res: any) => {
+        this.exisingReality = res.data
+      },
+      error: () => {
       },
     });
   }
