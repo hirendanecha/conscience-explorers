@@ -29,78 +29,21 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
   selectedAreaValues: number[] = [];
 
   selectedCards: any[] = [];
-  // cards: any[] = [
-  //   {
-  //     title: 'Botanical Medicine',
-  //     id: 1,
-  //     description: `Plant-based supplements, tinctures, and topical applications that
-  //   assist the body in healing. These may include either western or
-  //   oriental herbal formulas with time-honored traditional healing
-  //   applications for various symptoms and conditions.`,
-  //   },
-  //   {
-  //     title: 'Homeopathy',
-  //     id: 2,
-  //     description: `Gentle effective therapy that utilizes a minute amount of a
-  //   potentized substance to promote a beneficial healing response.`,
-  //   },
-  //   {
-  //     title: 'Hydrotherapy',
-  //     id: 3,
-  //     description: `An important healing modality in traditional naturopathic
-  //   medicine. Hydrotherapy utilizes the therapeutic benefits of water.
-  //   It includes application of cool or warm water in specialized
-  //   compresses or baths.`,
-  //   },
-  //   {
-  //     title: 'Nutritional Counseling',
-  //     id: 4,
-  //     description: `Nutritional supplementation, dietary assessment, and advice in
-  //   making the best food choices based on your unique health history
-  //   and individual needs.`,
-  //   },
-  //   {
-  //     title: 'Lifestyle Counseling',
-  //     id: 5,
-  //     description: `Help in making new choices that are healthier for you physically,
-  //   emotionally, and psychologically.`,
-  //   },
-  //   {
-  //     title: 'Touch for Health',
-  //     id: 6,
-  //     description: ` Touch for Health is a system of balancing posture, attitude and
-  //   life energy to relieve stress, aches and pains, feel and function
-  //   better, be more effective, clarify and achieve your goals and
-  //   enjoy your life! Using a holistic approach we
-  //   rebalance the body's energies and
-  //   activate the body's intrinsic healing process so
-  //   that the body can better heal itself, creating that sense of
-  //   effortless effort, and being in the flow of Life.`,
-  //   },
-  //   {
-  //     title: `German New Medicine, Spiritual, Psychosomatic or related healing modalities`,
-  //     id: 7,
-  //     description: `Various paradigms of medicine, that recognizes the profound
-  //   effects of how an individual's consciousness is reflected in their
-  //   health and well-being. It involves awakening the body's inherent
-  //   self-healing properties. German New Medicine is founded of medical
-  //   discoveries of Dr. med. Ryke Geerd Hamer`,
-  //   },
-  // ];
 
   fields = [
-    { label: '1.', name: 'first', placeholder: 'Enter Point' },
-    { label: '2.', name: 'second', placeholder: 'Enter Point' },
-    { label: '3.', name: 'third', placeholder: 'Enter Point' },
-    { label: '4.', name: 'fourth', placeholder: 'Enter Point' },
-    { label: '5.', name: 'fifth', placeholder: 'Enter Point' },
-    { label: '6.', name: 'sixth', placeholder: 'Enter Point' },
-    { label: '7.', name: 'seventh', placeholder: 'Enter Point' },
-    { label: '8.', name: 'eight', placeholder: 'Enter Point' },
-    { label: '9.', name: 'nineth', placeholder: 'Enter Point' },
-    { label: '10.', name: 'tenth', placeholder: 'Enter Point' },
+    { rulesNo: 1 },
+    { rulesNo: 2 },
+    { rulesNo: 3 },
+    { rulesNo: 4 },
+    { rulesNo: 5 },
+    { rulesNo: 6 },
+    { rulesNo: 7 },
+    { rulesNo: 8 },
+    { rulesNo: 9 },
+    { rulesNo: 10 },
   ];
-  fieldData: any = {};
+
+  fieldData: any = [];
 
   isFromHome = false;
 
@@ -209,28 +152,41 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     }
   }
 
+  calculateRows(text: string): number {
+    if (!text || text.trim() === '') {
+      return 1;
+    }
+    const rowCount = text.split('\n').length;
+    return Math.min(rowCount, 5);
+  }
+
   backPreview() {
     this.selectPractitionerPage = !this.selectPractitionerPage;
   }
 
   nextPageSearch() {
-    // if (this.selectedCards.length > 0) {
-    //   const practitionerRequirements = {
-    //     selectedCard: this.selectedCards,
-    //     selectedCountry: this.selectedCountry,
-    //     selectedState: this.selectedState,
-    //     selectedAreas: this.selectedAreaValues
-    //   };
-    //   this.router.navigate(['/visionaries'], { state: { data: practitionerRequirements } });
-    // } else if (this.isWorldwideChecked && this.selectedCards.length <= 0) {
-    //   const areaValues = { selectedAreas: this.selectedAreaValues }
-    //   this.router.navigate(['/visionaries'], { state: { data: areaValues } });
-    // }
-    // else {
-    //   this.toastService.danger('Please select What emphasis are you interested in healing');
-    // }
-    console.log('Field values:', this.fieldData);
-    this.router.navigate(['/home']);
+    const reality = Object.keys(this.fieldData).map((key) => {
+      return {
+        rulesNo: parseInt(key),
+        rulesDescription: this.fieldData[key],
+      };
+    });
+    const modifiedOutput = {
+      profileId: this.profileId,
+      reality: reality
+    };
+    this.customerService.addUserReality(modifiedOutput).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.router.navigate(['/home']);
+        } else{
+          this.toastService.danger('Something went wrong please try again!')
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   getCategories() {

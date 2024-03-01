@@ -38,7 +38,7 @@
             <li class="nav-item" role="presentation" (click)="activeTab = 2; getCommunities()">
               <a class="nav-link d-center" [ngClass]="activeTab === 2 ? 'active' : ''">Visionaries</a>
             </li>
-            <li class="nav-item" role="presentation" (click)="activeTab = 3; getCommunities()">
+            <li class="nav-item" role="presentation" (click)="activeTab = 3; getRealityList()">
               <a class="nav-link d-center" [ngClass]="activeTab === 3 ? 'active' : ''">My Reality</a>
             </li>
             <li class="nav-item" role="presentation" (click)="activeTab = 4; getPdfs()">
@@ -123,45 +123,31 @@
       </ng-container>
 
       <ng-container *ngIf="activeTab === 3">
-        <div>
-          <ul class="points-list p-12">
-            <li>
-              <p>All people are healthy, and the world is disease-free</p>
-            </li>
-            <li>
-              <p>All people have access to organic healthy food</p>
-            </li>
-            <li>
-              <p>Hunger does not exist</p>
-            </li>
-            <li>
-              <p>All people live in abundance and have access to homes</p>
-            </li>
-            <li>
-              <p>Free energy technology is available to all</p>
-            </li>
-            <li>
-              <p>Free healthcare is available to all</p>
-            </li>
-            <li>
-              <p>We live free and have no authoritative government</p>
-            </li>
-            <li>
-              <p>Higher level knowledge is available to all</p>
-            </li>
-            <li>
-              <p>A unit of transaction is used for trade and transactions for goods and services to provide a record
-                of transaction</p>
-            </li>
-            <li>
-              <p>We live in abundance in all aspects of life</p>
-            </li>
-          </ul>
-        </div>
+        <ng-container *ngIf="exisingReality.length; else noData">
+          <div class="d-flex flex-column points-list p-5">
+            <a class="align-self-end mb-3" routerLink="/collective-conscience">
+              <button class="droplist d-flex align-items-center ms-3">
+                <fa-icon [icon]="['fas','pen-to-square']"></fa-icon>
+                <span class="ms-2">Edit</span>
+              </button>
+            </a>
+            <div class="d-flex flex-column">
+              <div
+              *ngFor="let field of exisingReality; let i = index"
+              ><ng-container *ngIf="field.rulesDescription.trim() !== ''">
+                <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
+                  <label class="form-label">{{ i + 1  }}</label>
+                  <span class="input-area w-100">{{ field.rulesDescription }}</span>
+                </div>
+              </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
         <ng-template #noData>
           <div>
             <h6>
-              <h6 class="text-center">No Files Available</h6>
+              <h6 class="text-center">No Reality Available</h6>
             </h6>
           </div>
         </ng-template>

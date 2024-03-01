@@ -113,4 +113,12 @@ export class CustomerService {
       `${this.baseUrl}/notification/${id}&q=${Date.now()}`,
     );
   }
+
+  addUserReality(addEdit): Observable<any> {
+    return this.http.post(`${environment.serverUrl}reality/addEdit-reality`,addEdit);
+  }
+
+  getMyReality(id): Observable<any> {
+    return this.http.get(`${environment.serverUrl}reality/my-reality/${id}`);
+  }
 }
