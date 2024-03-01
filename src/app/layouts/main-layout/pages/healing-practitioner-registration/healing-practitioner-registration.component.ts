@@ -23,7 +23,7 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
   isCountryChecked: boolean = true;
   isWorldwideChecked: boolean = false;
 
-  selectPractitionerPage: boolean;
+  selectPractitionerPage: boolean = true;
 
   practitionerArea: any = [];
   selectedAreaValues: number[] = [];
@@ -98,23 +98,26 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     private route: ActivatedRoute,
     private tokenStorage: TokenStorageService,
     private toastService: ToastService,
-    private communityService: CommunityService,
+    private communityService: CommunityService
   ) {
     const queryParams = this.route.snapshot.queryParams;
     const newParams = { ...queryParams };
     // console.log(this.router.routerState.snapshot.url);
-    this.selectPractitionerPage = this.router.routerState.snapshot.url.includes('request-video-call') || false;
-    this.isFromHome = this.router.routerState.snapshot.url.includes('request-video-call') || false;
+    this.selectPractitionerPage =
+      this.router.routerState.snapshot.url.includes('request-video-call');
+    this.isFromHome =
+      this.router.routerState.snapshot.url.includes('request-video-call') ||
+      false;
     // console.log(this.selectPractitionerPage)
     // this.channelId = this.shareService?.channelData?.id;
     // this.route.queryParams.subscribe((params: any) => {
     //   console.log(params.channelId);
     if (newParams['token']) {
       const token = newParams['token'];
-      this.tokenStorage.saveToken(token)
-      delete newParams['token']
+      this.tokenStorage.saveToken(token);
+      delete newParams['token'];
       const navigationExtras: NavigationExtras = {
-        queryParams: newParams
+        queryParams: newParams,
       };
       this.router.navigate([], navigationExtras);
     }
@@ -139,7 +142,7 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     } else if (selectedOption === 'worldwide' && this.isCountryChecked) {
       this.selectedCountry = '';
       this.selectedState = '';
-      this.allStateData = null
+      this.allStateData = null;
       this.isCountryChecked = false;
     }
   }
@@ -182,7 +185,7 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     if (index === -1) {
       this.selectedCards.push(cardId);
     } else {
-      this.selectedCards = this.selectedCards.filter(id => id !== cardId);
+      this.selectedCards = this.selectedCards.filter((id) => id !== cardId);
     }
   }
 
@@ -206,7 +209,7 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     //   };
     //   this.router.navigate(['/visionaries'], { state: { data: practitionerRequirements } });
     // } else if (this.isWorldwideChecked && this.selectedCards.length <= 0) {
-    //   const areaValues = { selectedAreas: this.selectedAreaValues } 
+    //   const areaValues = { selectedAreas: this.selectedAreaValues }
     //   this.router.navigate(['/visionaries'], { state: { data: areaValues } });
     // }
     // else {
