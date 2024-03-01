@@ -1,10 +1,29 @@
-h4{
+h4 {
   text-transform: none;
   color: var(--primary-color) !important;
   margin-bottom: 8px;
   text-align: center;
 }
-.healing-registration-container{
+
+.custom-input-field {
+  width: 100%;
+  min-height: 54px;
+  max-height: 174px;
+  overflow-y: auto;
+}
+
+.lof-popup {
+  background: var(--box-1st-color);;
+  box-shadow: var(--box-shadow);
+  width: 281px;
+  border-radius: 6px;
+  align-self: center;
+  h6 {
+    color: var(--primary-color) !important;
+  }
+}
+
+.healing-registration-container {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -12,14 +31,13 @@ h4{
   margin: auto;
   justify-content: center;
 
-
   .card {
     width: 18rem;
     background: var(--section-1st-color);
     box-shadow: var(--box-shadow);
     border-radius: 10px;
     margin: 15px;
-  
+
     .card-body {
       display: flex;
       flex-direction: column;
@@ -38,7 +56,7 @@ h4{
   margin-bottom: 5px;
 }
 
-.container{
+.container {
   background: var(--section-1st-color);
   box-shadow: var(--box-shadow);
   border-radius: 10px;
@@ -46,16 +64,16 @@ h4{
 }
 
 .form-check,
-.form-check-label{
+.form-check-label {
   display: flex;
   align-items: center;
 }
-.selectCountry{
+.selectCountry {
   display: flex;
   white-space: nowrap;
   margin: 0 8px;
 
-  select{
+  select {
     margin: 0 8px;
     max-width: 210px;
 
@@ -65,21 +83,21 @@ h4{
   }
 }
 
-.healing-sub-container{
+.healing-sub-container {
   .card {
     width: 294px;
     background: var(--section-1st-color);
     box-shadow: var(--box-shadow);
     border-radius: 10px;
     margin: 10px;
-  
+
     .card-body {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 23px;
 
-      .card-title{
+      .card-title {
         border-bottom: 1px solid var(--font-icon-color);
       }
     }
@@ -91,7 +109,7 @@ h4{
   }
 }
 
-.health-points {  
+.health-points {
   background: var(--section-1st-color);
   border-radius: 10px;
   p {

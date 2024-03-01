@@ -1,0 +1,24 @@
+<div class="modal-header justify-content-center">
+  <h4 class="text-start m-0">{{ title }}</h4>
+
+  <!-- <fa-icon [icon]="['fas', 'xmark']" class="font-20-px" role="button" (click)="activeModal.close()" /> -->
+</div>
+
+<div class="modal-body text-start">
+  <ul class="points-list">
+    <li class="p-2" *ngFor="let point of realityPoints">
+      {{ point }}
+    </li>
+  </ul>
+</div>
+
+<div class="modal-footer justify-content-end gap-2 d-sm-none d-flex">
+  <!-- <button type="button" class="btn btn-sm btn-danger" (click)="activeModal.close('cancel')">
+    {{ cancelButtonLabel }}
+  </button> -->
+
+  <button type="button" class="btn btn-sm btn-secondary" (click)="activeModal.close('success')">
+    Done
+  </button>
+  <!-- {{ confirmButtonLabel }} -->
+</div>

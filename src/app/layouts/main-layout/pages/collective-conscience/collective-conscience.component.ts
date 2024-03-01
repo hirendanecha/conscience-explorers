@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MasterLoaModalComponent } from 'src/app/@shared/modals/master-loa-modal/master-loa-modal.component';
 
 @Component({
   selector: 'app-collective-conscience',
@@ -9,6 +11,7 @@ import { Router } from '@angular/router';
 export class CollectiveConscienceComponent {
   constructor(
     private router: Router,
+    private modalService: NgbModal,
   ) {
   }
   editMode: boolean = false;
@@ -43,8 +46,18 @@ export class CollectiveConscienceComponent {
     this.editMode = !this.editMode;
   }
 
+  openLofmodel(){
+    const modalRef = this.modalService.open(MasterLoaModalComponent, {
+      centered: true,
+      size: 'lg'
+    });
+    modalRef.result.then((res) => {
+      // console.log(res);
+    })
+  }
+
   nextPageSearch() {
     console.log('Field values:', this.fieldData);
-    this.router.navigate(['/home']);
+    // this.router.navigate(['/home']);
   }
 }
