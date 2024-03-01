@@ -87,12 +87,18 @@
       >
         <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
           <label class="form-label">{{ field.rulesNo }}</label>
-          <input
+          <!-- <input
             type="text"
             class="input-area"
             placeholder="Enter Point"
             [(ngModel)]="fieldData[field.rulesNo]"
-          />
+          /> -->
+          <textarea
+          class="input-area"
+          placeholder="Enter Point"
+          [(ngModel)]="fieldData[field.rulesNo]"
+          [rows]="calculateRows(fieldData[field.rulesNo])"
+        ></textarea>      
         </div>
       </div>
 

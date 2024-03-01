@@ -134,10 +134,12 @@
             <div class="d-flex flex-column">
               <div
               *ngFor="let field of exisingReality; let i = index"
-                class="d-flex align-items-baseline gap-2 col-12 mb-3"
-              >
-                <label class="form-label">{{ i + 1  }}</label>
-                <span class="input-area w-100">{{ field.rulesDescription }}</span>
+              ><ng-container *ngIf="field.rulesDescription.trim() !== ''">
+                <div class="d-flex align-items-baseline gap-2 col-12 mb-3">
+                  <label class="form-label">{{ i + 1  }}</label>
+                  <span class="input-area w-100">{{ field.rulesDescription }}</span>
+                </div>
+              </ng-container>
               </div>
             </div>
           </div>

@@ -65,6 +65,16 @@ export class CollectiveConscienceComponent implements OnInit{
     this.editMode = !this.editMode;
   }
 
+  calculateRows(text: string): number {
+    if (!text || text.trim() === '') {
+      return 1;
+    }
+    // return text.split('\n').length;
+    // const rowCount = Math.ceil(text.length / 50);
+    const rowCount = text.split('\n').length;
+    return Math.min(rowCount, 5);
+  }
+  
   getRealityList(): void {
     this.customerService.getMyReality(this.profileId).subscribe({
       next: (res: any) => {
@@ -92,7 +102,7 @@ export class CollectiveConscienceComponent implements OnInit{
     this.customerService.addUserReality(modifiedOutput).subscribe({
       next: (res: any) => {
         if (res) {
-          // this.router.navigate(['/home']);
+          this.router.navigate(['/home']);
         }
       },
       error: (error) => {

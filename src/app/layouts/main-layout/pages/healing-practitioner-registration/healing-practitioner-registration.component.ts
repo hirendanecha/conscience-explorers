@@ -152,6 +152,14 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
     }
   }
 
+  calculateRows(text: string): number {
+    if (!text || text.trim() === '') {
+      return 1;
+    }
+    const rowCount = text.split('\n').length;
+    return Math.min(rowCount, 5);
+  }
+
   backPreview() {
     this.selectPractitionerPage = !this.selectPractitionerPage;
   }
