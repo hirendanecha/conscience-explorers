@@ -121,4 +121,8 @@ export class CustomerService {
   getMyReality(id): Observable<any> {
     return this.http.get(`${environment.serverUrl}reality/my-reality/${id}`);
   }
+
+  verifyToken(token): Observable<any> {
+    return this.http.get(`${this.baseUrl}/verify-token/${token}`);
+  }
 }
