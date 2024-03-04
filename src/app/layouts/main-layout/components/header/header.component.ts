@@ -54,13 +54,15 @@ export class HeaderComponent {
     private socketService: SocketService
   ) {
     this.originalFavicon = document.querySelector('link[rel="icon"]');
-    this.socketService.socket.on('isReadNotification_ack', (data) => {
-      if (data?.profileId) {
-        this.sharedService.isNotify = false;
-        localStorage.setItem('isRead', data?.isRead);
-        this.originalFavicon.href = '/assets/images/android-chrome-192x192.png';
-      }
-    });
+    if (this.tokenService.getToken()) {      
+      this.socketService.socket.on('isReadNotification_ack', (data) => {
+        if (data?.profileId) {
+          this.sharedService.isNotify = false;
+          localStorage.setItem('isRead', data?.isRead);
+          this.originalFavicon.href = '/assets/images/android-chrome-192x192.png';
+        }
+      });
+    }
     const isRead = localStorage.getItem('isRead');
     if (isRead === 'N') {
       this.sharedService.isNotify = true;

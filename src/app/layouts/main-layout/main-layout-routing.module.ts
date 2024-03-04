@@ -21,8 +21,7 @@ const routes: Routes = [
         loadChildren: () => import('./pages/structure-reality/structure-reality.module').then((m) => m.StructureRealityModule),
         data: {
           isShowLeftSideBar: true
-        },
-        canActivate: mapToCanActivate([AuthenticationGuard]),
+        }
       },
       {
         path: 'collective-conscience',
