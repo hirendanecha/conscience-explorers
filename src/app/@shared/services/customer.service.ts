@@ -119,7 +119,7 @@ export class CustomerService {
   }
 
   getMyReality(id): Observable<any> {
-    return this.http.get(`${environment.serverUrl}reality/my-reality/${id}`);
+    return this.http.get(`${environment.serverUrl}reality/my-reality/${id}?q=${Date.now()}`);
   }
 
   verifyToken(token): Observable<any> {
