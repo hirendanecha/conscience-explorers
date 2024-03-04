@@ -31,8 +31,8 @@
     <div class="lof-popup mt-6 mb-7 c-pointer" (click)="openLofmodel()">
       <h6 class="p-2 btn-link m-0">How to Master the Law of Attraction</h6>
     </div>
-    <div class="d-flex row">
-      <div class="col-6 p-5">
+    <div class="d-flex flex-column flex-md-row">
+      <div class="col-md-6 p-5">
         <h4>Proposed Collective Reality</h4>
         <div class="d-flex flex-column">
           <div
@@ -45,8 +45,8 @@
         </div>
       </div>
 
-      <div class="col-6 p-5">
-        <div class="d-flex align-items-center justify-content-center">
+      <div class="col-md-6 p-5">
+        <div class="d-flex align-items-center justify-content-center flex-wrap">
           <h4>Your Proposed Reality</h4>
           <button
             class="droplist d-flex align-items-center ms-3"
@@ -55,7 +55,7 @@
             <fa-icon
               [icon]="['fas', editMode ? 'times' : 'pen-to-square']"
             ></fa-icon>
-            <span>{{ editMode ? "Cancel" : "Edit" }}</span>
+            <span class="ms-2">{{ editMode ? "Cancel" : "Edit" }}</span>
           </button>
         </div>
         <div class="d-flex flex-column">
@@ -78,13 +78,19 @@
               [(ngModel)]="fieldData[field.rulesNo]"
               [disabled]="!editMode"
             /> -->
-            <textarea
-              class="input-area"
-              placeholder="Enter Point"
-              [(ngModel)]="fieldData[field.rulesNo]"
-              [disabled]="!editMode"
-              [rows]="calculateRows(fieldData[field.rulesNo])"
-            ></textarea>
+            <div class="d-flex flex-column w-100">
+              <textarea
+                class="input-area"
+                placeholder="Enter Point"
+                [(ngModel)]="fieldData[field.rulesNo]"
+                (ngModelChange)="wordLimit(fieldData[field.rulesNo], field.rulesNo)"
+                [disabled]="!editMode"
+                [rows]="calculateRows(fieldData[field.rulesNo])"
+              ></textarea>
+              <div *ngIf="maxWordsLimit[field.rulesNo]" class="text-danger">
+                Word limit exceeded. Max word count is 300.
+              </div>
+            </div>
           </div>
         </div>
       </div>

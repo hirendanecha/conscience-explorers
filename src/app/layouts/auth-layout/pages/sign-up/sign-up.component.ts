@@ -93,11 +93,12 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     this.profileImg = event;
   }
 
-  upload(file) {
+  upload(file: any = {}) {
     // if (file.size / (1024 * 1024) > 5) {
     //   return 'Image file size exceeds 5 MB!';
     // }
     this.spinner.show();
+    if (file) {
     this.uploadService.uploadFile(file).subscribe({
       next: (res: any) => {
         this.spinner.hide();
@@ -119,6 +120,10 @@ export class SignUpComponent implements OnInit, AfterViewInit {
         return 'Could not upload the file:' + file.name;
       },
     });
+  } else {
+      this.spinner.hide();
+      this.creatProfile(this.registerForm.value);
+    }
   }
 
   save() {
@@ -178,14 +183,14 @@ export class SignUpComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     this.msg = '';
-    if (!this.profileImg?.file?.name) {
-      this.msg = 'Please upload profile picture';
-      this.scrollTop();
-      // return false;
-    }
+    // if (!this.profileImg?.file?.name) {
+    //   this.msg = 'Please upload profile picture';
+    //   this.scrollTop();
+    //   // return false;
+    // }
+    // this.profileImg?.file?.name &&
     if (
       this.registerForm.valid &&
-      this.profileImg?.file?.name &&
       this.registerForm.get('TermAndPolicy').value === true
     ) {
       if (!this.validatepassword()) {
@@ -292,7 +297,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       MobileNo: data?.MobileNo,
       UserID: window?.sessionStorage?.user_id,
       IsActive: 'N',
-      ProfilePicName: this.profilePic,
+      ProfilePicName: this.profilePic || null,
     };
     console.log(profile);
 

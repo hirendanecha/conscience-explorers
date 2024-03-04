@@ -22,18 +22,20 @@ export class CollectiveConscienceComponent implements OnInit{
     this.getRealityList();
   }
   editMode: boolean = false;
+  fieldDataValue: string = '';
+  maxWordsLimit: { [key: string]: boolean } = {};
 
   healthPoints = [
-    { label: '1.', placeholder: 'All people are healthy, and the world is disease-free' },
-    { label: '2.', placeholder: 'All people have access to organic healthy food' },
-    { label: '3.', placeholder: 'People have joyful well-paid work and they are compensated for the individual value they create in the world. As a result of this joyful contribution through loving the world (partially as an expression of their work) we collectively create enough abundance that the following conditions can be experienced' },
-    { label: '4.', placeholder: 'All people live in abundance and have access to homes' },
-    { label: '5.', placeholder: 'Free energy technology is available to all' },
-    { label: '6.', placeholder: 'Free healthcare is available to all' },
-    { label: '7.', placeholder: 'We live free and have no authoritative government' },
-    { label: '8.', placeholder: 'Higher level knowledge is available to all' },
-    { label: '9.', placeholder: 'A unit of transaction is used for trade and transactions for goods and services to provide a record of transaction' },
-    { label: '10.', placeholder: 'We live in abundance in all aspects of life' }
+    { label: '1', placeholder: 'All people are healthy, and the world is disease-free' },
+    { label: '2', placeholder: 'All people have access to organic healthy food' },
+    { label: '3', placeholder: 'People have joyful well-paid work and they are compensated for the individual value they create in the world. As a result of this joyful contribution through loving the world (partially as an expression of their work) we collectively create enough abundance that the following conditions can be experienced' },
+    { label: '4', placeholder: 'All people live in abundance and have access to homes' },
+    { label: '5', placeholder: 'Free energy technology is available to all' },
+    { label: '6', placeholder: 'Free healthcare is available to all' },
+    { label: '7', placeholder: 'We live free and have no authoritative government' },
+    { label: '8', placeholder: 'Higher level knowledge is available to all' },
+    { label: '9', placeholder: 'A unit of transaction is used for trade and transactions for goods and services to provide a record of transaction' },
+    { label: '10', placeholder: 'We live in abundance in all aspects of life' }
   ];
 
   exisingReality: any = [];
@@ -63,6 +65,12 @@ export class CollectiveConscienceComponent implements OnInit{
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+  }
+
+  wordLimit(value: string, fieldName: number) {
+    const maxWords = 300;
+    const words = value.trim().split(/\s+/).length;
+    this.maxWordsLimit[fieldName] = words > maxWords;
   }
 
   calculateRows(text: string): number {
