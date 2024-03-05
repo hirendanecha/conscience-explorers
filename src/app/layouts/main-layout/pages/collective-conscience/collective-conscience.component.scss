@@ -13,10 +13,11 @@ h4 {
 }
 
 .lof-popup {
-  background: var(--box-1st-color);;
+  background: var(--box-1st-color);
   box-shadow: var(--box-shadow);
-  width: 281px;
+  width: 300px;
   border-radius: 6px;
+  text-align: center;
   align-self: center;
   h6 {
     color: var(--primary-color) !important;

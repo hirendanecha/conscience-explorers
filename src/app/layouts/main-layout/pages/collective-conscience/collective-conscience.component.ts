@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MasterLoaModalComponent } from 'src/app/@shared/modals/master-loa-modal/master-loa-modal.component';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
+import { ToastService } from 'src/app/@shared/services/toast.service';
 
 @Component({
   selector: 'app-collective-conscience',
@@ -10,11 +11,13 @@ import { CustomerService } from 'src/app/@shared/services/customer.service';
   styleUrls: ['./collective-conscience.component.scss'],
 })
 export class CollectiveConscienceComponent implements OnInit{
+  @ViewChild('textarea') textareaRef: ElementRef;
   profileId: number
   constructor(
     private router: Router,
     private modalService: NgbModal,
     private customerService: CustomerService,
+    private toastService: ToastService,
   ) {
     this.profileId = +localStorage.getItem('profileId');
   }
@@ -74,14 +77,33 @@ export class CollectiveConscienceComponent implements OnInit{
   }
 
   calculateRows(text: string): number {
-    if (!text || text.trim() === '') {
+    if (!text) {
       return 1;
     }
-    // return text.split('\n').length;
-    // const rowCount = Math.ceil(text.length / 50);
-    const rowCount = text.split('\n').length;
-    return Math.min(rowCount, 5);
+    // const textareaWidth = this.textareaRef.nativeElement.offsetWidth;
+    // const charPerLine = Math.floor(textareaWidth / 9.5);
+    // const lineCount = text.split('\n').length;
+    // // const charPerLine = 45;
+    // const charCount = text.length;
+    // const rowCount = Math.ceil(charCount / charPerLine);
+    // return Math.min(Math.max(lineCount, rowCount), 5);
+    const trimmedText = text.replace(/\s/g, '');
+    const textareaWidth = this.textareaRef.nativeElement.offsetWidth;
+    const charPerLine = Math.floor(textareaWidth / 9.5);
+    const lineCount = text.split('\n').length;
+    const charCount = trimmedText.length;
+    const rowCount = Math.ceil(charCount / charPerLine);
+    return Math.min(Math.max(lineCount, rowCount), 5);
   }
+  // calculateRows(text: string): number {
+  //   if (!text || text.trim() === '') {
+  //     return 1;
+  //   }
+  //   // return text.split('\n').length;
+  //   // const rowCount = Math.ceil(text.length / 50);
+  //   const rowCount = text.split('\n').length;
+  //   return Math.min(rowCount, 5);
+  // }
   
   getRealityList(): void {
     this.customerService.getMyReality(this.profileId).subscribe({
@@ -110,10 +132,12 @@ export class CollectiveConscienceComponent implements OnInit{
     this.customerService.addUserReality(modifiedOutput).subscribe({
       next: (res: any) => {
         if (res) {
-          this.router.navigate(['/home']);
+          this.toastService.success('Changes Saved Successfully.');
+          this.editMode = false
         }
       },
       error: (error) => {
+        this.toastService.danger('Something went wrong please try again!');
         console.log(error);
       },
     });

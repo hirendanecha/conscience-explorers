@@ -29,7 +29,7 @@
     <!-- <div class="row mt-10"> -->
 
     <div class="lof-popup mt-6 mb-7 c-pointer" (click)="openLofmodel()">
-      <h6 class="p-2 btn-link m-0">How to Master the Law of Attraction</h6>
+      <h6 class="p-2 btn-link m-0 text-truncate">How to Master the Law of Attraction</h6>
     </div>
     <div class="d-flex flex-column flex-md-row">
       <div class="col-md-6 p-5">
@@ -80,6 +80,7 @@
             /> -->
             <div class="d-flex flex-column w-100">
               <textarea
+                #textarea
                 class="input-area"
                 placeholder="Enter Point"
                 [(ngModel)]="fieldData[field.rulesNo]"
@@ -96,7 +97,7 @@
       </div>
     </div>
 
-    <div class="mb-5 me-3">
+    <div class="mb-5 me-3 c-pointer" [routerLink]="!editMode ? ['/home'] : null">
       <!-- <button [routerLink]="['/home']" class="btn cmn-btn float-start">
         <fa-icon [icon]="['fas', 'arrow-left-long']" class="c-pointer close-icon me-2" title="Back" />Skip
       </button> -->
@@ -105,12 +106,13 @@
         class="btn cmn-btn float-end"
         [disabled]="!editMode"
       >
-        Save Changes
-        <!-- <fa-icon
+      {{editMode ? 'Save Changes' : 'Done'}}
+        <fa-icon
+          *ngIf="!editMode"
           [icon]="['fas', 'arrow-right-long']"
           class="c-pointer close-icon ms-2"
           title="Next"
-        /> -->
+        />
       </button>
     </div>
   </div>

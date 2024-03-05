@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommunityService } from 'src/app/@shared/services/community.service';
@@ -13,6 +13,7 @@ import { TokenStorageService } from 'src/app/@shared/services/token-storage.serv
   styleUrls: ['./healing-practitioner-registration.component.scss'],
 })
 export class HealingPractitionerRegistrationComponent implements OnInit {
+  @ViewChild('textarea') textareaRef: ElementRef;
   profileId: number;
 
   allCountryData: any;
@@ -153,11 +154,16 @@ export class HealingPractitionerRegistrationComponent implements OnInit {
   }
 
   calculateRows(text: string): number {
-    if (!text || text.trim() === '') {
+    if (!text) {
       return 1;
     }
-    const rowCount = text.split('\n').length;
-    return Math.min(rowCount, 5);
+    const trimmedText = text.replace(/\s/g, '');
+    const textareaWidth = this.textareaRef.nativeElement.offsetWidth;
+    const charPerLine = Math.floor(textareaWidth / 9.5);
+    const lineCount = text.split('\n').length;
+    const charCount = trimmedText.length;
+    const rowCount = Math.ceil(charCount / charPerLine);
+    return Math.min(Math.max(lineCount, rowCount), 5);
   }
 
   backPreview() {
