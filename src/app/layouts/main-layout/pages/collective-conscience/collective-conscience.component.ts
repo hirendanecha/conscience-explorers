@@ -80,11 +80,18 @@ export class CollectiveConscienceComponent implements OnInit{
     if (!text) {
       return 1;
     }
+    // const textareaWidth = this.textareaRef.nativeElement.offsetWidth;
+    // const charPerLine = Math.floor(textareaWidth / 9.5);
+    // const lineCount = text.split('\n').length;
+    // // const charPerLine = 45;
+    // const charCount = text.length;
+    // const rowCount = Math.ceil(charCount / charPerLine);
+    // return Math.min(Math.max(lineCount, rowCount), 5);
+    const trimmedText = text.replace(/\s/g, '');
     const textareaWidth = this.textareaRef.nativeElement.offsetWidth;
-    const charPerLine = Math.floor(textareaWidth / 10);
+    const charPerLine = Math.floor(textareaWidth / 9.5);
     const lineCount = text.split('\n').length;
-    // const charPerLine = 45;
-    const charCount = text.length;
+    const charCount = trimmedText.length;
     const rowCount = Math.ceil(charCount / charPerLine);
     return Math.min(Math.max(lineCount, rowCount), 5);
   }
