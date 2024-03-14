@@ -11,5 +11,7 @@ export const environment = {
   socketUrl: `${url}/`,
   webUrl: webUrl,
   tubeUrl: tubeUrl,
-  domain: '.conscienceexplorers.com'
+  domain: '.conscienceexplorers.com',
+  siteKey: '0x4AAAAAAAUwEEpA-evEkUGZ',
+  secretKey: '0x4AAAAAAAUwEAsfXjIJpeMAxwCU5RU2ZT0',
 };
