@@ -6,5 +6,6 @@ h4 {
   list-style-type: decimal;
   li {
     font-size: min(max(16px, 2vw), 18px) !important;
+    padding: 6px;
   }
 }
