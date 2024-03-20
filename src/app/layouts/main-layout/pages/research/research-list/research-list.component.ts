@@ -323,6 +323,7 @@ export class ResearchListComponent {
 
   resetPost(): void {
     this.researchForm.reset();
+    this.researchForm.get('posttoprofileid').setValue('');
     this.tagInputDefaultData = null;
     this.selectedImgFile = null;
     this.selectedpdfFile = null;
