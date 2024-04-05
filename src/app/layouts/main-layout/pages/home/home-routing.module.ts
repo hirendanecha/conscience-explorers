@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: 'occult-topics/:name',
     component: HomeComponent,
-    canActivate: mapToCanActivate([AuthenticationGuard,])   
+    // canActivate: mapToCanActivate([AuthenticationGuard])   
   },
   {
     path: 'post/:id',
