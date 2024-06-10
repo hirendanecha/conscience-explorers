@@ -18,7 +18,7 @@
     </ul>
   </div>
 
-  <div class="btn-item text-center">
+  <div class="btn-item text-center" *ngIf="tokenService.getCredentials()">
     <button
       class="btn btn-sm cmn-btn gap-1 d-flex align-items-center m-auto mt-1"
       (click)="createCommunity()"

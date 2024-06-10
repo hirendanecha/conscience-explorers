@@ -6,6 +6,7 @@ import { CommunityService } from 'src/app/@shared/services/community.service';
 import { SeoService } from 'src/app/@shared/services/seo.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
 
 @Component({
   selector: 'app-communities',
@@ -23,7 +24,8 @@ export class CommunitiesComponent {
     private spinner: NgxSpinnerService,
     private communityService: CommunityService,
     private seoService: SeoService,
-    private router: Router
+    private router: Router,
+    public tokenService: TokenStorageService
   ) {
     this.profileId = Number(localStorage.getItem('profileId'));
 
