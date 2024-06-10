@@ -35,6 +35,8 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   allCountryData: any;
   type = 'danger';
   defaultCountry = 'US';
+  allStateData: any;
+  selectedState = '';
   profilePic = '';
   profileImg: any = {
     file: null,
@@ -272,7 +274,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       next: (result) => {
         this.spinner.hide();
         this.allCountryData = result;
-        this.registerForm.get('Zip').enable();
+        this.getAllState(this.defaultCountry)  
       },
       error: (error) => {
         this.spinner.hide();
@@ -280,7 +282,24 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       },
     });
   }
-
+  onCountryChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.getAllState(target.value);
+  }
+  
+  getAllState(selectCountry) {
+    // this.spinner.show();
+    this.customerService.getStateData(selectCountry).subscribe({
+      next: (result) => {
+        this.spinner.hide();
+        this.allStateData = result;
+      },
+      error: (error) => {
+        this.spinner.hide();
+        console.log(error);
+      },
+    });
+  }
   // onZipChange(event) {
   //   this.spinner.show();
   //   this.customerService
