@@ -15,6 +15,7 @@ import { ProfileMenusModalComponent } from '../profile-menus-modal/profile-menus
 import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from 'src/app/@shared/services/post.service';
+import { ConferenceLinkComponent } from 'src/app/@shared/modals/create-conference-link/conference-link-modal.component';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -137,5 +138,9 @@ export class LeftSidebarComponent implements OnInit, AfterViewInit {
     });
     this.closeSidebar();
   }
-
+  uniqueLink(){
+    const modalRef = this.modalService.open(ConferenceLinkComponent, {
+      centered: true,
+    });
+  }
 }
