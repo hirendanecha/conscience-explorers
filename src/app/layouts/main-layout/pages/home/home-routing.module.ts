@@ -14,11 +14,11 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
   },
-  // {
-  //   path: 'visionaries/:name',
-  //   component: HomeComponent,
-  //   canActivate: mapToCanActivate([AuthenticationGuard])  
-  // },
+  {
+    path: 'visionaries/details/:name',
+    component: HomeComponent,
+    canActivate: mapToCanActivate([AuthenticationGuard])  
+  },
   {
     path: 'occult-topics/:name',
     component: HomeComponent,
