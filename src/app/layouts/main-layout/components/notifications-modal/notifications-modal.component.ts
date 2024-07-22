@@ -22,18 +22,13 @@ export class NotificationsModalComponent implements AfterViewInit {
   ) {
     this.sharedService.getNotificationList();
     this.originalFavicon = document.querySelector('link[rel="icon"]');
-    const isRead = localStorage.getItem('isRead');
-    if (isRead === 'N') {
-      localStorage.setItem('isRead', 'Y');
-    }
   }
 
   ngAfterViewInit(): void {
     const profileId = +localStorage.getItem('profileId');
-    this.socketService.readNotification({ profileId }, (data) => {
-    });
+    this.socketService.readNotification({ profileId }, (data) => { });
   }
-  
+
   readUnreadNotification(postId: string, notification: any = {}): void {
     this.customerService
       .readUnreadNotification(notification.id, 'Y')

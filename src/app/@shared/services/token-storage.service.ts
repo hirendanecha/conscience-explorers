@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 const TOKEN_KEY = 'auth-token';
-const USER_KEY = 'userData';
+const USER_KEY = 'auth-user';
 
 @Injectable({
   providedIn: 'root',
@@ -16,16 +16,16 @@ export class TokenStorageService {
   isUserAuthenticated: Subject<boolean> = new BehaviorSubject<boolean>(false);
   public _credentials: any = {};
 
-  constructor(private cookieService: CookieService,
+  constructor(
+    private cookieService: CookieService,
     private router: Router,
-    private toastService: ToastService,
-  ) { }
+    private toastService: ToastService
+  ) {}
 
   signOut(): void {
-    sessionStorage.clear();
     const theme = localStorage.getItem('theme');
     localStorage.clear();
-    this.cookieService.delete('userData', '/', environment.domain);
+    this.cookieService.delete('auth-user', '/', environment.domain);
     // this.cookieService.deleteAll('/');
     localStorage.setItem('theme', theme);
     this.toastService.success('Logout successfully');

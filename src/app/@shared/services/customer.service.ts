@@ -20,12 +20,12 @@ export class CustomerService {
 
   getCustomer(id: number): Observable<any> {
     this.http
-    .get<any>(`${this.baseUrl}/${id}`)
-    .pipe(take(1))
-    .subscribe((customers) => {
-      const cust = customers?.[0];
-      this.customerObs.next(cust);
-    });
+      .get<any>(`${this.baseUrl}/${id}`)
+      .pipe(take(1))
+      .subscribe((customers) => {
+        const cust = customers?.[0];
+        this.customerObs.next(cust);
+      });
 
     return this.customerObs;
   }
@@ -39,7 +39,9 @@ export class CustomerService {
   }
 
   deleteCustomer(id: number, profileId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}?profileId=${profileId}`, { responseType: 'text' });
+    return this.http.delete(`${this.baseUrl}/${id}?profileId=${profileId}`, {
+      responseType: 'text',
+    });
   }
 
   getCustomersList(): Observable<any> {
@@ -73,11 +75,11 @@ export class CustomerService {
   }
 
   updateProfile(id, customer: Customer): Observable<Object> {
-    const token = localStorage.getItem("auth-token");
+    const token = localStorage.getItem('auth-token');
     return this.http.put(`${this.baseUrl}/profile/${id}`, customer, {
       headers: {
-        'Authorization': 'Bearer ' + token
-      }
+        Authorization: 'Bearer ' + token,
+      },
     });
   }
 
@@ -108,10 +110,7 @@ export class CustomerService {
   }
 
   logout(): Observable<any> {
-    return this.http.get(
-      `${this.baseUrl}/logout`,
-      httpOptions
-    );
+    return this.http.get(`${this.baseUrl}/logout`, httpOptions);
   }
 
   getNotification(id): Observable<any> {

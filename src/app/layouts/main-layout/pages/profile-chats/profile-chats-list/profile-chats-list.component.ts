@@ -20,39 +20,30 @@ import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject, take, takeUntil } from 'rxjs';
-// import { OutGoingCallModalComponent } from 'src/app/@shared/modals/outgoing-call-modal/outgoing-call-modal.component';
-// import { EncryptDecryptService } from 'src/app/@shared/services/encrypt-decrypt.service';
-// import { MessageService } from 'src/app/@shared/services/message.service';
+import { OutGoingCallModalComponent } from 'src/app/@shared/modals/outgoing-call-modal/outgoing-call-modal.component';
+import { EncryptDecryptService } from 'src/app/@shared/services/encrypt-decrypt.service';
+import { MessageService } from 'src/app/@shared/services/message.service';
 import { PostService } from 'src/app/@shared/services/post.service';
 import { SharedService } from 'src/app/@shared/services/shared.service';
 import { SocketService } from 'src/app/@shared/services/socket.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { Howl } from 'howler';
 import { CreateGroupModalComponent } from 'src/app/@shared/modals/create-group-modal/create-group-modal.component';
-// import { EditGroupModalComponent } from 'src/app/@shared/modals/edit-group-modal/edit-group-modal.component';
-// import { MessageDatePipe } from 'src/app/@shared/pipe/message-date.pipe';
-// import { MediaGalleryComponent } from 'src/app/@shared/components/media-gallery/media-gallery.component';
-// import { EmojiPaths } from 'src/app/@shared/constant/emoji';
+import { EditGroupModalComponent } from 'src/app/@shared/modals/edit-group-modal/edit-group-modal.component';
+import { MessageDatePipe } from 'src/app/@shared/pipe/message-date.pipe';
+import { MediaGalleryComponent } from 'src/app/@shared/components/media-gallery/media-gallery.component';
+import { EmojiPaths } from 'src/app/@shared/constant/emoji';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from 'src/app/@shared/services/seo.service';
-// import { ForwardChatModalComponent } from 'src/app/@shared/modals/forward-chat-modal/forward-chat-modal.component';
-import { v4 as uuid } from 'uuid';
-// import {
-//   FILE_EXTENSIONS,
-//   FILE_EXTENSIONS_Video,
-// } from 'src/app/@shared/constant/file-extensions';
-import { HttpEventType } from '@angular/common/http';
-import { EncryptDecryptService } from 'src/app/@shared/services/encrypt-decrypt.service';
-import { MessageService } from 'src/app/@shared/services/message.service';
-import { OutGoingCallModalComponent } from 'src/app/@shared/modals/outgoing-call-modal/outgoing-call-modal.component';
-import { FILE_EXTENSIONS, FILE_EXTENSIONS_Video } from 'src/app/@shared/constant/file-extensions';
-import { MessageDatePipe } from 'src/app/@shared/pipe/message-date.pipe';
-import { MediaGalleryComponent } from 'src/app/@shared/components/media-gallery/media-gallery.component';
-import { EditGroupModalComponent } from 'src/app/@shared/modals/edit-group-modal/edit-group-modal.component';
 import { ForwardChatModalComponent } from 'src/app/@shared/modals/forward-chat-modal/forward-chat-modal.component';
-import { EmojiPaths } from 'src/app/@shared/constant/emoji';
+import { v4 as uuid } from 'uuid';
+import {
+  FILE_EXTENSIONS,
+  FILE_EXTENSIONS_Video,
+} from 'src/app/@shared/constant/file-extensions';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile-chats-list',

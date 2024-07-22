@@ -25,7 +25,6 @@ import { environment } from 'src/environments/environment';
 import { SeoService } from 'src/app/@shared/services/seo.service';
 import { AddCommunityModalComponent } from '../communities/add-community-modal/add-community-modal.component';
 import { AddFreedomPageComponent } from '../freedom-page/add-page-modal/add-page-modal.component';
-import { Meta } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { Howl } from 'howler';
 import { EditPostModalComponent } from 'src/app/@shared/modals/edit-post-modal/edit-post-modal.component';
@@ -64,7 +63,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   notificationId: number;
   buttonClicked = false;
   originalFavicon: HTMLLinkElement;
-  notificationSoundOct = '';
 
   constructor(
     private modalService: NgbModal,
@@ -114,47 +112,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (!this.socketService.socket?.connected) {
-      this.socketService.socket?.connect();
-    }
-    if (!this.socketService.socket?.connected) {
-      this.socketService.socket?.connect();
-    }
-
-    this.socketService.socket?.emit('join', { room: this.profileId });
-    this.socketService.socket?.on('notification', (data: any) => {
-      if (data) {
-        console.log('new-notification', data);
-        this.notificationId = data.id;
-        this.sharedService.isNotify = true;
-        this.originalFavicon.href = '/assets/images/icon-unread.jpg';
-        if (data?.actionType === 'T') {
-          var sound = new Howl({
-            src: [
-              'https://s3.us-east-1.wasabisys.com/freedom-social/freedom-notification.mp3'
-          ]
-          });
-          this.notificationSoundOct = localStorage?.getItem(
-            'notificationSoundEnabled'
-          );
-          if (this.notificationSoundOct !== 'N') {
-            if (sound) {
-              sound?.play();
-            }
-          }
-        }
-        if (this.notificationId) {
-          this.customerService.getNotification(this.notificationId).subscribe({
-            next: (res) => {
-              localStorage.setItem('isRead', res.data[0]?.isRead);
-            },
-            error: (error) => {
-              console.log(error);
-            },
-          });
-        }
-      }
-    });
     const isRead = localStorage.getItem('isRead');
     if (isRead === 'N') {
       this.sharedService.isNotify = true;
@@ -172,11 +129,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   onPostFileSelect(event: any): void {
+    const tagUserInput = document.querySelector('.home-input app-tag-user-input .tag-input-div') as HTMLInputElement;
+    if (tagUserInput) {tagUserInput.focus()}
     const file = event.target?.files?.[0] || {};
-    // console.log(file)
     if (file.type.includes('application/pdf')) {
       this.postData['file'] = file;
       this.pdfName = file?.name;
@@ -285,7 +243,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
             if (res?.body?.url) {
               if (this.postData?.file.type.includes('application/pdf')) {
                 this.postData['pdfUrl'] = res?.body?.url;
-                console.log('pdfUrl', res?.body?.url);
                 this.postData['imageUrl'] = null;
                 this.createOrEditPost();
               } else {
@@ -323,31 +280,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.postData.title = null;
         this.postData.metaimage = null;
         this.postData.metadescription = null;
-        console.log(this.postData);
-
       }
-      // this.spinner.show();
-      console.log(
-        'postData',
-        this.postData,
-        this.socketService.socket?.connected
-      );
       this.toastService.success('Post created successfully.');
       this.socketService?.createOrEditPost(this.postData);
       this.buttonClicked = false;
       this.resetPost();
-      // , (data) => {
-      //   this.spinner.hide();
-      //   console.log(data)
-      //   return data;
-      // });
     }
   }
 
   onTagUserInputChangeEvent(data: any): void {
-    // this.postMessageInputValue = data?.html
     this.extractImageUrlFromContent(data.html);
-    // this.postData.postdescription = data?.html;
     this.postData.meta = data?.meta;
     this.postMessageTags = data?.tags;
   }
@@ -369,26 +311,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onEditPost(post: any): void {
-   // console.log('edit-post', post)
-   if (post.posttype === 'V') {
-    this.openUploadVideoModal(post);
-  }
-  //  else if (post.pdfUrl) {
-  //   this.pdfName = post.pdfUrl.split('/')[3];
-  //   console.log(this.pdfName);
-  //   this.postData = { ...post };
-  //   this.postMessageInputValue = this.postData?.postdescription;
-  // }
-  else {
-    this.openUploadEditPostModal(post);
-    // this.postData = { ...post };
-    // this.postMessageInputValue = this.postData?.postdescription;
-  }
-  // window.scroll({
-  //   top: 0,
-  //   left: 0,
-  //   behavior: 'smooth',
-  // });
+    if (post.posttype === 'V') {
+      this.openUploadVideoModal(post);
+    }
+    else {
+      this.openUploadEditPostModal(post);
+    }
   }
 
   editCommunity(data): void {
@@ -436,7 +364,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         isAdmin: 'N',
       };
       this.searchText = '';
-      console.log(data);
       this.communityService.joinCommunity(data).subscribe(
         (res: any) => {
           if (res) {
@@ -473,9 +400,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
               if (res) {
                 this.toastService.success(res.message);
                 this.getCommunityDetailsBySlug();
-                if (this.buttonClicked) {
-                  this.buttonClicked = false;
-                }
               }
             },
             error: (error) => {
@@ -487,18 +411,29 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  deleteCommunity(): void {
+  deleteOrLeaveCommunity(actionType: 'delete' | 'leave'): void {
+    const actionTitle = actionType === 'delete' ? 'Delete' : 'Leave';
+    const modalTitle = `${actionTitle} ${this.communityDetails.pageType}`;
+    const modalMessage = `Are you sure you want to ${actionType} this ${this.communityDetails.pageType}?`;
+    const confirmButtonLabel = actionTitle;
     const modalRef = this.modalService.open(ConfirmationModalComponent, {
       centered: true,
     });
-    modalRef.componentInstance.title = `Delete ${this.communityDetails.pageType}`;
-    modalRef.componentInstance.confirmButtonLabel = 'Delete';
+    modalRef.componentInstance.title = modalTitle;
+    modalRef.componentInstance.confirmButtonLabel = confirmButtonLabel;
     modalRef.componentInstance.cancelButtonLabel = 'Cancel';
-    modalRef.componentInstance.message = `Are you sure want to delete this ${this.communityDetails.pageType}?`;
+    modalRef.componentInstance.message = modalMessage;
     modalRef.result.then((res) => {
       if (res === 'success') {
-        this.communityService
-          .deleteCommunity(this.communityDetails?.Id)
+        const serviceFunction = actionType === 'delete' ? this.communityService.deleteCommunity : this.communityService.removeFromCommunity;
+        let serviceParams: any[];
+        if (actionType === 'delete') {
+          serviceParams = [this.communityDetails?.Id];
+        } else {
+          serviceParams = [this.communityDetails?.Id, this.profileId];
+        }
+  
+        serviceFunction.apply(this.communityService, serviceParams)
           .subscribe({
             next: (res: any) => {
               if (res) {
@@ -561,7 +496,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openUploadEditPostModal(post: any = {}): void {
     const modalRef = this.modalService.open(EditPostModalComponent, {
-      centered: true, backdrop: 'static',
+      centered: true,
+      backdrop: 'static',
     });
     modalRef.componentInstance.title = `Edit Post`;
     modalRef.componentInstance.confirmButtonLabel = `Save`
@@ -571,7 +507,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     modalRef.result.then((res) => {
       if (res.id) {
         this.postData = res
-        console.log(this.postData)
         this.uploadPostFileAndCreatePost();
       }
     });
@@ -603,6 +538,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     const imgTag = contentContainer.querySelector('img');
 
     if (imgTag) {
+      const tagUserInput = document.querySelector('app-tag-user-input .tag-input-div') as HTMLInputElement;
+      if (tagUserInput) {setTimeout(() => {
+        tagUserInput.innerHTML = tagUserInput.innerHTML.slice(0, -1);
+      }, 100);}
       const imgTitle = imgTag.getAttribute('title');
       const imgStyle = imgTag.getAttribute('style');
       const imageGif = imgTag
@@ -614,9 +553,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         const bytes = copyImage.length;
         const megabytes = bytes / (1024 * 1024);
         if (megabytes > 1) {
-          let copyImageTag = '<img\\s*src\\s*=\\s*""\\s*alt\\s*="">'
-          this.postData['postdescription'] = `<div>${content.replace(copyImage, '').replace(/\<br\>/ig, '').replace(new RegExp(copyImageTag, 'g'), '')}</div>`;
-          // this.postData['postdescription'] = content.replace(copyImage, '');
+          let copyImageTag = '<img\\s*src\\s*=\\s*""\\s*alt\\s*="">';
+          this.postData['postdescription'] = `<div>${content
+            .replace(copyImage, '')
+            .replace(/\<br\>/gi, '')
+            .replace(new RegExp(copyImageTag, 'g'), '')}</div>`;
           const base64Image = copyImage
             .trim()
             .replace(/^data:image\/\w+;base64,/, '');
