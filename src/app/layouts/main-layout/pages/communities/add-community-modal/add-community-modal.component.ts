@@ -174,8 +174,8 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
     if (!this.data.Id) {
       this.spinner.show();
       const formData = this.communityForm.value;
-      formData['emphasis'] = this.selectedValues;
-      formData['areas'] = this.selectedAreaValues;
+      // formData['emphasis'] = this.selectedValues;
+      // formData['areas'] = this.selectedAreaValues;
       if (this.communityForm.valid) {
         this.communityService.createCommunity(formData).subscribe({
           next: (res: any) => {
@@ -348,26 +348,26 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onCheckboxChange(event: any, emphasis: any): void {
-    const isChecked = event.target.checked;
-    if (isChecked) {
-      this.selectedValues.push(emphasis.eId);
-    } else {
-      this.selectedValues = this.selectedValues.filter(
-        (id) => id !== emphasis.eId
-      );
-    }
-  }
-  onAreaboxChange(event: any, area: any): void {
-    const isChecked = event.target.checked;
-    if (isChecked) {
-      this.selectedAreaValues.push(area.aId);
-    } else {
-      this.selectedAreaValues = this.selectedAreaValues.filter(
-        (id) => id !== area.aId
-      );
-    }
-  }
+  // onCheckboxChange(event: any, emphasis: any): void {
+  //   const isChecked = event.target.checked;
+  //   if (isChecked) {
+  //     this.selectedValues.push(emphasis.eId);
+  //   } else {
+  //     this.selectedValues = this.selectedValues.filter(
+  //       (id) => id !== emphasis.eId
+  //     );
+  //   }
+  // }
+  // onAreaboxChange(event: any, area: any): void {
+  //   const isChecked = event.target.checked;
+  //   if (isChecked) {
+  //     this.selectedAreaValues.push(area.aId);
+  //   } else {
+  //     this.selectedAreaValues = this.selectedAreaValues.filter(
+  //       (id) => id !== area.aId
+  //     );
+  //   }
+  // }
 
   clearForm() {
     if (this.data.Id) {
