@@ -62,7 +62,7 @@ export class EditProfileComponent implements OnInit, AfterViewInit {
     this.userlocalId = +localStorage.getItem('user_id');
     this.userId = this.route.snapshot.paramMap.get('id');
     this.profileId = +localStorage.getItem('profileId');
-    this.userMail = localStorage.getItem('email');
+    this.userMail = JSON.parse(localStorage.getItem('auth-user'))?.Email;
     if (this.profileId) {
       this.getProfile(this.profileId);
     }
