@@ -34,7 +34,10 @@
               class="btn btn-sm cmn-btn me-2"
               (click)="editCommunity(communityDetails)"
             >
-              Edit {{ communityDetails?.pageType }}
+              Edit
+              {{
+                communityDetails?.pageType === "community" ? "Church" : "Topics"
+              }}
             </button>
           </ng-container>
           <!-- {{ communityDetails?.pageType }} -->
@@ -59,9 +62,14 @@
             <ng-template #elseLeaveCommunity>
               <button
                 class="btn btn-sm btn-danger"
-                (click)="deleteOrLeaveCommunity('leave')"
+                (click)="removeFromCommunity()"
               >
-                Leave {{ communityDetails?.pageType }}
+                Leave
+                {{
+                  communityDetails?.pageType === "community"
+                    ? "Church"
+                    : "Topics"
+                }}
               </button>
             </ng-template>
           </ng-container>
@@ -72,7 +80,10 @@
               (click)="joinCommunity()"
               [disabled]="buttonClicked"
             >
-              Join {{ communityDetails?.pageType }}
+              Join
+              {{
+                communityDetails?.pageType === "community" ? "Church" : "Topics"
+              }}
             </button>
           </ng-template>
         </div>
@@ -113,6 +124,47 @@
 </ng-container>
 
 <ng-container *ngIf="activeCommunityTab === 1">
+  <div
+    *ngIf="communityDetails?.pageType === 'community'"
+    class="single-box filter-single-box text-start p-5 p-md-3 align-items-center gap-4"
+  >
+    <div class="avatar-area d-flex align-items-center gap-3 float-end">
+      <!-- <img loading="lazy" class="w-48-px h-48-px rounded-3 shadow-none" data-src="{{ community?.logoImg }}"
+    onerror="this.onerror=null;this.src='/assets/images/avtar/placeholder-user.png';" alt="avatar" /> -->
+      <!-- <button *ngIf="communityDetails.profileId !== +profileId"
+      class="btn btn-sm btn-success">
+      <fa-icon class="c-icon-color" [icon]="['fas', 'phone']" />
+      Request Call
+    </button> -->
+    </div>
+    <div *ngIf="communityDetails?.Email" class="d-flex mt-2">
+      <fa-icon [icon]="['fas', 'envelope']" class="eye-icon"></fa-icon>
+      <span class="ms-1">{{ communityDetails?.Email }}</span>
+    </div>
+    <div *ngIf="communityDetails?.MobileNo" class="d-flex mt-2">
+      <fa-icon [icon]="['fas', 'phone']" class="eye-icon"></fa-icon>
+      <span class="ms-1">{{ communityDetails?.MobileNo }}</span>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+      <div class="d-flex flex-row align-self-baseline label">
+        <fa-icon
+          [icon]="['fas', 'location-dot']"
+          class="eye-icon font-14-px"
+        ></fa-icon>
+        <span class="ms-1">{{ communityDetails?.address }}</span>
+      </div>
+    </div>
+    <div class="d-flex mt-2">
+      <fa-icon [icon]="['fas', 'globe']" class="eye-icon"></fa-icon>
+      <span class="ms-1"
+        >{{ communityDetails?.Country }},{{ communityDetails?.State }},{{
+          communityDetails?.County
+        }},{{ communityDetails?.City }}</span
+      >
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="activeCommunityTab === 1">
   <ng-container
     *ngIf="
       (!communitySlug || communityDetails?.memberIds?.includes(+profileId)) &&
@@ -129,29 +181,76 @@
       />
 
       <!-- placeholder="Write something to post.." -->
-      <div class="w-100 position-relative">
-        <div class="d-flex align-items-center">
+      <div class="w-100">
+        <div class="d-flex align-items-center home-input">
           <app-tag-user-input
             placeholder="Post a link or image or file or let's just talk!"
             [value]="postMessageInputValue"
             [isShowMetaLoader]="true"
+            [isCopyImagePreview]="false"
             [isShowEmojis]="true"
             (onDataChange)="onTagUserInputChangeEvent($event)"
           />
           <button
-          class="d-sm-none btn btn-sm cmn-btn px-3 py-1 d-flex justify-content-center align-items-center gap-2 float-end ms-1 h-40-px"
-          [disabled]="
-            !(postData?.postdescription || postData?.file?.name) ||
-            buttonClicked
-          "
-          (click)="uploadPostFileAndCreatePost()"
-        >
-          <!-- {{ postData?.id ? "Update Post" : "Post" }} -->
-  
-          <fa-icon class="c-icon-color" [icon]="['fas', 'paper-plane']" />
-        </button>
+            class="d-sm-none btn btn-sm btn-primary px-3 py-1 d-flex justify-content-center align-items-center gap-2 float-end ms-1 h-40-px"
+            [disabled]="
+              !(postData?.postdescription || postMediaData?.[0]?.file?.name) ||
+              buttonClicked
+            "
+            (click)="uploadPostFileAndCreatePost()"
+          >
+            <!-- {{ postData?.id ? "Update Post" : "Post" }} -->
+
+            <fa-icon class="c-icon-color" [icon]="['fas', 'paper-plane']" />
+          </button>
         </div>
-        <ng-container *ngIf="postData?.imageUrl">
+        <ng-container *ngIf="postMediaData[0]">
+          <!-- <ngb-carousel [showNavigationIndicators]="false" [interval]="0"> -->
+          <ngb-carousel
+            [showNavigationIndicators]="false"
+            [interval]="0"
+            [showNavigationArrows]="postMediaData.length > 1"
+          >
+            <ng-container *ngFor="let media of postMediaData; let i = index">
+              <ng-template ngbSlide>
+                <div class="d-flex select-media-post align-items-center">
+                  <ng-container *ngIf="media?.imageUrl">
+                    <div class="position-relative mt-5">
+                      <app-img-preview
+                        [src]="media?.imageUrl"
+                        classes="w-300-px h-300-px"
+                      ></app-img-preview>
+                      <fa-icon
+                        [icon]="['fas', 'xmark']"
+                        class="position-absolute top-0 start-100 translate-middle badge bg-danger p-1 font-12-px c-pointer c-icon-color"
+                        role="button"
+                        (click)="removePostSelectedFile(i)"
+                      />
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="media?.pdfName">
+                    <div class="position-relative mt-5">
+                      <fa-icon
+                        [icon]="['fas', 'file-pdf']"
+                        class="c-pointer close-icon font-40-px"
+                      />
+                      <span class="c-pdf-show">{{
+                        media?.pdfName?.replaceAll("%", " ")
+                      }}</span>
+                      <fa-icon
+                        [icon]="['fas', 'xmark']"
+                        class="position-absolute top-0 translate-middle badge bg-danger p-1 font-12-px c-pointer c-icon-color"
+                        role="button"
+                        (click)="removePostSelectedFile(i)"
+                      />
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-template>
+            </ng-container>
+          </ngb-carousel>
+        </ng-container>
+        <!-- <ng-container *ngIf="postData?.imageUrl">
           <div class="position-relative w-100-px h-100-px mt-5">
             <img
               loading="lazy"
@@ -182,7 +281,7 @@
               (click)="removePostSelectedFile()"
             />
           </div>
-        </ng-container>
+        </ng-container> -->
 
         <ul
           class="d-flex justify-content-between justify-content-lg-between flex-wrap ps-0 mb-0 gap-1 gap-sm-5 pt-3 pt-sm-5"
@@ -205,23 +304,25 @@
           <li
             class="d-flex align-items-center gap-2 pointer-events"
             cursor
-            (click)="postImage.click()"
+            (click)="openAlertMessageImg(postImage)"
           >
-            <input
-              type="file"
-              #postImage
-              hidden
-              class="d-none"
-              accept="image/*"
-              (change)="onPostFileSelect($event)"
-              [disabled]="postData?.meta?.metaimage"
-            />
+            <!-- (click)="postImage.click()" -->
             <fa-icon [icon]="['fas', 'image']" class="font-20-px" />
             <span>Image</span>
           </li>
+          <input
+            type="file"
+            #postImage
+            hidden
+            multiple
+            class="d-none"
+            accept="image/*"
+            (change)="onPostFileSelect($event)"
+            [disabled]="postData?.meta?.metaimage"
+          />
           <li class="d-flex gap-2 align-items-center" (click)="pdfFile.click()">
             <!-- ngbTooltip="Comming Soon!"
-            placement="bottom" -->
+              placement="bottom" -->
             <input
               type="file"
               #pdfFile
@@ -258,7 +359,7 @@
               class="btn btn-sm btn-secondary px-3 py-1 d-flex justify-content-center align-items-center gap-2"
               *ngIf="
                 postData?.postdescription ||
-                postData?.file?.name ||
+                postMediaData?.[0] ||
                 postData.imageUrl
               "
               (click)="resetPost()"
@@ -270,12 +371,12 @@
             <button
               class="btn btn-sm cmn-btn px-3 py-1 d-flex justify-content-center align-items-center gap-2 float-end"
               [disabled]="
-                !(postData?.postdescription || postData?.file?.name) ||
+                !(postData?.postdescription || postMediaData?.[0]) ||
                 buttonClicked
               "
               (click)="uploadPostFileAndCreatePost()"
             >
-            {{ "Post" }}
+              {{ "Post" }}
 
               <fa-icon class="c-icon-color" [icon]="['fas', 'paper-plane']" />
             </button>
@@ -447,24 +548,21 @@
         Delete {{ communityDetails?.pageType }}
       </button>
     </ng-container>
-    <ng-container *ngIf="communityDetails?.profileId !== +profileId && communityDetails?.memberIds.includes(+profileId)">
+    <ng-container
+      *ngIf="
+        communityDetails?.profileId !== +profileId &&
+        communityDetails?.memberIds.includes(+profileId)
+      "
+    >
       <button
         class="btn btn-sm btn-danger w-152-px float-end"
         (click)="removeFromCommunity()"
       >
-        Leave {{ communityDetails?.pageType === "community"
-        ? "Occult-Topic"
-        : "page" }}
+        Leave
+        {{
+          communityDetails?.pageType === "community" ? "Occult-Topic" : "page"
+        }}
       </button>
     </ng-container>
   </div>
 </ng-container>
-
-<ng-template #emojiMenu>
-  <emoji-mart
-    class="emoji-mart"
-    (emojiSelect)="addEmoji($event)"
-    title="Pick your emoji…"
-    set="google"
-  ></emoji-mart>
-</ng-template>

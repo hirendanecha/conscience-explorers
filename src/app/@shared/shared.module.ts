@@ -113,7 +113,9 @@ import {
   faPhoneVolume,
   faVoicemail,
   faCircleChevronUp,
-  faCircleChevronDown
+  faCircleChevronDown,
+  faSignIn,
+  faSignOut
 } from '@fortawesome/free-solid-svg-icons';
 import { ClaimTokenModalComponent } from './modals/clai-1776-token-modal/claim-token-modal.component';
 import { WalletLinkComponent } from './modals/wallet-download-modal/1776-wallet.component';
@@ -153,6 +155,8 @@ import { IncomingcallModalComponent } from './modals/incoming-call-modal/incomin
 import { GalleryImgPreviewComponent } from './components/gallery-img-preview/gallery-img-preview.component';
 import { MasterLoaModalComponent } from './modals/master-loa-modal/master-loa-modal.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { ImgLayoutComponent } from './components/img-layout/img-layout.component';
+import { HoverDropdownDirective } from './directives/hover-dropdown.directive';
 
 const sharedComponents = [
   ConfirmationModalComponent,
@@ -193,7 +197,9 @@ const sharedComponents = [
   AppointmentCallComponent,
   ConferenceLinkComponent,
   AppointmentModalComponent,
-  OpenStripeComponent
+  OpenStripeComponent,
+  ImgLayoutComponent,
+  HoverDropdownDirective
 ];
 
 const sharedModules = [
@@ -330,7 +336,9 @@ export class SharedModule {
       faVoicemail,
       faPhoneVolume,
       faCircleChevronUp,
-      faCircleChevronDown
+      faCircleChevronDown,
+      faSignIn,
+      faSignOut
     );
   }
 }

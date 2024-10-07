@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CustomerService } from './customer.service';
-import { PostService } from './post.service';
 import { CommunityService } from './community.service';
+import { PostService } from './post.service';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,19 +15,22 @@ export class SharedService {
   userData: any = {};
   notificationList: any = [];
   isNotify = false;
-  linkMetaData: {}
-  advertizementLink: any = []
+  linkMetaData: {};
+  advertizementLink: any = [];
   onlineUserList: any = [];
-  private isRoomCreatedSubject: BehaviorSubject<boolean> =
-  new BehaviorSubject<boolean>(false);
 
+  private isRoomCreatedSubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  loginUserInfo = new BehaviorSubject<any>(null);
+  loggedInUser$ = this.loginUserInfo.asObservable();
+  callId: string;
   constructor(
     public modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private customerService: CustomerService,
-    private route: ActivatedRoute,
     private communityService: CommunityService,
-    private postService: PostService
+    private postService: PostService,
+    private route: ActivatedRoute
   ) {
     this.route.paramMap.subscribe((paramMap) => {
       const name = paramMap.get('name');
@@ -44,14 +47,14 @@ export class SharedService {
 
   changeDarkUi() {
     this.isDark = true;
-    document.body.classList.remove('dark-ui');
+    document?.body.classList.remove('dark-ui');
     // document.body.classList.add('dark-ui');
     localStorage.setItem('theme', 'dark');
   }
 
   changeLightUi() {
     this.isDark = false;
-    document.body.classList.add('dark-ui');
+    document?.body.classList.add('dark-ui');
     // document.body.classList.remove('dark-ui');
     localStorage.setItem('theme', 'light');
   }
@@ -67,27 +70,21 @@ export class SharedService {
   getUserDetails() {
     const profileId = localStorage.getItem('profileId');
     if (profileId) {
-      // const localUserData = JSON.parse(localStorage.getItem('userData'));
-      // if (localUserData?.ID) {
-      //   this.userData = localUserData;
-      // }
-
       this.spinner.show();
-
-      this.customerService.getProfile(profileId).subscribe({
+      this.customerService.getProfile(+profileId).subscribe({
         next: (res: any) => {
           this.spinner.hide();
           const data = res?.data?.[0];
-
           if (data) {
             this.userData = data;
             localStorage.setItem('userData', JSON.stringify(this.userData));
+            this.getLoginUserDetails(data);
           }
         },
         error: (error) => {
           this.spinner.hide();
           console.log(error);
-        }
+        },
       });
     }
   }
@@ -105,7 +102,11 @@ export class SharedService {
     this.customerService.getNotificationList(Number(id), data).subscribe({
       next: (res: any) => {
         this.isNotify = false;
-        this.notificationList = res?.data;
+        this.notificationList = res.data.filter((ele) => {
+          ele.notificationToProfileId === id;
+          return ele;
+        });
+        // this.notificationList = res?.data;
       },
       error: (error) => {
         console.log(error);
@@ -158,11 +159,32 @@ export class SharedService {
       },
     });
   }
+
   updateIsRoomCreated(value: boolean): void {
     this.isRoomCreatedSubject.next(value);
   }
 
+  // Method to get an Observable that emits isRoomCreated changes
   getIsRoomCreatedObservable(): Observable<boolean> {
     return this.isRoomCreatedSubject.asObservable();
+  }
+
+  getLoginUserDetails(userData: any = {}) {
+    this.loginUserInfo.next(userData);
+  }
+
+  generateSessionKey(): void {
+    const sessionKey =
+      Math.random().toString(36).substring(2) + Date.now().toString(36);
+    sessionStorage.setItem('uniqueSessionKey', sessionKey);
+  }
+
+  isCorrectBrowserSession(): boolean {
+    const sessionKey = sessionStorage.getItem('uniqueSessionKey');
+    if (sessionKey) {
+      sessionStorage.removeItem('uniqueSessionKey');
+      return true;
+    }
+    return false;
   }
 }

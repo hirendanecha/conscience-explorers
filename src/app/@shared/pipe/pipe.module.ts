@@ -1,28 +1,16 @@
-// import { CommonModule } from '@angular/common';
-// import { GetImageUrlPipe } from './get-image-url.pipe';
-// import { CommaSeperatePipe } from './comma-seperate.pipe';
-// import { DateDayPipe } from './date-day.pipe';
-// import { NoSanitizePipe } from './sanitize.pipe';
-// import { MessageTimePipe } from './message-time.pipe';
-// import { MessageDatePipe } from './message-date.pipe';
-// // import { SearchFilterPipe } from './search-filter.pipe';
-// import { HighlightPipe } from './hightlight-text.pipe';
-// import { RandomAdvertisementUrlPipe } from './random-advertisement.pipe';
-// import { NgModule } from "@angular/core";
-// import { SafePipe } from "./safe.pipe";
-
-import { NgModule } from "@angular/core";
-import { SafePipe } from "./safe.pipe";
-import { GetImageUrlPipe } from "./get-image-url.pipe";
-import { CommaSeperatePipe } from "./comma-seperate.pipe";
-import { DateDayPipe } from "./date-day.pipe";
-import { NoSanitizePipe } from "./sanitize.pipe";
-import { MessageTimePipe } from "./message-time.pipe";
-import { MessageDatePipe } from "./message-date.pipe";
-import { HighlightPipe } from "./hightlight-text.pipe";
-import { RandomAdvertisementUrlPipe } from "./random-advertisement.pipe";
-import { CommonModule } from "@angular/common";
-import { SearchFilterPipe } from "./search-filter.pipe";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SafePipe } from './safe.pipe';
+import { GetImageUrlPipe } from './get-image-url.pipe';
+import { CommaSeperatePipe } from './comma-seperate.pipe';
+import { DateDayPipe } from './date-day.pipe';
+import { NoSanitizePipe } from './sanitize.pipe';
+import { MessageDatePipe } from './message-date.pipe';
+import { MessageTimePipe } from './message-time.pipe';
+import { HighlightPipe } from './hightlight-text.pipe';
+import { RandomAdvertisementUrlPipe } from './random-advertisement.pipe';
+import { SearchFilterPipe } from './search-filter.pipe';
+import { StripHtmlPipe, TruncatePipe } from './post-description.pipe';
 
 @NgModule({
   declarations: [
@@ -31,23 +19,28 @@ import { SearchFilterPipe } from "./search-filter.pipe";
     CommaSeperatePipe,
     DateDayPipe,
     NoSanitizePipe,
-    MessageTimePipe,
     MessageDatePipe,
-    SearchFilterPipe,
+    MessageTimePipe,
     HighlightPipe,
-    RandomAdvertisementUrlPipe
+    RandomAdvertisementUrlPipe,
+    SearchFilterPipe,
+    TruncatePipe,
+    StripHtmlPipe,
   ],
   imports: [CommonModule],
-  exports: [ SafePipe,
+  exports: [
+    SafePipe,
     GetImageUrlPipe,
     CommaSeperatePipe,
     DateDayPipe,
     NoSanitizePipe,
-    MessageTimePipe,
     MessageDatePipe,
-    SearchFilterPipe,
+    MessageTimePipe,
     HighlightPipe,
-    RandomAdvertisementUrlPipe
+    RandomAdvertisementUrlPipe,
+    SearchFilterPipe,
+    TruncatePipe,
+    StripHtmlPipe,
   ],
 })
-export class PipeModule { }
+export class PipeModule {}

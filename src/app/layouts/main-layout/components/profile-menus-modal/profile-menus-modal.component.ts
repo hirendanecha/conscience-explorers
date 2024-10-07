@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbActiveModal, NgbActiveOffcanvas, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbActiveModal,
+  NgbActiveOffcanvas,
+  NgbModal,
+} from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { SharedService } from 'src/app/@shared/services/shared.service';
-import { SocketService } from 'src/app/@shared/services/socket.service';
 import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
 import { ForgotPasswordComponent } from 'src/app/layouts/auth-layout/pages/forgot-password/forgot-password.component';
@@ -12,11 +15,11 @@ import { ForgotPasswordComponent } from 'src/app/layouts/auth-layout/pages/forgo
 @Component({
   selector: 'app-profile-menus-modal',
   templateUrl: './profile-menus-modal.component.html',
-  styleUrls: ['./profile-menus-modal.component.scss']
+  styleUrls: ['./profile-menus-modal.component.scss'],
 })
 export class ProfileMenusModalComponent {
   profileId: number;
-  userId: number
+  userId: number;
 
   constructor(
     public sharedService: SharedService,
@@ -27,11 +30,12 @@ export class ProfileMenusModalComponent {
     private tokenStorageService: TokenStorageService,
     private router: Router,
     private customerService: CustomerService,
-    private cookieService: CookieService,
-    private socketService: SocketService
+    private cookieService: CookieService
   ) {
-    this.userId = +localStorage.getItem('user_id');
-    this.profileId = +localStorage.getItem('profileId');
+    this.sharedService.loggedInUser$.subscribe((user) => {
+      this.userId = user.UserID;
+      this.profileId = user.profileId;
+    });
   }
 
   closeMenu(e: MouseEvent, type: string) {
@@ -47,7 +51,7 @@ export class ProfileMenusModalComponent {
           break;
         case 'setting':
           this.goToSetting();
-            break;
+          break;
         case 'change-password':
           this.forgotPasswordOpen();
           break;
@@ -62,20 +66,11 @@ export class ProfileMenusModalComponent {
 
   logout(): void {
     // this.isCollapsed = true;
-    this.socketService?.socket?.emit('offline', (data) => { return })
-    this.socketService?.socket?.on('get-users', (data) => {
-      data.map(ele => {
-        if (!this.sharedService.onlineUserList.includes(ele.userId)) {
-          this.sharedService.onlineUserList.push(ele.userId)
-        }
-      })
-      // this.onlineUserList = data;
-    })
     this.customerService.logout().subscribe({
-      next: (res => {
+      next: (res) => {
         this.tokenStorageService.signOut();
-        return;
-      })
+        console.log(res);
+      },
     });
     // this.toastService.success('Logout successfully');
     // this.router.navigate(['/auth']);

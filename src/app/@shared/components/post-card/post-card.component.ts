@@ -30,7 +30,6 @@ import { BreakpointService } from '../../services/breakpoint.service';
 import { EditResearchModalComponent } from '../../modals/edit-research-modal/edit-research-modal.component';
 import { SharePostModalComponent } from '../../modals/share-post-modal/share-post-modal.component';
 import { EmojiPaths } from '../../constant/emoji';
-// import { EmojiPaths } from '../../constant/emoji';
 
 declare var jwplayer: any;
 @Component({
@@ -84,7 +83,9 @@ export class PostCardComponent implements OnInit {
   shareButton = false;
   isViewProfile = false;
   emojiPaths = EmojiPaths;
-
+  parentReplayComment: boolean = false;
+  commentparentReplayId = null;
+  showFullDesc: boolean = false;
   constructor(
     private seeFirstUserService: SeeFirstUserService,
     private unsubscribeProfileService: UnsubscribeProfileService,
@@ -100,12 +101,14 @@ export class PostCardComponent implements OnInit {
     public tokenService: TokenStorageService,
     private seoService: SeoService,
     public breakpointService: BreakpointService,
-    public activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal
   ) {
     this.profileId = localStorage.getItem('profileId');
     afterNextRender(() => {
-
-      if (this.post?.id && this.post?.posttype === 'V' || this.post?.posttype === 'R') {
+      if (
+        (this.post?.id && this.post?.posttype === 'V') ||
+        this.post?.posttype === 'R'
+      ) {
         this.playVideo(this.post?.id);
       }
       this.socketListner();
@@ -219,19 +222,21 @@ export class PostCardComponent implements OnInit {
       });
   }
 
-  selectMessaging(data){
+  selectMessaging(data) {
     const userData = {
       Id: data.profileid,
       ProfilePicName: data.ProfilePicName,
-      Username: data.Username
-    }
+      Username: data.Username,
+    };
     // this.router.navigate(['/profile-chats'], {
     //   state: { chatUserData: userData}
     // });
     const encodedUserData = encodeURIComponent(JSON.stringify(userData));
-    const url = this.router.createUrlTree(['/profile-chats'], {
-      queryParams: { chatUserData: encodedUserData }
-    }).toString();
+    const url = this.router
+      .createUrlTree(['/profile-chats'], {
+        queryParams: { chatUserData: encodedUserData },
+      })
+      .toString();
     window.open(url, '_blank');
   }
   goToViewProfile(id: any): void {
@@ -264,7 +269,6 @@ export class PostCardComponent implements OnInit {
     if (comment) {
       const modalRef = this.modalService.open(ReplyCommentModalComponent, {
         centered: true,
-
       });
       modalRef.componentInstance.title = 'Edit Comment';
       modalRef.componentInstance.confirmButtonLabel = 'Comment';
@@ -435,11 +439,20 @@ export class PostCardComponent implements OnInit {
     });
   }
 
-  showReplySection(id) {
-    this.isReply = this.commentId == id ? false : true;
-    this.commentId = id;
-    if (!this.isReply) {
-      this.commentId = null;
+  showReplySection(commentType, comment) {
+    if (commentType === 'reply') {
+      this.isReply = this.commentId == comment.id ? false : true;
+      this.commentId = comment.id;
+      if (!this.isReply) {
+        this.commentId = null;
+      }
+    } else if (commentType === 'parentReplay') {
+      this.parentReplayComment =
+        this.commentparentReplayId == comment.id ? false : true;
+      this.commentparentReplayId = comment.id;
+      if (!this.parentReplayComment) {
+        this.commentparentReplayId = null;
+      }
     }
   }
 
@@ -543,6 +556,7 @@ export class PostCardComponent implements OnInit {
       }, 100);
       this.commentData = {};
       this.isReply = false;
+      this.parentReplayComment = false;
       this.viewComments(this.post?.id);
     }
     //  else {
@@ -581,16 +595,17 @@ export class PostCardComponent implements OnInit {
     this.commentData['imageUrl'] = '';
   }
 
-  playVideo(id: any) {
+  async playVideo(id: any) {
     if (this.player) {
       this.player.remove();
     }
+
     const config = {
       file: this.post?.streamname,
       image: this.post?.thumbfilename,
       mute: false,
       autostart: false,
-      volume: 30,
+      volume: 80,
       height: '300px',
       width: 'auto',
       pipIcon: 'disabled',
@@ -602,14 +617,26 @@ export class PostCardComponent implements OnInit {
       },
       controls: true,
     };
-    if (id) {
-      const jwPlayer = jwplayer('jwVideo-' + id);
-      if (jwPlayer) {
-        this.player = jwPlayer?.setup({
-          ...config,
-        });
-        this.player?.load();
+    const elementId = 'jwVideo-' + id;
+    const videoElement = document.getElementById(elementId);
+
+    if (!videoElement) {
+      console.error(`Element with id ${elementId} not found in the DOM`);
+      return;
+    }
+
+    try {
+      const jwPlayerInstance = jwplayer(elementId);
+      if (jwPlayerInstance && typeof jwPlayerInstance.setup === 'function') {
+        this.player = jwPlayerInstance.setup(config);
+        this.player.load();
+      } else {
+        console.error(
+          'jwplayer instance is not initialized or setup is not a function.'
+        );
       }
+    } catch (error) {
+      console.error('Error initializing JW Player:', error);
     }
   }
 
@@ -735,18 +762,9 @@ export class PostCardComponent implements OnInit {
     return null;
   }
 
-  selectedEmoji(emoji) {
-    this.commentMessageInputValue =
-      this.commentMessageInputValue +
-      `<img src=${emoji} width="60" height="60">`;
-
-    // if (this.commentMessageInputValue) {
-    //   this.commentMessageInputValue =
-    //     this.commentMessageInputValue +
-    //     `<img src=${emoji} width="60" height="60">`;
-    // } else {
-    //   this.commentMessageInputValue = `<img src=${emoji} width="60" height="60">`;
-    // }
+  selectedEmoji(emoji, post) {
+    this.commentData.comment = `<img src=${emoji} width="50" height="50">`;
+    this.commentOnPost(post);
   }
 
   extractLargeImageFromContent(content: string, postId): void {
@@ -758,9 +776,9 @@ export class PostCardComponent implements OnInit {
       const imgTitle = imgTag.getAttribute('title');
       const imgStyle = imgTag.getAttribute('style');
       const imageGif = imgTag
-      .getAttribute('src')
-      .toLowerCase()
-      .endsWith('.gif');
+        .getAttribute('src')
+        .toLowerCase()
+        .endsWith('.gif');
       if (!imgTitle && !imgStyle && !imageGif) {
         this.focusTagInput(postId);
         const copyImage = imgTag.getAttribute('src');
@@ -768,8 +786,11 @@ export class PostCardComponent implements OnInit {
         const megabytes = bytes / (1024 * 1024);
         if (megabytes > 1) {
           // this.commentData.comment = content.replace(copyImage, '');
-          let copyImageTag = '<img\\s*src\\s*=\\s*""\\s*alt\\s*="">'
-          this.commentData.comment = `<div>${content.replace(copyImage, '').replace(/\<br\>/ig, '').replace(new RegExp(copyImageTag, 'g'), '')}</div>`;
+          let copyImageTag = '<img\\s*src\\s*=\\s*""\\s*alt\\s*="">';
+          this.commentData.comment = `<div>${content
+            .replace(copyImage, '')
+            .replace(/\<br\>/gi, '')
+            .replace(new RegExp(copyImageTag, 'g'), '')}</div>`;
           const base64Image = copyImage
             .trim()
             .replace(/^data:image\/\w+;base64,/, '');
@@ -798,14 +819,34 @@ export class PostCardComponent implements OnInit {
   }
 
   focusTagInput(postId: number) {
-    const tagUserInput = document.querySelector(`#replaycomment-${postId} .tag-input-div`) as HTMLInputElement || document.querySelector(`#comment-${postId} .tag-input-div`) as HTMLInputElement
+    const tagUserInput =
+      (document.querySelector(
+        `#replaycomment-${postId} .tag-input-div`
+      ) as HTMLInputElement) ||
+      (document.querySelector(
+        `#comment-${postId} .tag-input-div`
+      ) as HTMLInputElement);
     if (tagUserInput) {
       tagUserInput.focus();
       if (tagUserInput.innerHTML.length) {
         setTimeout(() => {
-          tagUserInput.innerHTML = tagUserInput.innerHTML.slice(0, -1);
+          tagUserInput.innerText = tagUserInput.innerText + ' '.slice(0, -1);
+          const range = document.createRange();
+          const selection = window.getSelection();
+          if (selection) {
+            range.selectNodeContents(tagUserInput);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
         }, 100);
       }
     }
+  }
+
+  showFullDescription() {
+    console.log(this.post.postdescription?.length);
+
+    this.showFullDesc = !this.showFullDesc;
   }
 }
