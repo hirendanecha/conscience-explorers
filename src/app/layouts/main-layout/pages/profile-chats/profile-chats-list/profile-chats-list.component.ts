@@ -156,12 +156,12 @@ export class ProfileChatsListComponent
     // this.qrLink = `${environment.qrLink}${this.profileId}?token=${authToken}`;
 
     const data = {
-      title: 'Buzz Chat',
+      title: 'ConscienceExplorers.com Chat',
       url: `${location.href}`,
       description: '',
     };
     this.seoService.updateSeoMetaData(data);
-    this.isOnCall = this.router.url.includes('/buzz-call/') || false;
+    this.isOnCall = this.router.url.includes('/facetime/') || false;
   }
   ngAfterViewInit(): void {
     if (this.callRoomId && !this.sidebarClass) {
@@ -1078,14 +1078,14 @@ export class ProfileChatsListComponent
           this.groupData?.groupName || this.sharedService?.userData?.Username,
         actionType: 'VC',
         notificationByProfileId: this.profileId,
-        link: `${this.webUrl}buzz-call/${originUrl}`,
+        link: `${this.webUrl}facetime/${originUrl}`,
         roomId: this.userChat?.roomId || null,
         groupId: this.userChat?.groupId || null,
         notificationDesc:
           this.groupData?.groupName ||
           this.sharedService?.userData?.Username + ' incoming call...',
         notificationToProfileId: this.userChat.profileId,
-        domain: 'christian.team',
+        domain: 'conscienceexplorers.com',
         uuId: uuId,
       };
       this.customerService.startCallToBuzzRing(buzzRingData).subscribe({
@@ -1106,14 +1106,14 @@ export class ProfileChatsListComponent
           this.groupData?.groupName || this.sharedService?.userData?.Username,
         actionType: 'VC',
         notificationByProfileId: this.profileId,
-        link: `${this.webUrl}buzz-call/${originUrl}`,
+        link: `${this.webUrl}facetime/${originUrl}`,
         roomId: this.userChat?.roomId || null,
         groupId: this.userChat?.groupId || null,
         notificationDesc:
           this.groupData?.groupName ||
           this.sharedService?.userData?.Username + ' incoming call...',
         notificationToProfileIds: groupMembers,
-        domain: 'christian.team',
+        domain: 'conscienceexplorers.com',
         uuId: uuId,
       };
       this.customerService
@@ -1151,7 +1151,7 @@ export class ProfileChatsListComponent
               this.groupData?.groupName ||
               this?.userChat.Username + 'incoming call...',
             notificationToProfileId: this.userChat.profileId,
-            domain: 'christian.team',
+            domain: 'conscienceexplorers.com',
             uuId: uuId,
           };
           this.customerService.startCallToBuzzRing(buzzRingData).subscribe({

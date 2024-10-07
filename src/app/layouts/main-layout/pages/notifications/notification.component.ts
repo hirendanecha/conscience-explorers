@@ -15,7 +15,7 @@ export class NotificationsComponent {
   notificationList: any[] = [];
   activePage = 1;
   hasMoreData = false;
-
+  
   constructor(
     private customerService: CustomerService,
     private spinner: NgxSpinnerService,
@@ -26,9 +26,9 @@ export class NotificationsComponent {
   ) 
   {  const data = {
     title: 'ConscienceExplorers.com Notification',
-    url: `${location.href}`,
-    description: '',
-  };
+      url: `${location.href}`,
+      description: '',
+    };
     this.seoService.updateSeoMetaData(data);
     const profileId = +localStorage.getItem('profileId');
     this.socketService.readNotification({ profileId }, (data) => {});
@@ -70,19 +70,26 @@ export class NotificationsComponent {
         this.toastService.success(
           res.message || 'Notification delete successfully'
         );
-        this.notificationList = [];
-        this.getNotificationList();
+        this.notificationList = this.notificationList.filter(
+          (notification) => notification.id !== id
+        );
+        if (this.notificationList.length <= 6 && this.hasMoreData) {
+          this.notificationList = [];
+          this.loadMoreNotification();
+        }
       },
     });
   }
 
   readUnreadNotification(notification, isRead): void {
-    this.customerService.readUnreadNotification(notification.id, isRead).subscribe({
-      next: (res) => {
-        notification.isRead = isRead;
-        this.toastService.success(res.message);
-      },
-    });
+    this.customerService
+      .readUnreadNotification(notification.id, isRead)
+      .subscribe({
+        next: (res) => {
+          this.toastService.success(res.message);
+          notification.isRead = isRead;
+        },
+      });
   }
   loadMoreNotification(): void {
     this.activePage = this.activePage + 1;

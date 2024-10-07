@@ -58,7 +58,7 @@ export class AppointmentCallComponent implements OnInit {
       };
     }
     const appointmentURLCall =
-      this.route.snapshot['_routerState'].url.split('/buzz-call/')[1];
+      this.route.snapshot['_routerState'].url.split('/facetime/')[1];
     this.options = {
       roomName: appointmentURLCall,
       parentNode: document.querySelector('#meet'),
