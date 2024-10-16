@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'view-profile/:id',
-    component: ViewProfileComponent,    
+    component: ViewProfileComponent,
   },
   {
     path: 'delete-profile',

@@ -4,7 +4,7 @@
     'mh-100 vh-100': (breakpointService?.screen | async).lg.lessThen
   }"
 >
-  <ng-container *ngIf="tokenService.getToken()">
+  <ng-container *ngIf="tokenService.getCredentials()">
     <div class="profile-pic d-flex gap-2" routerLink="/home">
       <div class="position-relative">
         <img
@@ -237,7 +237,17 @@
                 <span>Unsubscribed Users</span>
               </a>
             </li>
-
+            <li>
+              <a
+                routerLink="/report-bugs"
+                routerLinkActive="active"
+                class="d-flex gap-4"
+                (click)="closeSidebar()"
+              >
+                <fa-icon [icon]="['fas', 'ticket-alt']" class="font-24-px" />
+                <span>Support Ticket page</span>
+              </a>
+            </li>
             <!-- <li>
               <a
                 routerLink="/settings/delete-profile"

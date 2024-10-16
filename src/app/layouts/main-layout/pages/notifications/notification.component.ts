@@ -15,7 +15,6 @@ export class NotificationsComponent {
   notificationList: any[] = [];
   activePage = 1;
   hasMoreData = false;
-  
   constructor(
     private customerService: CustomerService,
     private spinner: NgxSpinnerService,
@@ -23,9 +22,9 @@ export class NotificationsComponent {
     private toastService: ToastService,
     private seoService: SeoService,
     private socketService: SocketService
-  ) 
-  {  const data = {
-    title: 'ConscienceExplorers.com Notification',
+  ) {
+    const data = {
+      title: 'ConscienceExplorers.com Notification',
       url: `${location.href}`,
       description: '',
     };

@@ -1,14 +1,16 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Customer } from 'src/app/@shared/constant/customer';
+import { ConfirmationModalComponent } from 'src/app/@shared/modals/confirmation-modal/confirmation-modal.component';
 import { BreakpointService } from 'src/app/@shared/services/breakpoint.service';
 import { CommunityService } from 'src/app/@shared/services/community.service';
 import { CustomerService } from 'src/app/@shared/services/customer.service';
 import { PostService } from 'src/app/@shared/services/post.service';
 import { SeoService } from 'src/app/@shared/services/seo.service';
 import { SharedService } from 'src/app/@shared/services/shared.service';
+import { ToastService } from 'src/app/@shared/services/toast.service';
 import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
 import { environment } from 'src/environments/environment';
 
@@ -19,7 +21,6 @@ import { environment } from 'src/environments/environment';
 })
 export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   customer: any = {};
-  // customer: Customer = new Customer();
   customerPostList: any = [];
   userId = '';
   profilePic: any = {};
@@ -31,8 +32,11 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   isExpand = false;
   pdfList: any = [];
   exisingReality: any = [];
+  searchText: string = '';
+  hasShownWarning: boolean = false;
   constructor(
     private modalService: NgbActiveModal,
+    private modal: NgbModal,
     private router: Router,
     private customerService: CustomerService,
     private spinner: NgxSpinnerService,
@@ -42,24 +46,27 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     public breakpointService: BreakpointService,
     private postService: PostService,
     private seoService: SeoService,
+    private toastService: ToastService
   ) {
     this.router.events.subscribe((event: any) => {
-      const id = event?.routerEvent?.url.split('/')[3];
-      this.profileId = id
-      if (id) {
-        this.getProfile(id);
+      if (event?.routerEvent?.url.includes('/settings/view-profile')) {
+        const id = event?.routerEvent?.url.split('/')[3];
+        this.profileId = id;
+        if (id) {
+          this.getProfile(id);
+        }
       }
       this.profileId = +localStorage.getItem('profileId');
     });
   }
-  
+
   ngOnInit(): void {
     if (!this.tokenStorage.getToken()) {
       this.router.navigate([`/login`]);
     }
     this.modalService.close();
   }
-  
+
 
   ngAfterViewInit(): void { }
 
@@ -73,7 +80,7 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
           this.userId = res.data[0]?.UserID;
           const data = {
             title: this.customer?.Username,
-            url: `${environment.webUrl}settings/view-profile/${this.customer?.Id}`,
+            url: `${environment.webUrl}settings/view-profile/${this.customer?.profileId}`,
             description: '',
             image: this.customer?.ProfilePicName,
           };
@@ -142,24 +149,21 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getPdfs(): void {
-    this.postService.getPdfsFile(this.customer.profileId).subscribe(
-      {
-        next: (res: any) => {
-          this.spinner.hide();
-          if (res) {
-            res.map((e: any) => {
-              e.pdfName = e.pdfUrl.split('/')[3].replaceAll('%', ' ')
-            })
-            this.pdfList = res;
-            console.log(this.pdfList);
-          }
-        },
-        error:
-          (error) => {
-            this.spinner.hide();
-            console.log(error);
-          }
-      });
+    this.postService.getPdfsFile(this.customer.profileId).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        if (res) {
+          res.map((e: any) => {
+            e.pdfName = e.pdfUrl.split('/')[3].replaceAll('%', ' ');
+          })
+          this.pdfList = res;
+        }
+      },
+      error: (error) => {
+        this.spinner.hide();
+        console.log(error);
+      }
+    });
   }
 
   viewUserPost(id) {
@@ -173,5 +177,47 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     // window.open(pdf);
     // pdfLink.download = "TestFile.pdf";
     pdfLink.click();
+  }
+
+  deletePost(postId): void {
+    const modalRef = this.modal.open(ConfirmationModalComponent, {
+      centered: true,
+      backdrop: 'static',
+    });
+    modalRef.componentInstance.title = 'Delete post';
+    modalRef.componentInstance.confirmButtonLabel = 'Delete';
+    modalRef.componentInstance.cancelButtonLabel = 'Cancel';
+    modalRef.componentInstance.message =
+      'Are you sure want to delete this post?';
+    modalRef.result.then((res) => {
+      if (res === 'success') {
+        this.postService.deletePost(postId).subscribe({
+          next: (res: any) => {
+            if (res) {
+              this.toastService.success('Post deleted successfully');
+              this.getPdfs();
+            }
+          },
+          error: (error) => {
+            console.log('error : ', error);
+          },
+        });
+      }
+    });
+  }
+
+  searchPosts(event): void {
+    if (event.target.value.length > 3) {
+      this.searchText = event.target.value;
+      console.log(this.searchText);
+      this.hasShownWarning = false;
+    } else if (!event.target.value.length) {
+      this.searchText = '';
+    } else {
+      if (!this.hasShownWarning) {
+        this.toastService.warring('Please enter at least 4 characters');
+        this.hasShownWarning = true;
+      }
+    }
   }
 }

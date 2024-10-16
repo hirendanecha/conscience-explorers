@@ -515,10 +515,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
               // this.getCommunityDetailsBySlug();
               this.router.navigate([
                 `${
-                  this.communityDetails.pageType === 'community'
-                    ? 'Visionaries'
-                    : 'Occult Topics'
-                }`,
+                  this.communityDetails.pageType === 'community' ? 'Visionaries' : 'Occult Topics'}`,
               ]);
             }
           },

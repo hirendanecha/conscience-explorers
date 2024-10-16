@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'truncate' })
+@Pipe({name: 'truncate'})
 export class TruncatePipe implements PipeTransform {
   transform(value: string, limit: number): string {
     if (limit === -1 || value.length <= limit) {
@@ -10,7 +10,7 @@ export class TruncatePipe implements PipeTransform {
   }
 }
 @Pipe({
-  name: 'stripHtml',
+  name: 'stripHtml'
 })
 export class StripHtmlPipe implements PipeTransform {
   transform(value: string): string {
@@ -22,14 +22,12 @@ export class StripHtmlPipe implements PipeTransform {
         const tagName = element.tagName.toLowerCase();
         if (tagName === 'a' && element.hasAttribute('data-id')) {
           return element.outerHTML;
-        }
-        const childContent = Array.from(element.childNodes)
-          .map(processNode)
-          .join('');
-        if (
-          element.childNodes.length === 1 &&
-          element.firstChild?.nodeType === Node.ELEMENT_NODE
-        ) {
+        } 
+        // else if (tagName === 'br') {
+        //   return '\n';
+        // }
+        const childContent = Array.from(element.childNodes).map(processNode).join('');
+        if (element.childNodes.length === 1 && element.firstChild?.nodeType === Node.ELEMENT_NODE) {
           const firstChildElement = element.firstChild as HTMLElement;
           if (firstChildElement.tagName.toLowerCase() === tagName) {
             return childContent;

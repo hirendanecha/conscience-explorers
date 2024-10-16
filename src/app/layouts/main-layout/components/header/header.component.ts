@@ -16,6 +16,7 @@ import { LeftSidebarComponent } from '../../components/left-sidebar/left-sidebar
 import { environment } from 'src/environments/environment';
 import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
 import { SocketService } from 'src/app/@shared/services/socket.service';
+import { UserGuideModalComponent } from 'src/app/@shared/modals/userguide-modal/userguide-modal.component';
 
 @Component({
   selector: 'app-header',
@@ -48,6 +49,7 @@ export class HeaderComponent {
   hideSubHeader: boolean = false;
   hideOngoingCallButton: boolean = false;
   authToken = localStorage.getItem('auth-token');
+  showUserGuideBtn: boolean = false;
   constructor(
     private modalService: NgbModal,
     public sharedService: SharedService,
@@ -77,6 +79,7 @@ export class HeaderComponent {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.hideSubHeader = this.router.url.includes('profile-chats');
+        this.showUserGuideBtn = this.router.url.includes('home');
         this.hideOngoingCallButton = this.router.url.includes('facetime');
         this.sharedService.callId = sessionStorage.getItem('callId') || null;
       }
@@ -179,10 +182,22 @@ export class HeaderComponent {
 
   redirectToTube(): void {
     const channelId = +localStorage.getItem('channelId');
+    let redirectUrl = `${environment.tubeUrl}`;
     if (channelId) {
-      window.open(`${environment.tubeUrl}?channelId=${channelId}`, '_blank');
-    } else {
-      window.open(`${environment.tubeUrl}`, '_blank');
+      redirectUrl += `?channelId=${channelId}`;
     }
+    if (this.authToken) {
+      redirectUrl += channelId
+        ? `&authToken=${this.authToken}`
+        : `?authToken=${this.authToken}`;
+    }
+    window.open(redirectUrl, '_blank');
+  }
+
+  openUserGuide(){
+    this.modalService.open(UserGuideModalComponent, {
+      centered: true,
+      size: 'lg',
+    });
   }
 }

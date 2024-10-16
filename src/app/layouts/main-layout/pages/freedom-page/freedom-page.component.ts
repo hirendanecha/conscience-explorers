@@ -29,7 +29,7 @@ export class FreedomPageComponent {
 
     this.getPages();
     const data = {
-      title: 'ConscienceExplorers.com Conscience Explorers Occult Topics',
+      title: 'ConscienceExplorers.com Occult Topics',
       url: `${location.href}`,
       description: '',
     };

@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, forkJoin, fromEvent } from 'rxjs';
@@ -41,11 +34,11 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
   originUrl = environment.webUrl + 'visionaries/';
   logoImg: any = {
     file: null,
-    url: '',
+    url: ''
   };
   coverImg: any = {
     file: null,
-    url: '',
+    url: ''
   };
   allCountryData: any;
   defaultCountry = 'US';
@@ -111,7 +104,6 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
       this.communityForm.get('State').enable();
       this.communityForm.get('City').enable();
       this.communityForm.get('County').enable();
-      console.log(this.data);
     }
   }
 
@@ -134,9 +126,7 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
     }
 
     if (this.coverImg?.file?.name) {
-      uploadObs['coverImg'] = this.uploadService.uploadFile(
-        this.coverImg?.file
-      );
+      uploadObs['coverImg'] = this.uploadService.uploadFile(this.coverImg?.file);
     }
 
     if (Object.keys(uploadObs)?.length > 0) {
@@ -147,15 +137,13 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
           if (res?.logoImg?.body?.url) {
             this.logoImg['file'] = null;
             this.logoImg['url'] = res?.logoImg?.body?.url;
-            this.communityForm.get('logoImg').setValue(res?.logoImg?.body?.url);
+            this.communityForm.get('logoImg').setValue(res?.logoImg?.body?.url)
           }
 
           if (res?.coverImg?.body?.url) {
             this.coverImg['file'] = null;
             this.coverImg['url'] = res?.coverImg?.body?.url;
-            this.communityForm
-              .get('coverImg')
-              .setValue(res?.coverImg?.body?.url);
+            this.communityForm.get('coverImg').setValue(res?.coverImg?.body?.url)
           }
 
           this.spinner.hide();
@@ -173,39 +161,36 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
   onSubmit() {
     if (!this.data.Id) {
       this.spinner.show();
-      const formData = this.communityForm.value;
-      // formData['emphasis'] = this.selectedValues;
-      // formData['areas'] = this.selectedAreaValues;
       if (this.communityForm.valid) {
-        this.communityService.createCommunity(formData).subscribe({
-          next: (res: any) => {
-            this.spinner.hide();
-            if (!res.error) {
-              this.submitted = true;
-              this.createCommunityAdmin(res.data);
+        this.communityService.createCommunity(this.communityForm.value).subscribe(
+          {
+            next: (res: any) => {
+              this.spinner.hide();
+              if (!res.error) {
+                this.submitted = true;
+                this.createCommunityAdmin(res.data);
               this.toastService.success(
                 'Your Visionaries will be approved within 24 hours!'
               );
-              this.activeModal.close('success');
+                this.activeModal.close('success');
               this.router.navigate(['/visionaries']);
-            }
-          },
+              }
+            },
           error: (err) => {
             this.toastService.danger(
               'Please change Visionaries. this Visionaries name already in use.'
             );
-            this.spinner.hide();
-          },
-        });
+                this.spinner.hide();
+           },
+          });
       } else {
         this.spinner.hide();
         this.toastService.danger('Please enter mandatory fields(*) data.');
       }
     }
     if (this.communityForm.valid && this.data.Id) {
-      this.communityService
-        .editCommunity(this.communityForm.value, this.data.Id)
-        .subscribe({
+      this.communityService.editCommunity(this.communityForm.value, this.data.Id).subscribe(
+        {
           next: (res: any) => {
             this.spinner.hide();
             if (!res.error) {
@@ -221,8 +206,8 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
             this.toastService.danger(
               'Please change Visionaries. this Visionaries name already in use.'
             );
-            this.spinner.hide();
-          },
+              this.spinner.hide();
+            },
         });
     }
   }
@@ -234,21 +219,23 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
       isActive: 'Y',
       isAdmin: 'Y',
     };
-    this.communityService.joinCommunity(data).subscribe({
-      next: (res: any) => {
-        if (res) {
-          return res;
-        }
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+    this.communityService.joinCommunity(data).subscribe(
+      {
+        next: (res: any) => {
+          if (res) {
+            return res;
+          }
+        },
+        error:
+          (error) => {
+            console.log(error);
+          }
+      });
   }
 
   onCommunityNameChange(): void {
     const slug = slugify(this.communityForm.get('CommunityName').value);
-    this.communityForm.get('slug').setValue(slug);
+    this.communityForm.get('slug').setValue(slug)
   }
 
   onLogoImgChange(event: any): void {
@@ -379,7 +366,7 @@ export class AddCommunityModalComponent implements OnInit, AfterViewInit {
 
   convertToUppercase(event: any) {
     const inputElement = event.target as HTMLInputElement;
-    let inputValue = inputElement.value;   
+    let inputValue = inputElement.value;
     inputValue = inputValue.replace(/\s/g, '');
     inputElement.value = inputValue.toUpperCase();
   }

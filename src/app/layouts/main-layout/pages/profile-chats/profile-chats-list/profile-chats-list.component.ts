@@ -397,9 +397,9 @@ export class ProfileChatsListComponent
       });
       this.findUserStatus(this.userChat.profileId);
     }
-    this.messageElements?.changes?.subscribe(() => {
-      this.resetIndex();
-    });
+    // this.messageElements?.changes?.subscribe(() => {
+    //   this.resetIndex();
+    // });
     this.socketService.socket?.on('typing', (data) => {
       this.typingData = data;
     });
@@ -830,7 +830,7 @@ export class ProfileChatsListComponent
     const tagUserInput = document.querySelector(
       'app-tag-user-input .tag-input-div'
     ) as HTMLInputElement;
-    if (tagUserInput) {
+    if (tagUserInput && !this.isSearch) {
       tagUserInput.focus();
     }
   }
@@ -1345,11 +1345,12 @@ export class ProfileChatsListComponent
       status: status,
       id: this.profileId,
     };
-    const localUserData = JSON.parse(localStorage.getItem('userData'));
+    // const localUserData = JSON.parse(localStorage.getItem('userData'));
     this.socketService.switchOnlineStatus(data, (res) => {
       this.sharedService.userData.userStatus = res.status;
-      localUserData.userStatus = res.status;
-      localStorage.setItem('userData', JSON.stringify(localUserData));
+      this.sharedService.getLoginUserDetails(this.sharedService.userData);
+      // localUserData.userStatus = res.status;
+      // localStorage.setItem('userData', JSON.stringify(localUserData));
     });
   }
 
@@ -1483,7 +1484,7 @@ export class ProfileChatsListComponent
           break;
         }
       }
-      this.checkLastMessageOfRoom();
+      // this.checkLastMessageOfRoom();
     }
     if (this.userChat?.groupId) {
       for (let group of this.filteredMessageList) {
@@ -1534,6 +1535,7 @@ export class ProfileChatsListComponent
   }
 
   scrollToHighlighted(index: number) {
+    // Remove the 'highlighted' class from any currently highlighted element
     this.messageElements.forEach((element) => {
       const highlightedSpans =
         element.nativeElement.querySelectorAll('.highlighted');
@@ -1541,6 +1543,8 @@ export class ProfileChatsListComponent
         this.renderer.removeClass(span, 'highlighted');
       });
     });
+
+    // Find all elements that contain highlighted words
     const highlightedElements = this.messageElements
       .toArray()
       .filter(
@@ -1550,7 +1554,9 @@ export class ProfileChatsListComponent
 
     if (index >= 0 && index < highlightedElements.length) {
       const element = highlightedElements[index];
-      const highlightedSpans = element.nativeElement.querySelectorAll('.highlight');
+      const highlightedSpans =
+        element.nativeElement.querySelectorAll('.highlight');
+      // Iterate through each highlighted word within the element
       highlightedSpans.forEach((span) => {
         this.renderer.addClass(span, 'highlighted');
       });
@@ -1581,11 +1587,18 @@ export class ProfileChatsListComponent
       .filter(
         (element) => element.nativeElement.querySelector('.highlight') !== null
       );
-
-    if (highlightedElements.length > 0) {
+    if (!this.currentHighlightedIndex) {
+      this.loadMoreChats();
+      this.currentHighlightedIndex = this.currentHighlightedIndex + 1;
+      this.scrollToHighlighted(this.currentHighlightedIndex);
+    } else if (highlightedElements.length > 0) {
       this.currentHighlightedIndex =
         (this.currentHighlightedIndex - 1 + highlightedElements.length) %
         highlightedElements.length;
+      this.scrollToHighlighted(this.currentHighlightedIndex);
+    } else {
+      this.loadMoreChats();
+      this.currentHighlightedIndex = this.currentHighlightedIndex + 1;
       this.scrollToHighlighted(this.currentHighlightedIndex);
     }
   }

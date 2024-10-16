@@ -17,16 +17,16 @@ const routes: Routes = [
   {
     path: 'visionaries/details/:name',
     component: HomeComponent,
-    canActivate: mapToCanActivate([AuthenticationGuard])  
+    // canActivate: mapToCanActivate([AuthenticationGuard])
   },
   {
     path: 'occult-topics/:name',
     component: HomeComponent,
-    // canActivate: mapToCanActivate([AuthenticationGuard])   
+    // canActivate: mapToCanActivate([AuthenticationGuard])
   },
   {
     path: 'post/:id',
-    component: PostDetailComponent
+    component: PostDetailComponent,
   },
 ];
 
@@ -34,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {}

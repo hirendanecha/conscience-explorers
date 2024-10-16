@@ -24,9 +24,9 @@
     }
   }
   .custom-input-area {
-    fa-icon{
+    fa-icon {
       top: 11px;
-      right: 20px;
+      right: 15px;
       background-color: var(--box-1st-color);
       border-radius: 50%;
       height: 36px;
@@ -35,4 +35,15 @@
       align-content: center;
     }
   }
+
+  .form-check-label{
+    text-transform: none;
+  }
+}
+.check-box{
+  width: 20px;
+  height: 20px;
+}
+.font-check{
+  font-size: 20px;
 }

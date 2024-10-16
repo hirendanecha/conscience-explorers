@@ -2,8 +2,6 @@ import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../../services/message.service';
 import { FILE_EXTENSIONS, FILE_EXTENSIONS_Video } from '../../constant/file-extensions';
-// import { MessageService } from '../../services/message.service';
-// import { FILE_EXTENSIONS, FILE_EXTENSIONS_Video } from '../../constant/file-extensions';
 
 @Component({
   selector: 'app-gallery-img-preview',

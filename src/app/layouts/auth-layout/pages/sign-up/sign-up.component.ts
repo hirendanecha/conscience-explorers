@@ -36,12 +36,14 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   type = 'danger';
   defaultCountry = 'US';
   allStateData: any;
-  selectedState = '';
-  profilePic = '';
+  profilePic: string;
   profileImg: any = {
     file: null,
     url: '',
   };
+  theme = '';
+  passwordHidden: boolean = true;
+  confirmPasswordHidden: boolean = true;
 
   @ViewChild('zipCode') zipCode: ElementRef;
 
@@ -54,18 +56,14 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     confirm_password: new FormControl('', [Validators.required]),
     MobileNo: new FormControl(''),
     Country: new FormControl('US', [Validators.required]),
-    Zip: new FormControl('', Validators.required),
-    State: new FormControl('', Validators.required),
+    Zip: new FormControl('', [Validators.required]),
+    State: new FormControl('', [Validators.required]),
     City: new FormControl(''),
     County: new FormControl(''),
     TermAndPolicy: new FormControl(false, Validators.required),
+    Anonymous: new FormControl(false),
   });
-  theme = '';
-  captchaToken = '';
-  passwordHidden: boolean = true;
-  confirmPasswordHidden: boolean = true;
   @ViewChild('captcha', { static: false }) captchaElement: ElementRef;
-
   constructor(
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
@@ -81,7 +79,6 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       description: 'Registration page',
       image: `${environment.webUrl}/assets/images/ce-logo.png`,
     };
-    // this.seoService.updateSeoMetaData(data);
     this.theme = localStorage.getItem('theme');
   }
 
@@ -90,19 +87,15 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    fromEvent(this.zipCode.nativeElement, 'input')
+      .pipe(debounceTime(1000))
+      .subscribe((event) => {
+        const val = event['target'].value;
+        if (val.length > 3) {
+          // this.onZipChange(val);
+        }
+      });
     this.loadCloudFlareWidget();
-    // fromEvent(this.zipCode.nativeElement, 'input')
-    //   .pipe(debounceTime(1000))
-    //   .subscribe((event) => {
-    //     const val = event['target'].value;
-    //     if (val.length > 3) {
-    //       // this.onZipChange(val);
-    //     }
-    //   });
-  }
-
-  selectFiles(event) {
-    this.profileImg = event;
   }
 
   loadCloudFlareWidget() {
@@ -111,7 +104,6 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       theme: this.theme === 'dark' ? 'light' : 'dark',
       callback: function (token) {
         localStorage.setItem('captcha-token', token);
-        this.captchaToken = token;
         console.log(`Challenge Success ${token}`);
         if (!token) {
           this.msg = 'invalid captcha kindly try again!';
@@ -132,6 +124,10 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     this.confirmPasswordHidden = !this.confirmPasswordHidden;
   }
 
+  selectFiles(event) {
+    this.profileImg = event;
+  }
+
   upload(file: any = {}) {
     this.spinner.show();
     if (file) {
@@ -140,7 +136,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
           this.spinner.hide();
           if (res.body) {
             this.profilePic = res?.body?.url;
-            this.creatProfile(this.registerForm.value);
+            this.createProfile(this.registerForm.value);
           }
         },
         error: (err) => {
@@ -154,45 +150,46 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.spinner.hide();
-      this.creatProfile(this.registerForm.value);
+      this.createProfile(this.registerForm.value);
     }
   }
 
   save() {
-    this.spinner.show();
     const token = localStorage.getItem('captcha-token');
     if (!token) {
-      this.spinner.hide();
       this.msg = 'Invalid captcha kindly try again!';
       this.type = 'danger';
       this.scrollTop();
       return;
     }
-    this.customerService.createCustomer(this.registerForm.value).subscribe({
-      next: (data: any) => {
-        this.spinner.hide();
-        if (!data.error) {
-          this.submitted = true;
-          window.sessionStorage.user_id = data.data;
-          this.registrationMessage =
-            'Your account has registered successfully. Kindly login with your email and password !!!';
-          this.scrollTop();
-          this.isragister = true;
-          const id = data.data;
-          if (id) {
-            this.upload(this.profileImg?.file);
-            localStorage.setItem('register', String(this.isragister));
-            this.router.navigateByUrl('/login?isVerify=false');
+    if (this.registerForm.valid) {
+      this.spinner.show();
+      this.customerService.createCustomer(this.registerForm.value).subscribe({
+        next: (data: any) => {
+          this.spinner.hide();
+          if (!data.error) {
+            this.submitted = true;
+            window.sessionStorage.user_id = data.data;
+            this.registrationMessage =
+              'Your account has registered successfully. Kindly login with your email and password !!!';
+            this.scrollTop();
+            this.isragister = true;
+            const id = data.data;
+            if (id) {
+              this.upload(this.profileImg?.file);
+              localStorage.setItem('register', String(this.isragister));
+              this.router.navigateByUrl('/login?isVerify=false');
+            }
           }
-        }
-      },
-      error: (err) => {
-        this.registrationMessage = err.error.message;
-        this.type = 'danger';
-        this.spinner.hide();
-        this.scrollTop();
-      },
-    });
+        },
+        error: (err) => {
+          this.registrationMessage = err.error.message;
+          this.type = 'danger';
+          this.spinner.hide();
+          this.scrollTop();
+        },
+      });
+    }
   }
 
   validatepassword(): boolean {
@@ -224,7 +221,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     this.msg = '';
     if (
       this.registerForm.valid &&
-      this.registerForm.get('TermAndPolicy').value === true
+      this.registerForm.get('TermAndPolicy').value === true 
     ) {
       if (!this.validatepassword()) {
         return;
@@ -233,7 +230,6 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     } else {
       this.msg = 'Please enter mandatory fields(*) data.';
       this.scrollTop();
-      // return false;
     }
   }
 
@@ -251,6 +247,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       next: (result) => {
         this.spinner.hide();
         this.allCountryData = result;
+        this.registerForm.get('Zip').enable();
         this.getAllState(this.defaultCountry);
       },
       error: (error) => {
@@ -270,6 +267,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       next: (result) => {
         this.spinner.hide();
         this.allStateData = result;
+        this.registerForm.get('State').setValue(result[0]?.state);
       },
       error: (error) => {
         this.spinner.hide();
@@ -314,7 +312,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     this.msg = '';
   }
 
-  creatProfile(data) {
+  createProfile(data) {
     this.spinner.show();
     const profile = {
       Username: data?.Username,
@@ -331,7 +329,6 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       IsActive: 'N',
       ProfilePicName: this.profilePic || null,
     };
-    console.log(profile);
 
     this.customerService.createProfile(profile).subscribe({
       next: (data: any) => {

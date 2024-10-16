@@ -1,8 +1,9 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProfileService } from 'src/app/@shared/services/profile.service';
 import { SeoService } from 'src/app/@shared/services/seo.service';
+import { TokenStorageService } from 'src/app/@shared/services/token-storage.service';
 
 @Component({
   selector: 'app-research-details',
@@ -18,14 +19,17 @@ export class ResearchDetailsComponent {
     page: 1,
     limit: 12,
   };
-
+  profileId: number;
+  membersIds = [];
   constructor(
     private profileService: ProfileService,
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
-    private seoService: SeoService
+    private seoService: SeoService,
+    public tokenService: TokenStorageService
   ) {
     this.GetGroupBasicDetails();
+    this.profileId = +localStorage.getItem('profileId');
   }
 
   GetGroupBasicDetails(): void {
@@ -33,28 +37,33 @@ export class ResearchDetailsComponent {
     // const uniqueLink = this.route.snapshot.paramMap.get('uniqueLink');
     this.route.paramMap.subscribe((param: any) => {
       const uniqueLink = param.get('uniqueLink');
-    this.profileService.getGroupBasicDetails(uniqueLink).subscribe({
-      next: (res: any) => {
-        if (res?.ID) {
-          this.groupDetails = res;
-          const data = {
+      this.profileService.getGroupBasicDetails(uniqueLink).subscribe({
+        next: (res: any) => {
+          if (res?.ID) {
+            this.groupDetails = res;
+            if (this.groupDetails?.groupMembersList?.length >= 0) {
+              this.membersIds = this.groupDetails?.groupMembersList?.map(
+                (member: any) => member?.profileId
+              );
+            }
+            const data = {
             title: `ConscienceExplorers.com Research ${this.groupDetails?.PageTitle}`,
-            url: `${location.href}`,
-            description: this.groupDetails?.PageDescription,
+              url: `${location.href}`,
+              description: this.groupDetails?.PageDescription,
             image: this.groupDetails?.CoverPicName || this.groupDetails?.ProfilePicName
-          };
-          this.seoService.updateSeoMetaData(data);
-          console.log(this.groupDetails)
-          this.GetGroupPostById();
+            };
+            this.seoService.updateSeoMetaData(data);
+            console.log(this.groupDetails)
+            this.GetGroupPostById();
+          }
+          this.spinner.hide();
+        },
+        error: () => {
+          this.spinner.hide();
         }
-        this.spinner.hide();
-      },
-      error: () => {
-        this.spinner.hide();
-      }
-    });
-  })
-
+      });
+    })
+    
   }
 
   GetGroupPostById(): void {
@@ -99,5 +108,47 @@ export class ResearchDetailsComponent {
   loadMorePosts(): void {
     this.pagination.page += 1;
     this.GetGroupPostById();
+  }
+
+  joinResearchGroup(): void {
+    this.spinner.show();
+    const data = {
+      researchProfileId: this.groupDetails?.ID,
+      profileId: this.profileId,
+    };
+
+    this.profileService.joinGroup(data).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.spinner.hide();
+          this.GetGroupBasicDetails();
+        }
+      },
+      error: (err) => {
+        console.log(err);
+        this.spinner.hide();
+      },
+    });
+  }
+
+  leaveResearchGroup(): void {
+    this.spinner.show();
+    const data = {
+      researchProfileId: this.groupDetails?.ID,
+      profileId: this.profileId,
+    };
+
+    this.profileService.leaveGroup(data).subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.spinner.hide();
+          this.GetGroupBasicDetails();
+        }
+      },
+      error: (err) => {
+        console.log(err);
+        this.spinner.hide();
+      },
+    });
   }
 }

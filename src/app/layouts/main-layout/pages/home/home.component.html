@@ -34,7 +34,7 @@
               class="btn btn-sm cmn-btn me-2"
               (click)="editCommunity(communityDetails)"
             >
-              Edit {{ communityDetails?.pageType === "community" ? "Visionaries" : "Occult Topics"}}
+              Edit {{ communityDetails?.pageType === 'community' ? 'Visionaries' : 'Occult Topics'}}
             </button>
           </ng-container>
           <!-- {{ communityDetails?.pageType }} -->
@@ -61,7 +61,7 @@
                 class="btn btn-sm btn-danger"
                 (click)="removeFromCommunity()"
               >
-                Leave {{ communityDetails?.pageType === "community" ? "Visionaries" : "Occult Topics"}}
+                Leave {{ communityDetails?.pageType === 'community' ? 'Visionaries' : 'Occult Topics'}}
               </button>
             </ng-template>  
           </ng-container>
@@ -72,7 +72,7 @@
               (click)="joinCommunity()"
               [disabled]="buttonClicked"
             >
-              Join {{ communityDetails?.pageType === "community" ? "Visionaries" : "Occult Topics"}}
+              Join {{ communityDetails?.pageType === 'community' ? 'Visionaries' : 'Occult Topics'}}
             </button>
           </ng-template>
         </div>
@@ -220,9 +220,7 @@
                         [icon]="['fas', 'file-pdf']"
                         class="c-pointer close-icon font-40-px"
                       />
-                      <span class="c-pdf-show">{{
-                        media?.pdfName?.replaceAll("%", " ")
-                      }}</span>
+                      <span class="c-pdf-show">{{ media?.pdfName?.replaceAll('%', ' ') }}</span>
                       <fa-icon
                         [icon]="['fas', 'xmark']"
                         class="position-absolute top-0 translate-middle badge bg-danger p-1 font-12-px c-pointer c-icon-color"
@@ -446,7 +444,7 @@
                   (click)="createCommunityAdmin(member)"
                 >
                   <fa-icon [icon]="['fas', 'user-check']" />
-                  <span>Make {{ this.communityDetails.pageType === "community" ? "Visionaries" : "Occult Topics" }} member</span>
+                  <span>Make {{ this.communityDetails.pageType === 'community' ? 'Visionaries' : 'Occult Topics'}} member</span>
                 </a>
               </button>
               <button ngbDropdownItem *ngIf="member?.isAdmin === 'N'">
@@ -455,7 +453,7 @@
                   (click)="createCommunityAdmin(member)"
                 >
                   <fa-icon [icon]="['fas', 'user-check']" />
-                  <span>Make {{ this.communityDetails.pageType === "community" ? "Visionaries" : "Occult Topics" }} admin</span>
+                  <span>Make {{ this.communityDetails.pageType === 'community' ? 'Visionaries' : 'Occult Topics'}} admin</span>
                 </a>
               </button>
               <button ngbDropdownItem>
@@ -503,18 +501,12 @@
         Delete {{ communityDetails?.pageType }}
       </button>
     </ng-container>
-    <ng-container
-      *ngIf="
-        communityDetails?.profileId !== +profileId &&
-        communityDetails?.memberIds.includes(+profileId)
-      "
-    >
+    <ng-container *ngIf="communityDetails?.profileId !== +profileId && communityDetails?.memberIds.includes(+profileId)">
       <button
         class="btn btn-sm btn-danger w-152-px float-end"
         (click)="deleteOrLeaveCommunity('leave')"
       >
-        Leave
-        {{ communityDetails?.pageType === "community" ? "Visionaries" : "Occult Topics" }}
+        Leave {{ communityDetails?.pageType }}
       </button>
     </ng-container>
   </div>

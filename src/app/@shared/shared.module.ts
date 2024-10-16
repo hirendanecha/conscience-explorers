@@ -157,6 +157,7 @@ import { MasterLoaModalComponent } from './modals/master-loa-modal/master-loa-mo
 import { QRCodeModule } from 'angularx-qrcode';
 import { ImgLayoutComponent } from './components/img-layout/img-layout.component';
 import { HoverDropdownDirective } from './directives/hover-dropdown.directive';
+import { UserGuideModalComponent } from './modals/userguide-modal/userguide-modal.component';
 
 const sharedComponents = [
   ConfirmationModalComponent,
@@ -199,7 +200,8 @@ const sharedComponents = [
   AppointmentModalComponent,
   OpenStripeComponent,
   ImgLayoutComponent,
-  HoverDropdownDirective
+  HoverDropdownDirective,
+  UserGuideModalComponent
 ];
 
 const sharedModules = [
@@ -217,7 +219,6 @@ const sharedModules = [
   PipeModule,
   MentionModule,
   QRCodeModule,
-  // PdfViewerModule
 ];
 
 @NgModule({
