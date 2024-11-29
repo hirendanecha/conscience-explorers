@@ -1,23 +1,35 @@
-<div class="row mt-8 login-content">
-  <div class="col-lg-6 d-lg-flex d-none align-items-center">
-    <div class="m-10 banner-sction">
+<div class="row mt-8 login-content justify-content-center">
+  <div class="col-lg-4 d-flex flex-column align-items-xl-end">
+    <div class="mb-3 d-flex justify-content-center mt-17">
+      <div class="img-pick d-flex flex-column justify-content-center mb-5">
+        <label class="form-label"
+          >Profile Picture<span class="text-danger">*</span></label
+        >
+        <app-img-picker
+          classes="h-300-px w-300-px"
+          (onFileChange)="selectFiles($event)"
+        />
+      </div>
+    </div>
+
+    <div class="d-lg-block d-none banner-sction">
       <div class="hrero-section">
-        <div class="about-freedom align-item-center" routerLink="/">
+        <div class="about-freedom" routerLink="/">
           <h3 class="text-center">
             Platform for the consciously awakening people worldwide to create
             worldwide unity conscience
           </h3>
           <img
-            class="mx-auto d-block"
-            src="/assets/images/ce-logo.png"
-            alt=""
-          />
+          class="mx-auto d-block"
+          src="/assets/images/ce-logo.png"
+          alt=""
+        />
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-12 col-lg-6 mx-auto">
+  <div class="col-12 col-lg-6">
     <p class="text-2 mb-5">
       Already activated?
       <a class="fw-500" routerLink="/login">Login</a>
@@ -61,9 +73,24 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-6 mb-3 d-flex flex-column">
-          <label class="form-label">Profile Picture</label>
+        <div class="col-12 col-md-6 mb-3 d-none px-6">
+          <label class="form-label"
+            >Profile Picture<span class="text-danger"></span
+          ></label>
           <app-img-picker (onFileChange)="selectFiles($event)" />
+        </div>
+        <div class="col-12 col-md-6 mb-3 single-box px-6">
+          <p class="align-items-center text-start my-auto mt-3 font-check">
+            Hide your personal information and remain anonymous on
+            Freedom.buzz.<br />Only your User Name will be displayed
+          </p>
+          <div class="d-flex justify-content-end">
+            <input
+              type="checkbox"
+              class="my-3 check-box"
+              formControlName="Anonymous"
+              />
+          </div>
         </div>
 
         <div class="col-12 col-md-6 mb-3">
@@ -138,7 +165,7 @@
             />
             <fa-icon
               [icon]="passwordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']"
-              class="font-20-px position-absolute"
+              class="font-20-px position-absolute c-pointer"
               (click)="togglePasswordVisibility(passwordInput)"
             ></fa-icon>
           </div>
@@ -169,14 +196,14 @@
               (keyup)="changetopassword($event)"
               formControlName="confirm_password"
               autocomplete="new-password"
-              #confirmPasswordInput
+              #confirmpasswordInput
             />
             <fa-icon
               [icon]="
-                confirmPasswordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']
+                confirmpasswordHidden ? ['fas', 'eye'] : ['fas', 'eye-slash']
               "
-              class="font-20-px position-absolute"
-              (click)="toggleConfirmPasswordVisibility(confirmPasswordInput)"
+              class="font-20-px position-absolute eye-slash c-pointer"
+              (click)="toggleConfirmPasswordVisibility(confirmpasswordInput)"
             ></fa-icon>
           </div>
           <div
@@ -215,14 +242,15 @@
 
         <div class="col-12 col-md-6 mb-3">
           <label class="form-label"
-            >Country<span class="text-danger">*</span></label
-          >
+            >Country
+            <span class="text-danger">*</span>
+          </label>
           <select
             id="Country"
-            required
             name="Country"
             class="input-area w-100"
             formControlName="Country"
+            (input)="convertToUppercase($event)"
             (change)="onCountryChange($event)"
           >
             <option [value]="defaultCountry">United states</option>
@@ -237,19 +265,19 @@
 
         <div class="col-12 col-md-6 mb-3">
           <label class="form-label"
-            >Zip Code<span class="text-danger">*</span></label
-          >
+            >Zip Code
+            <!-- <span class="text-danger">*</span> -->
+          </label>
           <input
             type="text"
             class="input-area"
-            required
             placeholder="Enter your zip code"
             formControlName="Zip"
             name="Zip"
             #zipCode
             (input)="convertToUppercase($event)"
           />
-          <div
+          <!-- <div
             class="text-danger"
             *ngIf="
               registerForm.get('Zip').hasError('required') &&
@@ -257,16 +285,16 @@
             "
           >
             Zip code is required.
-          </div>
+          </div> -->
         </div>
 
         <div class="col-12 col-md-6 mb-3">
           <label class="form-label"
-            >State<span class="text-danger">*</span></label
-          >
+            >State or Region
+            <!-- <span class="text-danger">*</span> -->
+          </label>
           <select
             id="State"
-            required
             name="State"
             class="input-area w-100"
             formControlName="State"
@@ -274,6 +302,7 @@
             <option *ngFor="let item of allStateData">
               {{ item.state }}
             </option>
+            <option value="Other">Other</option>
           </select>
         </div>
 
@@ -323,24 +352,25 @@
           </div> -->
         </div>
       </div>
-      <div class="mb-3">
+      <div class="form-check ps-0 my-4 d-flex">
         <div id="captcha" #captcha></div>
       </div>
-      <div class="form-check ps-0 my-4 d-flex">
+      <div class="form-check ps-0 my-4 align-items-center d-flex">
         <input
           type="checkbox"
+          class="p-0 check-box"
           required
-          class="p-0"
           formControlName="TermAndPolicy"
         />
-        <label class="form-check-label ms-2">
-          I agree to the <a>Terms</a> and <a>Privacy Policy</a>.
-          <span class="text-danger">*</span>
+        <label class="form-check-label ms-2 c-pointer fw-light">
+          I agree to the conscienceexplorers.com
+          <a class="custom-primary fw-bold" href="/user-agreement" >Terms of Use</a> and
+          <a class="custom-primary fw-bold" href="/privacy-policy" >Privacy Policy.<span class="text-danger">*</span></a>
         </label>
       </div>
 
       <button
-        class="btn cmn-btn my-2 ms-auto"
+        class="btn btn-primary my-2 ms-auto"
         type="submit"
         [disabled]="!registerForm.valid"
       >
@@ -350,10 +380,10 @@
   </div>
 </div>
 <div class="text-center mt-3">
-  <p class="text-danger">
+  <p class="h6 fw-light">
     If you are having technical issues, email
-    <a href="mailto:support@conscienceexplorers.com">{{
-      "support@conscienceexplorers.com"
-    }}</a>
+    <a class="h5 c-pointer custom-primary" (click)="onClick($event)">{{ "support@conscienceexplorers.com" }}
+      <fa-icon class="font-16-px ms-1" [icon]="['fas', 'copy']" />
+    </a>
   </p>
 </div>

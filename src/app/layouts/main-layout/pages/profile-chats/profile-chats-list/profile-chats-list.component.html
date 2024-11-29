@@ -1329,6 +1329,15 @@
           class="p-2 message-content"
           [ngClass]="!sidebarClass ? 'p-sm-3' : ''"
         >
+        <ng-container *ngIf="showButton">
+          <button
+            class="scrollToBottom d-flex justify-content-center align-items-center"
+            (click)="scrollToBottom()"
+            [ngClass]="sidebarClass ? 'active' : ''"
+          >
+            <fa-icon class="c-icon-color" [icon]="['fas', 'angles-up']"></fa-icon>
+          </button>
+        </ng-container>
           <div
             class="d-flex align-items-sm-center align-items-end flex-column flex-sm-row mt-2 gap-3"
           >
@@ -1342,6 +1351,7 @@
                     <input
                       type="file"
                       [(ngModel)]="chatObj.msgMedia"
+                      [ngModelOptions]="{ standalone: true }"
                       name="doc"
                       accept="application/*"
                       (change)="onPostFileSelect($event)"
@@ -1359,6 +1369,7 @@
                     <input
                       type="file"
                       [(ngModel)]="chatObj.msgMedia"
+                      [ngModelOptions]="{ standalone: true }"
                       name="image"
                       accept="image/*"
                       (change)="onPostFileSelect($event)"
@@ -1373,6 +1384,7 @@
                     <input
                       type="file"
                       [(ngModel)]="chatObj.msgMedia"
+                      [ngModelOptions]="{ standalone: true }"
                       id="fileInput"
                       (change)="onPostFileSelect($event)"
                       accept="video/*"
@@ -1439,7 +1451,7 @@
                   "
                   (onDataChange)="onTagUserInputChangeEvent($event)"
                   (keypress)="startTypingChat(true)"
-                  (keydown.enter)="uploadPostFileAndCreatePost()"
+                  (keydown.enter)="this.chatObj.msgText !== null ? uploadPostFileAndCreatePost() : null"
                   (keydown.shift.enter)="$event.stopPropagation()"
                 />
                 <!-- (keydown)="delayedStartTypingChat()" -->
@@ -1474,6 +1486,7 @@
                 <input
                   type="file"
                   [(ngModel)]="chatObj.msgMedia"
+                  [ngModelOptions]="{ standalone: true }"
                   name="doc"
                   accept="application/*"
                   (change)="onPostFileSelect($event)"
@@ -1489,6 +1502,7 @@
                 <input
                   type="file"
                   [(ngModel)]="chatObj.msgMedia"
+                  [ngModelOptions]="{ standalone: true }"
                   name="image"
                   accept="image/*"
                   (change)="onPostFileSelect($event)"
@@ -1504,6 +1518,7 @@
                 <input
                   type="file"
                   [(ngModel)]="chatObj.msgMedia"
+                  [ngModelOptions]="{ standalone: true }"
                   id="fileInput"
                   (change)="onPostFileSelect($event)"
                   accept="video/*"

@@ -103,15 +103,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           if (
             data.actionType === 'EC' &&
             data.notificationByProfileId !== this.profileId &&
-            sessionStorage.getItem('callId')
+            localStorage.getItem('callId')
           ) {
             this.sharedService.callId = null;
-            sessionStorage.removeItem('callId');
+            localStorage.removeItem('callId');
             const endCall = {
               profileId: this.profileId,
               roomId: data.roomId,
             };
             this.socketService?.endCall(endCall);
+            this.router.navigate(['/profile-chats']);
           }
           // const userData = this.tokenService.getUser();
           // this.sharedService.getLoginUserDetails(userData);
@@ -122,7 +123,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
               user.messageNotificationSound === 'Y' || false;
           });
           if (data?.notificationByProfileId !== this.profileId) {
-            this.sharedService.isNotify = true;
+            this.sharedService.setNotify(true);
             this.originalFavicon.href = '/assets/images/icon-unread.jpg';
           }
           this.soundControlService.soundEnabled$.subscribe((soundEnabled) => {
@@ -227,7 +228,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       const isRead = localStorage.getItem('isRead');
       if (isRead === 'N') {
-        this.sharedService.isNotify = true;
+        this.sharedService.setNotify(true);
+        this.originalFavicon.href = '/assets/images/icon-unread.jpg';
       }
     }
   }

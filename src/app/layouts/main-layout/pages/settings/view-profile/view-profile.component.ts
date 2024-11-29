@@ -155,20 +155,19 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (res) {
           res.map((e: any) => {
             e.pdfName = e.pdfUrl.split('/')[3].replaceAll('%', ' ');
-          })
+          });
           this.pdfList = res;
         }
       },
       error: (error) => {
         this.spinner.hide();
         console.log(error);
-      }
+      },
     });
   }
 
   viewUserPost(id) {
-    // this.router.navigate([`post/${id}`]);
-    window.open(`post/${id}`, '_blank');
+    this.router.navigate([`post/${id}`]);
   }
 
   downloadPdf(pdf): void {
@@ -209,7 +208,6 @@ export class ViewProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   searchPosts(event): void {
     if (event.target.value.length > 3) {
       this.searchText = event.target.value;
-      console.log(this.searchText);
       this.hasShownWarning = false;
     } else if (!event.target.value.length) {
       this.searchText = '';

@@ -96,7 +96,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
       theme: this.theme === 'dark' ? 'light' : 'dark',
       callback: function (token) {
         localStorage.setItem('captcha-token', token);
-        console.log(`Challenge Success ${token}`);
         if (!token) {
           this.msg = 'invalid captcha kindly try again!';
           this.type = 'danger';
@@ -143,6 +142,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             });
             // Redirect to a new page after reload
             this.toastService.success('Logged in successfully');
+            this.setCookiesForTube();
             window.location.reload();
             this.router.navigate([`/home`]);
           } else {
@@ -197,5 +197,27 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.type = 'success';
       }
     });
+  }
+
+  setCookiesForTube() {
+    const authToken = localStorage.getItem('auth-token');
+    if (authToken) {
+      // const cookieValue = `authToken=${authToken}; path=/; secure; samesite=None; max-age=86400`; // expires in 1 day
+      const cookieValue = `authToken=${authToken}; domain=.conscienceexplorers.com; path=/; secure; samesite=None; max-age=2592000`; //expires in 1 month
+      document.cookie = cookieValue;
+    }
+  }
+
+  onClick(event: MouseEvent): void {
+    event.preventDefault();
+    let listener = (e: ClipboardEvent) => {
+      let clipboard = e.clipboardData || window["clipboardData"];
+      clipboard.setData("text", 'support@conscienceexplorers.com');
+      e.preventDefault();
+      this.toastService.success('Email address copied');
+    };
+    document.addEventListener("copy", listener, false)
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener, false);
   }
 }

@@ -13,7 +13,7 @@ import { SocketService } from 'src/app/@shared/services/socket.service';
 import { ConfirmationModalComponent } from 'src/app/@shared/modals/confirmation-modal/confirmation-modal.component';
 import { BreakpointService } from 'src/app/@shared/services/breakpoint.service';
 import { take } from 'rxjs';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AppQrModalComponent } from 'src/app/@shared/modals/app-qr-modal/app-qr-modal.component';
 import { ConferenceLinkComponent } from 'src/app/@shared/modals/create-conference-link/conference-link-modal.component';
 import { Router } from '@angular/router';
@@ -67,9 +67,9 @@ export class ProfileChartsComponent implements OnInit, OnDestroy {
     private toasterService: ToastService
   ) {
     this.profileId = +localStorage.getItem('profileId');
-    if (this.sharedService.isNotify) {
-      this.sharedService.isNotify = false;
-    }
+    // if (this.sharedService.isNotify) {
+    //   this.sharedService.isNotify = false;
+    // }
     // const data = this.tokenStorageService.getUser();
     // this.sharedService.getLoginUserDetails(data);
   }
@@ -114,7 +114,6 @@ export class ProfileChartsComponent implements OnInit, OnDestroy {
   }
 
   onChatPost(userName: any) {
-    // console.log('old-user-chat', this.userChat);
     if (this.userChat?.groupId) {
       const date = moment(new Date()).utc();
       this.oldChat = {
@@ -122,13 +121,9 @@ export class ProfileChartsComponent implements OnInit, OnDestroy {
         groupId: this.userChat.groupId,
         date: moment(date).format('YYYY-MM-DD HH:mm:ss'),
       };
-      this.socketService.switchChat(this.oldChat, (data) => {
-        console.log(data);
-      });
+      this.socketService.switchChat(this.oldChat, (data) => {});
     }
-
     this.userChat = userName;
-    // console.log('new-user-chat', this.userChat);
   }
 
   onNewChatRoom(isRoomCreated) {
@@ -183,7 +178,7 @@ export class ProfileChartsComponent implements OnInit, OnDestroy {
         const modalRef = this.modalService.open(ConfirmationModalComponent, {
           centered: true,
         });
-        modalRef.componentInstance.title = 'Add ConscienceExplorers.com chats on home';
+        modalRef.componentInstance.title = 'Add ConscienceExplorers chats on home';
         modalRef.componentInstance.confirmButtonLabel = 'Do not display again';
         modalRef.componentInstance.cancelButtonLabel = 'Close';
         modalRef.componentInstance.message =
@@ -226,6 +221,10 @@ export class ProfileChartsComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(ConferenceLinkComponent, {
       centered: true,
     });
+  }
+
+  invitePeople(): void {
+    this.sharedService.triggerOpenModal();
   }
 
   ngOnDestroy(): void {

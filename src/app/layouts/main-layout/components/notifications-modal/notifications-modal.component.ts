@@ -43,11 +43,34 @@ export class NotificationsModalComponent implements AfterViewInit {
           // window.open(`post/${postId}`.toString(), '_blank')
         },
       });
-      this.closeModal();
+    if (!notification?.postId) {
+      this.selectMessaging(notification);
+    }
+    this.closeModal();
   }
 
   closeModal(): void {
     this.activeModal?.dismiss();
     this.activeOffcanvas?.dismiss();
+  }
+
+  selectMessaging(data) {
+    const userData = {
+      Id: data.notificationByProfileId,
+      ProfilePicName:
+        data.profileImage ||
+        data.ProfilePicName ||
+        '/assets/images/avtar/placeholder-user.png',
+      Username: data.Username,
+      GroupId: data.groupId,
+      GroupName: data.groupName,
+    };
+    const encodedUserData = encodeURIComponent(JSON.stringify(userData));
+    const url = this.router
+      .createUrlTree(['/profile-chats'], {
+        queryParams: { chatUserData: encodedUserData },
+      })
+      .toString();
+      this.router.navigateByUrl(url);
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, IMAGE_CONFIG } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -115,7 +115,7 @@ import {
   faCircleChevronUp,
   faCircleChevronDown,
   faSignIn,
-  faSignOut
+  faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
 import { ClaimTokenModalComponent } from './modals/clai-1776-token-modal/claim-token-modal.component';
 import { WalletLinkComponent } from './modals/wallet-download-modal/1776-wallet.component';
@@ -158,6 +158,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { ImgLayoutComponent } from './components/img-layout/img-layout.component';
 import { HoverDropdownDirective } from './directives/hover-dropdown.directive';
 import { UserGuideModalComponent } from './modals/userguide-modal/userguide-modal.component';
+import { InvitePeopleForChatModalComponent } from './modals/invite-people-for-chat/invite-people-for-chat-modal.component';
 
 const sharedComponents = [
   ConfirmationModalComponent,
@@ -201,7 +202,8 @@ const sharedComponents = [
   OpenStripeComponent,
   ImgLayoutComponent,
   HoverDropdownDirective,
-  UserGuideModalComponent
+  UserGuideModalComponent,
+  InvitePeopleForChatModalComponent,
 ];
 
 const sharedModules = [
@@ -222,13 +224,20 @@ const sharedModules = [
 ];
 
 @NgModule({
-  declarations: [sharedComponents],
   imports: [sharedModules],
+  declarations: [sharedComponents],
   exports: [...sharedModules, ...sharedComponents],
   providers: [
     NgbActiveModal,
     NgbActiveOffcanvas,
     { provide: LAZYLOAD_IMAGE_HOOKS, useClass: ScrollHooks },
+    {
+      provide: IMAGE_CONFIG,
+      useValue: {
+        disableImageSizeWarning: true, 
+        disableImageLazyLoadWarning: true
+      }
+    },
   ],
 })
 export class SharedModule {

@@ -17,7 +17,7 @@ import {
 import { ToastService } from '../../services/toast.service';
 import { OpenStripeComponent } from '../open-stripe/open-stripe.component';
 import { CustomerService } from '../../services/customer.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AppointmentsService } from '../../services/appointment.service';
 // import { AppointmentsService } from '../../services/appointment.service';
 

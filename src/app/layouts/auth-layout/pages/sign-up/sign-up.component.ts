@@ -43,7 +43,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   };
   theme = '';
   passwordHidden: boolean = true;
-  confirmPasswordHidden: boolean = true;
+  confirmpasswordHidden: boolean = true;
 
   @ViewChild('zipCode') zipCode: ElementRef;
 
@@ -56,8 +56,8 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     confirm_password: new FormControl('', [Validators.required]),
     MobileNo: new FormControl(''),
     Country: new FormControl('US', [Validators.required]),
-    Zip: new FormControl('', [Validators.required]),
-    State: new FormControl('', [Validators.required]),
+    Zip: new FormControl(''),
+    State: new FormControl(''),
     City: new FormControl(''),
     County: new FormControl(''),
     TermAndPolicy: new FormControl(false, Validators.required),
@@ -87,14 +87,14 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.zipCode.nativeElement, 'input')
-      .pipe(debounceTime(1000))
-      .subscribe((event) => {
-        const val = event['target'].value;
-        if (val.length > 3) {
-          // this.onZipChange(val);
-        }
-      });
+    // fromEvent(this.zipCode.nativeElement, 'input')
+    //   .pipe(debounceTime(1000))
+    //   .subscribe((event) => {
+    //     const val = event['target'].value;
+    //     if (val.length > 3) {
+    //        this.onZipChange(val);
+    //     }
+    //   });
     this.loadCloudFlareWidget();
   }
 
@@ -104,7 +104,6 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       theme: this.theme === 'dark' ? 'light' : 'dark',
       callback: function (token) {
         localStorage.setItem('captcha-token', token);
-        console.log(`Challenge Success ${token}`);
         if (!token) {
           this.msg = 'invalid captcha kindly try again!';
           this.type = 'danger';
@@ -121,7 +120,7 @@ export class SignUpComponent implements OnInit, AfterViewInit {
   toggleConfirmPasswordVisibility(confirmpasswordInput: HTMLInputElement) {
     confirmpasswordInput.type =
       confirmpasswordInput.type === 'password' ? 'text' : 'password';
-    this.confirmPasswordHidden = !this.confirmPasswordHidden;
+    this.confirmpasswordHidden = !this.confirmpasswordHidden;
   }
 
   selectFiles(event) {
@@ -192,11 +191,22 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     }
   }
 
+  validateEmail() {
+    const emailControl = this.registerForm.get('Email');
+    const emailError = Validators.email(emailControl);
+    if (emailError) {
+      this.msg = 'Please enter a valid email address.';
+      this.scrollTop();
+      return false;
+    }
+    return true;
+  }
+
   validatepassword(): boolean {
-    const pattern = '[a-zA-Z0-9]{5,}';
+    // const pattern = '[a-zA-Z0-9]{5,}';
     // const pattern =
     //   '(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[a-z])(?=.*[0-9].*[0-9]).{8}';
-
+    const pattern = '.{5,}';
     if (!this.registerForm.get('Password').value.match(pattern)) {
       this.msg = 'Password must be a minimum of 5 characters';
       // this.msg =
@@ -223,6 +233,9 @@ export class SignUpComponent implements OnInit, AfterViewInit {
       this.registerForm.valid &&
       this.registerForm.get('TermAndPolicy').value === true 
     ) {
+      if (!this.validateEmail()) {
+        return;
+      }
       if (!this.validatepassword()) {
         return;
       }
@@ -375,5 +388,18 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     let inputValue = inputElement.value;
     inputValue = inputValue.replace(/\s/g, '');
     inputElement.value = inputValue.toUpperCase();
+  }
+
+  onClick(event: MouseEvent): void {
+    event.preventDefault();
+    let listener = (e: ClipboardEvent) => {
+      let clipboard = e.clipboardData || window["clipboardData"];
+      clipboard.setData("text", 'conscienceexplorers.com');
+      e.preventDefault();
+      this.toastService.success('Email address copied');
+    };
+    document.addEventListener("copy", listener, false)
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener, false);
   }
 }

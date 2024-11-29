@@ -118,13 +118,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const isRead = localStorage.getItem('isRead');
     if (isRead === 'N') {
-      this.sharedService.isNotify = true;
+      // this.sharedService.isNotify = true;
+      this.sharedService.setNotify(true);
     }
     this.socketService.socket?.on(
       'new-post-added',
       (res: any) => {
         this.spinner.hide();
-        this.resetPost();
+        // this.resetPost();
       },
       (error: any) => {
         this.spinner.hide();
@@ -185,7 +186,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         fileData.imageUrl = URL.createObjectURL(file);
       }
       this.selectedFiles.push(fileData);
-      // console.log(`File ${i + 1}:`, fileData);
     }
     if (files?.[0]?.type?.includes('application/')) {
       this.postMediaData = this.selectedFiles;
@@ -194,7 +194,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedFiles
       );
     }
-    // console.log('Selected files:', this.postMediaData);
   }
 
   removePostSelectedFile(index: number): void {
@@ -348,8 +347,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.postData.metadescription = null;
       }
       this.toastService.success('Post created successfully.');
-      console.log(this.postData);
-
       this.socketService?.createOrEditPost(this.postData);
       this.buttonClicked = false;
       this.resetPost();

@@ -5,7 +5,7 @@
 
   .tag-input-div {
     z-index: 1;
-    font-size: 16px !important;
+    font-size: 18px !important;
     min-height: 56px;
     // line-break: anywhere;
     text-align: start;
@@ -92,12 +92,13 @@
     p {
       background: unset !important;
       background-color: unset !important;
-      font-size: 16px !important;
+      font-size: 18px !important;
       line-height: unset !important;
       // color: var(--input-text) !important;
       color: var(--para-2nd-color) !important;
       font-weight: 400 !important;
       overflow-wrap: anywhere;
+      margin: 0;
     }
     // br {
     //   display: none;

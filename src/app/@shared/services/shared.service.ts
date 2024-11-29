@@ -26,6 +26,11 @@ export class SharedService {
   private bc = new BroadcastChannel('user_data_channel');
   loginUserInfo = new BehaviorSubject<any>(null);
   loggedInUser$ = this.loginUserInfo.asObservable();
+  public openModalSubject = new Subject<void>();
+  openModal$ = this.openModalSubject.asObservable();
+  private isNotifySubject = new BehaviorSubject<boolean>(false);
+  isNotify$ = this.isNotifySubject.asObservable();
+
   callId: string;
   constructor(
     public modalService: NgbModal,
@@ -221,5 +226,17 @@ export class SharedService {
         }
       },
     });
+  }
+
+  triggerOpenModal() {
+    this.openModalSubject.next();
+  }
+
+  setNotify(value: boolean): void {
+    this.isNotifySubject.next(value);
+  }
+
+  getNotify(): boolean {
+    return this.isNotifySubject.getValue();
   }
 }

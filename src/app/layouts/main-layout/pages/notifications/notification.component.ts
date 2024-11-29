@@ -59,9 +59,9 @@ export class NotificationsComponent {
     });
   }
 
-  viewUserPost(id) {
-    this.router.navigate([`post/${id}`]);
-  }
+  // viewUserPost(id) {
+  //   this.router.navigate([`post/${id}`]);
+  // }
 
   removeNotification(id: number): void {
     this.customerService.deleteNotification(id).subscribe({
@@ -93,5 +93,24 @@ export class NotificationsComponent {
   loadMoreNotification(): void {
     this.activePage = this.activePage + 1;
     this.getNotificationList();
+  }
+
+  selectMessaging(data) {
+    if (!data?.postId) {
+      const userData = {
+        Id: data.notificationByProfileId,
+        ProfilePicName: data.profileImage || data.ProfilePicName || '/assets/images/avtar/placeholder-user.png',
+        Username: data.Username,
+        GroupId: data.groupId,
+        GroupName: data.groupName,
+      };
+      const encodedUserData = encodeURIComponent(JSON.stringify(userData));
+      const url = this.router
+        .createUrlTree(['/profile-chats'], {
+          queryParams: { chatUserData: encodedUserData },
+        })
+        .toString();
+        this.router.navigateByUrl(url);
+    }
   }
 }

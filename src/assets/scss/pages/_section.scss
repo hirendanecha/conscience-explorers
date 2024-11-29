@@ -740,6 +740,9 @@
     }
   }
 }
+.modal-header {
+  justify-content: space-between;
+}
 .cart-content {
   thead {
     background-color: var(--box-2nd-color);

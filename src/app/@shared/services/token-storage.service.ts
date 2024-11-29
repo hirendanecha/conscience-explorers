@@ -9,7 +9,7 @@ import { SocketService } from './socket.service';
 import { SharedService } from './shared.service';
 
 const TOKEN_KEY = 'auth-token';
-const USER_KEY = 'auth-user';
+const USER_KEY = 'userData';
 
 @Injectable({
   providedIn: 'root',
@@ -22,23 +22,26 @@ export class TokenStorageService {
     private cookieService: CookieService,
     private socketService: SocketService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
   ) {}
 
   signOut(): void {
     const theme = localStorage.getItem('theme');
     localStorage.clear();
-    this.cookieService.delete('auth-user', '/', environment.domain);
-    // this.cookieService.deleteAll('/');
+    this.cookieService.delete('userData', '/', environment.domain);
+    this.cookieService.deleteAll('/');
     localStorage.setItem('theme', theme);
-    this.toastService.success('Logout successfully');
+    this.toastService.success('Successfully Logged Out');
     this.router.navigate(['/']);
   }
 
   clearLoginSession(profileId): void {
-    this.socketService.logout({profileId: profileId, token: this.getToken()}, (data) => {
+    this.socketService.logout(
+      { profileId: profileId, token: this.getToken() },
+      (data) => {
         return;
-    });
+      }
+    );
   }
 
   public saveToken(token: string): void {
