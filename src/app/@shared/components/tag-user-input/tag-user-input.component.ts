@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -58,14 +59,15 @@ export class TagUserInputComponent implements OnChanges, OnDestroy {
     private postService: PostService,
     private spinner: NgxSpinnerService,
     private sharedService: SharedService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef
   ) {
+    this.sharedService.loggedInUser$.subscribe((data) => {
+      this.profileId = data?.profileId;
+    });
     this.metaDataSubject.pipe(debounceTime(200)).subscribe(() => {
       this.getMetaDataFromUrlStr();
       this.checkUserTagFlag();
-    });
-    this.sharedService.loggedInUser$.subscribe((data) => {
-      this.profileId = data?.profileId;
     });
   }
 
@@ -90,6 +92,9 @@ export class TagUserInputComponent implements OnChanges, OnDestroy {
   }
 
   messageOnKeyEvent(): void {
+    if (this.isCustomeSearch) {
+      this.cdr.detectChanges();
+    };
     this.metaDataSubject.next();
     this.emitChangeEvent();
   }
@@ -301,6 +306,7 @@ export class TagUserInputComponent implements OnChanges, OnDestroy {
             const beforeText = node.nodeValue?.substring(0, atSymbolIndex);
             const afterText = node.nodeValue?.substring(cursorOffset);
             const replacedText = `${beforeText}${replacement}${afterText}`;
+            this.clearUserSearchData();
             const span = document.createElement('span');
             span.innerHTML = replacedText;
             while (span.firstChild) {
@@ -355,6 +361,7 @@ export class TagUserInputComponent implements OnChanges, OnDestroy {
 
   getUserList(search: string): void {
     if (this.isCustomeSearch) {
+      this.cdr.detach();
       this.messageService
         .getRoomProfileList(search, this.isCustomeSearch)
         .subscribe({
@@ -392,6 +399,9 @@ export class TagUserInputComponent implements OnChanges, OnDestroy {
     this.userNameSearch = '';
     this.userList = [];
     // this.userSearchNgbDropdown?.close();
+    if (this.isCustomeSearch) {
+      this.cdr.reattach();
+    }
   }
 
   clearMetaData(): void {

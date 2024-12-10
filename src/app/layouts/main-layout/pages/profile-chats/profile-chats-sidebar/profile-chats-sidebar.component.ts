@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -72,7 +73,8 @@ export class ProfileChatsSidebarComponent
     private router: Router,
     private toasterService: ToastService,
     public encryptDecryptService: EncryptDecryptService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private cdr: ChangeDetectorRef
   ) {
     this.profileId = +localStorage.getItem('profileId');
     // const notificationSound =
@@ -183,6 +185,7 @@ export class ProfileChatsSidebarComponent
         (user: any) => user.isAccepted === 'N'
       );
     });
+    this.cdr.markForCheck();
     return this.chatList;
   }
 
@@ -201,6 +204,7 @@ export class ProfileChatsSidebarComponent
     if (this.searchText) {
       this.searchText = null;
     }
+    this.cdr.markForCheck();
   }
 
   goToViewProfile(): void {
@@ -244,6 +248,7 @@ export class ProfileChatsSidebarComponent
       this.groupList = data;
       this.mergeUserChatList();
     });
+    this.cdr.markForCheck();
   }
 
   mergeUserChatList(): void {
@@ -267,6 +272,7 @@ export class ProfileChatsSidebarComponent
       });
       this.messageService.chatList.push(this.newChatList);
     }
+    this.cdr.markForCheck();
   }
 
   createNewGroup() {
@@ -378,7 +384,7 @@ export class ProfileChatsSidebarComponent
     return status;
   }
 
-  checkRoom(): void { 
+  checkRoom(): void {
     const oldUserChat = {
       profileId1: this.profileId,
       profileId2: this.chatData.Id,
@@ -399,7 +405,7 @@ export class ProfileChatsSidebarComponent
         this.selectedChatUser = existingUser.roomId;
         this.onNewChat?.emit(existingUser);
       } else if (this.chatData.GroupId) {
-        const redirectToGroup ={
+        const redirectToGroup = {
           groupId: this.chatData.GroupId,
           groupName: this.chatData.GroupName,
           isAccepted: this.chatData?.isAccepted || 'Y',
@@ -407,7 +413,7 @@ export class ProfileChatsSidebarComponent
           profileImage: this.chatData?.ProfilePicName,
           ProfilePicName: this.chatData?.ProfilePicName,
           createdBy: this.chatData?.Id,
-        }
+        };
         this.onNewChat?.emit(redirectToGroup);
       } else {
         const newUser = {
@@ -419,6 +425,7 @@ export class ProfileChatsSidebarComponent
         this.onNewChat?.emit(newUser);
       }
     });
+    this.cdr.markForCheck();
   }
 
   invitePeople(): void {
