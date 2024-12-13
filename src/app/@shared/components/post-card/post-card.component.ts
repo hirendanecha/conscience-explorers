@@ -667,11 +667,13 @@ export class PostCardComponent implements OnInit {
     this.extractLargeImageFromContent(data.html, postId, commentId);
     this.commentData.meta = data?.meta;
     this.commentMessageTags = data?.tags;
+    this.isParent = true;
   }
   onTagUserReplayInputChangeEvent(data: any, postId, commentId?: number): void {
     this.extractLargeImageFromContent(data.html, postId, commentId);
     this.commentData.meta = data?.meta;
     this.commentMessageTags = data?.tags;
+    this.isParent = false;
   }
 
   socketListner(): void {
