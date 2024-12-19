@@ -30,7 +30,7 @@ export class SharedService {
   openModal$ = this.openModalSubject.asObservable();
   private isNotifySubject = new BehaviorSubject<boolean>(false);
   isNotify$ = this.isNotifySubject.asObservable();
-
+  private callData: any = {};
   callId: string;
   constructor(
     public modalService: NgbModal,
@@ -238,5 +238,14 @@ export class SharedService {
 
   getNotify(): boolean {
     return this.isNotifySubject.getValue();
+  }
+
+  setExistingCallData(data) {
+    this.callData = data;
+  }
+
+  getExistingCallData() {
+    console.log(this.callData);
+    return this.callData;
   }
 }

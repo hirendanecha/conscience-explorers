@@ -9,7 +9,7 @@
   //   .border-top {
   //     border-top: 1px solid var(--bs-border-color) !important;
   //   }
-  .image-render{
+  .image-render {
     image-rendering: -webkit-optimize-contrast;
   }
   .sidebar-head-text {
@@ -131,7 +131,7 @@
     .abs-dnd {
       background: red;
     }
-    .abs-invisible{
+    .abs-invisible {
       background: rgb(156, 155, 155);
     }
   }
@@ -172,7 +172,7 @@
       line-height: 25px !important;
     }
     a {
-      color: var(--para-2nd-color)!important;
+      color: var(--para-2nd-color) !important;
       font-weight: 600 !important;
     }
   }

@@ -122,7 +122,7 @@ export class ProfileChatsListComponent
     groupId: null,
     roomId: null,
   };
-  isOnCall = false;
+  // isOnCall = false;
   callRoomId: number;
   isLoading: boolean = false;
   messageIndex: number;
@@ -133,6 +133,10 @@ export class ProfileChatsListComponent
   isScrollUp = false;
   @ViewChildren('message') messageElements: QueryList<ElementRef>;
   private scrollSubject = new Subject<any>();
+  isCallNotification: boolean = false;
+  isCallWindowOpen: boolean = false;
+  isOnCall: boolean = false;
+  callId: string = '';
 
   constructor(
     private socketService: SocketService,
@@ -157,12 +161,12 @@ export class ProfileChatsListComponent
     this.profileId = +localStorage.getItem('profileId');
     this.callRoomId = +localStorage.getItem('callRoomId');
     const data = {
-      title: 'ConscienceExplorers Chat',
+      title: 'Buzz Chat',
       url: `${location.href}`,
       description: '',
     };
     this.seoService.updateSeoMetaData(data);
-    this.isOnCall = this.router.url.includes('/facetime/') || false;
+    this.isCallWindowOpen = this.router.url.includes('/facetime/') || false;
     this.scrollSubject
       .pipe(debounceTime(200))
       .subscribe((event) => this.handleScroll(event));
@@ -173,12 +177,18 @@ export class ProfileChatsListComponent
       localStorage.removeItem('callRoomId');
       this.callRoomId = null;
     }
+    if (this.userChat?.groupId) {
+      this.getGroupDetails(this.userChat.groupId);
+    } else {
+      this.groupData = null;
+    }
   }
 
   ngOnInit(): void {
     if (this.userChat?.roomId || this.userChat?.groupId) {
       this.messageList = [];
       this.filteredMessageList = [];
+      this.relevantMembers = [];
       this.getMessageList();
     }
     this.socketService.socket?.on('new-message', (data) => {
@@ -317,7 +327,10 @@ export class ProfileChatsListComponent
       // this.activePage = 1;
       this.messageList = [];
       this.filteredMessageList = [];
+      this.relevantMembers = [];
       this.resetData();
+      this.callId = localStorage.getItem('callId');
+      this.checkOngoingCall();
       this.getGroupDetails(this.userChat?.groupId);
       this.goToFirstPage();
       // this.getMessageList();
@@ -392,8 +405,15 @@ export class ProfileChatsListComponent
       /<img\s+[^>]*src="data:image\/.*?;base64,[^\s]*"[^>]*>|<img\s+[^>]*src=""[^>]*>/g;
     cleanedText = cleanedText.replace(regex, '');
     const divregex = /<div\s*>\s*<\/div>/g;
-    if (cleanedText.replace(divregex, '').replace(/<(?!img\b)[^>]*>/gi, '')
-      .replace(/&nbsp;/gi, '').replace(/\s+/g, '').trim() === '') return null;
+    if (
+      cleanedText
+        .replace(divregex, '')
+        .replace(/<(?!img\b)[^>]*>/gi, '')
+        .replace(/&nbsp;/gi, '')
+        .replace(/\s+/g, '')
+        .trim() === ''
+    )
+      return null;
     return this.encryptDecryptService?.encryptUsingAES256(cleanedText) || null;
   }
 
@@ -477,6 +497,7 @@ export class ProfileChatsListComponent
         profileId: this.userChat.profileId,
         parentMessageId: this.chatObj?.parentMessageId || null,
         tags: this.chatObj?.['tags'],
+        messageType: this.isCallNotification ? 'C' : null,
       };
       this.userChat?.roomId ? (data['isRead'] = 'N') : null;
       if (!data.messageMedia && !data.messageText && !data.parentMessageId) {
@@ -695,6 +716,7 @@ export class ProfileChatsListComponent
     this.isSearch = false;
     this.uploadTo.roomId = null;
     this.uploadTo.groupId = null;
+    this.isCallNotification = false;
     if (this.messageInputValue !== null) {
       setTimeout(() => {
         this.messageInputValue = null;
@@ -932,7 +954,7 @@ export class ProfileChatsListComponent
       roomId: this.userChat?.roomId || null,
       groupId: this.userChat?.groupId || null,
       notificationByProfileId: this.profileId,
-      link: this.isOnCall ? lastParam : originUrl,
+      link: this.isCallWindowOpen ? lastParam : originUrl,
     };
     localStorage.setItem('callRoomId', data?.roomId || data.groupId);
     if (!data?.groupId) {
@@ -1015,6 +1037,7 @@ export class ProfileChatsListComponent
       if (!window.document.hidden) {
         if (res === 'missCalled') {
           this.chatObj.msgText = 'Missed call';
+          this.isCallNotification = true;
           this.sendMessage();
 
           const callLogData = {
@@ -1197,6 +1220,7 @@ export class ProfileChatsListComponent
     if (isRead === 'Y') {
       this.originalFavicon.href = '/assets/images/icon.jpg';
       this.sharedService.setNotify(false);
+      this.socketService.readNotification({ profileId: this.profileId }, (data) => { });
       // localStorage.setItem('isRead', 'Y');
     }
   }
@@ -1233,6 +1257,7 @@ export class ProfileChatsListComponent
     this.socketService.switchOnlineStatus(data, (res) => {
       this.sharedService.userData.userStatus = res.status;
       this.sharedService.getLoginUserDetails(this.sharedService.userData);
+      this.cdr.markForCheck();
       // localUserData.userStatus = res.status;
       // localStorage.setItem('userData', JSON.stringify(localUserData));
     });
@@ -1287,23 +1312,38 @@ export class ProfileChatsListComponent
   }
 
   private processMessageData(data): void {
-    if (this.activePage === data.pagination.totalPages) {
-      this.messageList = [...data.data, ...this.messageList];
-    } else {
-      this.filteredMessageList = [];
-      this.messageList = [];
-      this.messageList = data.data;
-    }
-    this.messageList.sort(
+    const isActivePage = this.activePage === data.pagination.totalPages;
+    const sortedData = data.data.sort(
       (a, b) =>
         new Date(a?.createdDate).getTime() - new Date(b?.createdDate).getTime()
     );
+    if (isActivePage) {
+      this.mergeMessagesIntoFilteredList(
+        new MessageDatePipe(this.encryptDecryptService).transform(sortedData)
+      );
+    } else {
+      this.messageList = sortedData;
+      this.filteredMessageList = [];
+      this.mergeMessagesIntoFilteredList(
+        new MessageDatePipe(this.encryptDecryptService).transform(
+          this.messageList
+        )
+      );
+    }
+    this.filteredMessageList.sort((a, b) => this.compareDates(a.date, b.date));
     this.readMessagesBy = data?.readUsers?.filter(
       (item) => item.ID !== this.profileId
     );
-    const newMessages = new MessageDatePipe(
-      this.encryptDecryptService
-    ).transform(this.messageList);
+  }
+
+  private compareDates(dateA: string, dateB: string): number {
+    const today = new Date();
+    const parsedDateA = dateA === 'Today' ? today : new Date(dateA);
+    const parsedDateB = dateB === 'Today' ? today : new Date(dateB);
+    return parsedDateA.getTime() - parsedDateB.getTime();
+  }
+
+  private mergeMessagesIntoFilteredList(newMessages: any[]): void {
     for (const dateObj of newMessages) {
       const existingDateObj = this.filteredMessageList.find(
         (existing) => existing.date === dateObj.date
@@ -1317,11 +1357,7 @@ export class ProfileChatsListComponent
         this.filteredMessageList.push(dateObj);
       }
     }
-    this.filteredMessageList.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
   }
-
   private processMetaData(): void {
     if (this.filteredMessageList.length) {
       this.filteredMessageList.map((element) => {
@@ -1578,9 +1614,42 @@ export class ProfileChatsListComponent
   }
 
   goToFirstPage(): void {
-    this.activePage = 1;
-    this.showButton = false;
-    this.isScrollUp = false;
-    this.getMessagesBySocket();
+    if (this.activePage >= 1) {
+      this.activePage = 1;
+      this.getMessagesBySocket();
+      this.showButton = false;
+      this.isScrollUp = false;
+    }
+  }
+
+  checkOngoingCall(): void {
+    const reqObj = {
+      roomId: this.userChat?.roomId || null,
+      groupId: this.userChat?.groupId || null,
+    };
+    if (reqObj) {
+      this.socketService?.checkCall(reqObj, (data: any) => {
+        if (data) {
+          console.log('ongoingCall==>', data);
+          this.sharedService.setExistingCallData(data);
+          this.isOnCall = data.isOnCall === 'Y';
+        } else {
+          this.isOnCall = false;
+        }
+      });
+    }
+  }
+
+  goToOnGoingCall(): void {
+    const data = {
+      roomId: this.userChat?.roomId,
+      groupId: this.userChat?.groupId,
+      link: this.sharedService.getExistingCallData()?.callLink,
+      members: this.sharedService.getExistingCallData()?.members + 1,
+    };
+    this.socketService?.pickUpCall(data, (data: any) => {});
+    this.router.navigate([
+      `/facetime/${this.sharedService.getExistingCallData()?.callLink}`,
+    ]);
   }
 }
